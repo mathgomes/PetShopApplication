@@ -1,2 +1,2 @@
 
-Copyright (C) 2017 mathgomes
+Copyright (C) 2017
