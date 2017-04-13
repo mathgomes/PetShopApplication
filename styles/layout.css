@@ -92,7 +92,21 @@ article.boas_vindas {
 	text-shadow: 0 1px 0 #0F2326;
 }
 
-.painel_de_cadastro input[type=text] {
+.painel_de_cadastro input[type=number] {
+	display: block;
+	height: 20px;
+	border: none;
+	color: #FFFFFF;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	padding: 5px 10px;
+	margin: 10px 0;
+	text-shadow: 0 1px 0 #0F2326;
+}
+
+
+.painel_de_cadastro input[type=number],input[type=text] {
 	/* Fallback Color */
 	background: #46737B;
 	/* Firefox 3.6+ */
@@ -163,5 +177,25 @@ footer .logo {
 	line-height: 60px;
 	/*background: url('images/logo.png') no-repeat;*/
 	/*text-indent: -5000px;*/
+}
+
+.formTextArea {
+	display: block;
+	height: 60px;
+	border: none;
+	color: #FFFFFF;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	padding: 5px 100px;
+	margin: 1px 0;
+	text-shadow: 1 1px 1 #0F2326;
+	
+	/* Fallback Color */
+	background: #46737B;
+	/* Firefox 3.6+ */
+	background-image: -moz-linear-gradient(#0C3617, #5C858C);
+	/* Safari 5.1+, Chrome 10+ */
+	background-image: -webkit-linear-gradient(#0C3617, #5C858C);
 }
 

@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="utf-8" />
-		<title>Cadastro</title>
+		<title>Cadastro Produto</title>
 		<link rel="stylesheet" href="styles/layout.css" type="text/css">
 		<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
 		<!--[if IE]>
@@ -25,15 +25,20 @@
 			<section class="center_page">
 				<div class="wrapper">
 					<article class="painel_de_cadastro">
-						<h4>Cadastro do Pet</h4>
+						<h4>Cadastro de Produto</h4>
 						<form>
-							<input type="text" value = "" placeholder="Usuário do cliente" name="name"/>
-							<input type="text" value="" placeholder="Nome do pet " name="name">
-							<input type="text" value="" placeholder="Raça" name="name">
-							<input type="text" value="" placeholder="Idade" name="name"> </input>
-							<h1>Foto do Pet
-							<input type="file" value="" class="button_1"></input></h1><br />
-							<input type="submit" value="enviar cadastro"  />							
+							<input type="text" value = "" placeholder="Nome Produto" name="name"/>
+
+							<input type="number" value="" placeholder="quantidade em estoque" name="name" />
+							<input type="number" value="" placeholder="quantidade vendida" name="name" />
+							<textarea class="formTextArea" placeholder = "Descrição do produto"  ></textarea>
+							<br />
+							<h1>Foto do produto
+							<input type="file" value="Foto produto" class="button_1">
+							</input>
+							</h1>
+							<br />
+							<input type="submit" value="Cadastrar"  />
 						</form>
 					</article>
 				</div>
