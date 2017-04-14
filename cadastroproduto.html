@@ -24,19 +24,27 @@
 			<!-- Content -->
 			<section class="center_page">
 				<div class="wrapper">
+					<nav class ="navigation_bar">
+						<h3>Bem vindo, usuario !</h3>
+						<ul>
+							<li><a href="#">Editar registro</a></li>
+							<li><a href="#">Cadastrar animais</a></li>
+							<li><a href="#">Comprar produtos</a></li>
+							<li><a href="#">Agendar horário</a></li>
+						</ul>
+					</nav>
 					<article class="painel_de_cadastro">
 						<h4>Cadastro de Produto</h4>
 						<form>
-							<input type="text" value = "" placeholder="Nome Produto" name="name"/>
-
-							<input type="number" value="" placeholder="quantidade em estoque" min="0" name="name" />
-							<input type="number" value="" placeholder="quantidade vendida" min="0" name="name" />
-							<textarea class="formTextArea" placeholder = "Descrição do produto"  ></textarea>
+							<input type="text" value = "" placeholder="Nome Produto" name="name">
+							<input type="number" value="" placeholder="quantidade em estoque" name="name" >
+							<input type="number" value="" placeholder="quantidade vendida" name="name">
+							<textarea class="formTextArea" placeholder = "Descrição do produto">
+							</textarea>
 							<br />
-							<h1>Foto do produto
+							<h4>Foto do produto</h4>
 							<input type="file" value="Foto produto" class="button_1">
 							</input>
-							</h1>
 							<br />
 							<input type="submit" value="Cadastrar"  />
 						</form>

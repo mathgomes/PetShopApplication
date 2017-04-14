@@ -5,7 +5,7 @@
  Author URI:
  */
 
-/* genericos */
+/* Programa geral */
 body {
 	background: #005A31;
 	color: #666666;
@@ -58,12 +58,60 @@ h1.logo {
 }
 
 /* conteudo */
+
+
+/* tela inicial */
 section.center_page {
 	/*border: 1px solid black;*/
 	min-height: 400px;
 	max-height: 980px;
 	background: #73D873;
 	box-shadow: inset 0 5px 9px #66888E;
+}
+
+/* barra de navegação */
+.navigation_bar {
+	height: 50px;
+	box-shadow: inset 0 -1px 2px #66888E;
+}
+.navigation_bar h3 {
+	display: inline-block;
+}
+.navigation_bar ul {
+	display: inline-block;
+}
+.navigation_bar li {
+	display: inline-block;
+	width: 120px;
+	height: 20px;
+	margin: 0 10px 0 0;
+	border: 1px solid #CDE0E4;
+	text-align: center;
+
+	-moz-border-radius: 5px; 
+	-webkit-border-radius: 5px; 
+	border-radius: 5px;
+	-moz-box-shadow: 0 5px 9px #66888E; 
+	-webkit-box-shadow: 0 5px 9px #66888E; 
+	box-shadow: 0 5px 9px #66888E;
+	/* Fallback Color */
+	background: #73D873;
+	/* Firefox 3.6+ */
+	background-image: -moz-linear-gradient(#FFFFFF,#73D873);
+	/* Safari 5.1+, Chrome 10+ */
+	background-image: -webkit-linear-gradient(#FFFFFF,#73D873);
+}
+.navigation_bar li:hover {
+	/* Fallback Color */
+	background: #FFFFFF;
+	/* Firefox 3.6+ */
+	background-image: -moz-linear-gradient(#FFFFFF, #E8F4F6);
+	/* Safari 5.1+, Chrome 10+ */
+	background-image: -webkit-linear-gradient(#FFFFFF, #E8F4F6); 
+}
+.navigation_bar li a {
+	color: #2C6069;
+	font-weight: bold;
 }
 
 article.boas_vindas {
@@ -79,6 +127,7 @@ article.boas_vindas {
 	clear: both;
 }
 
+/* paineis de cadastro */
 .painel_de_cadastro input[type=text] {
 	display: block;
 	height: 20px;
@@ -135,11 +184,6 @@ article.painel_de_login {
 	margin: 10px 0;
 	text-shadow: 0 1px 0 #0F2326;
 }
-
-.painel_de_login input[type=text]:focus {
-	outline: none;
-}
-
 .painel_de_login input[type=text] {
 	/* Fallback Color */
 	background: #46737B;
@@ -148,6 +192,20 @@ article.painel_de_login {
 	/* Safari 5.1+, Chrome 10+ */
 	background-image: -webkit-linear-gradient(#0C3617, #5C858C);
 }
+
+.painel_de_login input[type=text]:focus {
+	outline: none;
+}
+
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #CAE3D0;
+    opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:    #CAE3D0;
+   opacity:  1;
+}
+
 /* footer */
 footer {
 	/*border: 1px solid black;*/
