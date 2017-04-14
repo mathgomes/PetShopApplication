@@ -90,6 +90,7 @@ article.boas_vindas {
 	padding: 5px 100px;
 	margin: 10px 0;
 	text-shadow: 0 1px 0 #0F2326;
+	
 }
 
 .painel_de_cadastro input[type=number] {
@@ -198,4 +199,23 @@ footer .logo {
 	/* Safari 5.1+, Chrome 10+ */
 	background-image: -webkit-linear-gradient(#0C3617, #5C858C);
 }
+
+
+#divBusca{
+  background-color:#E0EEEE;
+  border:solid 2px #5F9EA0;
+  border-radius:10px;
+  width:300px;
+  height:32px;
+}
+
+
+#posiPesquisa
+{
+	margin-top: 10px;
+	width: 30px;
+	height: 30px;
+	
+}
+
 
