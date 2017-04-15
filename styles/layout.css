@@ -335,3 +335,23 @@ footer .logo {
 	width: 34px;
 	height: 32px;
 }
+.divbntBuscaAltProd
+{
+	position: relative;
+	/*background-color: #E0EEEE;
+	 border: solid 2px #5F9EA0;
+	 border-radius: 10px;*/
+	height: 200px;
+	top: 80px;
+	left: 215px;
+	border: none;
+	color: #FFFFFF;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	padding: 0px 10px;
+	margin: 1px 100;
+	text-shadow: 0 1px 0 #0F2326;
+	width: 34px;
+	height: 32px;
+}
