@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="utf-8" />
-		<title>Cadastro Produto</title>
+		<title>Apaga Produto </title>
 		<link rel="stylesheet" href="styles/layout.css" type="text/css">
 		<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
 		<!--[if IE]>
@@ -24,16 +24,25 @@
 			<!-- Content -->
 			<section class="center_page">
 				<div class="wrapper">
-					<article class="painel_de_cadastro">
-						<h4>Apaga Produto</h4>
-						<form>
-							<img  id="posiPesquisa"  src="images/pesquisa.png" alt="Buscar..."/>
-							<input type="number" value = "" placeholder="Id do produto" name="name"></input>
-							<button id="">
+					<article class="#">
+						<div id="divbntBusca">
+							<button id="btnBusca">
 								Buscar
 							</button>
+						</div>
 
-						</form>
+						<h4>Apaga Produto</h4>
+						<div id="divBusca">
+							<img  id="posiPesquisa"  src="images/pesquisa.png" alt="Buscar..."></img>
+							<input id="txtBusca" type="number" value = "" placeholder="Id do produto" min="1" name="name">
+							</input>
+						</div>
+						<!--
+						<img  id="posiPesquisa"  src="images/pesquisa.png" alt="Buscar..."></img>
+
+						<form>
+
+						</form> -->
 
 					</article>
 				</div>
