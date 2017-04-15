@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt" dir="ltr">
+
+<head>
+	<meta charset="utf-8" />
+	<title>Pet Shop</title>
+	<link rel="stylesheet" href="styles/layout.css" type="text/css">
+	<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+	<!--[if IE]>
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+</head>
+
+<body>
+	<div id="all_content">
+
+		<!-- Header -->
+		<header>
+			<div class="wrapper">
+				<h1 class="logo"><a href="#">Pet Shop</a></h1>
+			</div><!--.wrapper-->
+		</header> <!--End Header -->
+
+		<!-- Content -->
+		<section class="center_page">
+			<div class="wrapper">
+				<nav class ="navigation_bar">
+					<h3>Bem vindo, usuario !</h3>
+					<ul>
+						<li><a href="#">Perfil</a></li>
+						<li><a href="#">Meus Animais</a></li>
+						<li><a href="#">Cadastrar animais</a></li>
+						<li><a href="#">Loja</a></li>
+						<li><a href="#">Serviços</a></li>
+					</ul>
+				</nav>
+
+				<article>
+					<h2>Finalizar Compra</h2>
+					<table class="tabela_carrinho">
+						<tr>
+							<th><!-- Imagem --></th>
+							<th>Nome do Produto</th>
+							<th>Preço</th>
+							<th>Qtde.</th>
+						</tr>
+
+						<!-- TODO: botar no CSS o tamanho das imagens -->
+						<!-- TODO: arrumar tamanho do input number no CSS -->
+
+						<tr>
+							<td><img src="images/racao.jpg" height=40 width=40 /></td>
+							<td>Ração para gatos 1kg</td>
+							<td>R$ 24.99</td>
+							<td>1</td>
+						</tr>
+
+						<tr>
+							<td><img src="images/osso.jpg" height=40 width=40 /></td>
+							<td>Osso de borracha</td>
+							<td>R$ 4.99</td>
+							<td>2</td>
+						</tr>
+
+						<tr>
+							<td><img src="images/alpiste.jpg" height=40 width=40 /></td>
+							<td>Alpiste 500g</td>
+							<td>R$ 14.99</td>
+							<td>2</td>
+						</tr>
+					</table>
+				</article>
+				<article>
+					<h2>Preço total: R$ 64.95</h2>
+					<form>
+						<select name="bandeira">
+							<option value="visa">Visa</option>
+							<option value="mastercard">MasterCard</option>
+							<option value="americanexpress">American Express</option>
+							<option value="elo">Elo</option>
+						</select>
+						<input type="text" placeholder="Número do Cartão" />
+						<input type="text" placeholder="Código de verificação" />
+						<input type="text" placeholder="Validade (MM/AAAA)" />
+						<input type="submit" value="Finalizar" />
+					</form>
+				</article>
+			</div> <!--.wrapper-->
+		</section> <!--End Content -->
+
+		<!-- Footer -->
+		<footer>
+			<div class="wrapper">
+					<div class="logo">
+						<h3>Pet Shop</h3>
+					</div>
+					<p class="copyright_notice">Copyright 2017 © <strong>Pet Shop</strong>. All Rights Reserved.</p>
+			</div> <!--.wrapper-->
+		</footer> <!--End Footer-->
+
+	</div><!--End all_content-->
+</body>
+
+</html>
