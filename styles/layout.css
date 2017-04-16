@@ -212,14 +212,14 @@ article.boas_vindas
 {
 	display: block;
 	font-size: 15px;
+	padding: 10px;
 	float: left;
 }
 
-.boas_vindas h4
+article.boas_vindas h1
 {
-	font-size: 25px;
+	margin: 0px;
 	color: #2C5F66;
-	margin: 0 0 10px 0;
 	clear: both;
 }
 
@@ -227,6 +227,7 @@ article.painel_de_login
 {
 	float: right;
 	display: block;
+	padding: 10px;
 	width: 200px;
 }
 
