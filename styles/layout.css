@@ -202,8 +202,8 @@ input[type=button],
 input[type=submit],
 input[type=reset]
 {
-	display: block;
-	margin: auto;
+	display: inline-block;
+	margin: 5px;
 	/* TODO */
 }
 
@@ -244,6 +244,7 @@ aside *
 	display: block;
 }
 
+/* TODO botar mais coisa p destacar aqui? */
 h1.perfil
 {
 	text-align: center;
