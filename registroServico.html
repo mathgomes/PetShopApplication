@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="utf-8" />
-		<title>Apaga Produto </title>
+		<title>Pet Shop</title>
 		<link rel="stylesheet" href="styles/layout.css" type="text/css">
 		<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
 		<!--[if IE]>
@@ -22,45 +22,42 @@
 				</div><!--.wrapper-->
 			</header>
 			<!--End Header -->
+
 			<!-- Content -->
 			<section class="center_page">
 				<div class="wrapper">
 					<nav class ="navigation_bar">
 						<h3>Bem vindo, admin !</h3>
 						<ul>
-							<li><a href="#">Cadastrar Cliente</a></li>
-							<li><a href="#">Gerenciar Produtos</a></li>
-							<li><a href="#">Gerenciar Serviços</a></li>
-							<li><a href="#">Estatísticas</a></li>
+							<li>
+								<a href="#">Cadastrar Cliente</a>
+							</li>
+							<li>
+								<a href="#">Gerenciar Produtos</a>
+							</li>
+							<li>
+								<a href="#">Gerenciar Serviços</a>
+							</li>
+							<li>
+								<a href="#">Estatísticas</a>
+							</li>
 						</ul>
 					</nav>
-					<article class="#">
-						<div id="divbntBusca">
-							<button id="btnBusca">
-								Buscar
-							</button>
-						</div>
+					<article class="painel_de_servico">
+						<h4>Cadastro de Serviço</h4>
+						<form>
+							<input type="text" value="" placeholder="Nome do Serviço" name="name" />
+							<input type="text" value="" placeholder="Preço" name="name" />
+							<textarea class="formTextArea" placeholder= "Descrição do Produto"></textarea>							
 
-						<h4>Apaga Produto</h4>
-						<div id="divBusca">
-							<img  id="posiPesquisa"  src="images/pesquisa.png" alt="Buscar..."></img>
-							<input id="txtBusca" type="number" value = "" placeholder="Id do produto" min="1" name="name">
-							</input>
-						</div>
-						<table>
-							<br />
-							<br />
-							<td>Nome Produto : Osso branco 100g</tr> <td>Preço : 12,00</tr> <td>Quantidade no Estoque : 30</tr> <td>Quantidade no Vendida : 100</tr> <td>Indicado para cachorros de 3 à 9 meses</tr>
-							
-						</table>
-						<img id="posiOssoBranco"  src="images/produtos/ossoBranco.png" />	
-						<h1>Apagar produto
-						<input type="checkbox" value="Excluir" name="name" /> </h1>
-						<input type="submit" value="Confirmar"  name="name"/>
-
+ <h4>Foto</h4>
+							<input type="file" value="" class="button_1" />
+							<br/>
+							<input type="submit" value="Cadastrar Serviço" />
+						</form>
 					</article>
-
 				</div>
+
 				<!--.wrapper-->
 			</section>
 			<!--End Content -->

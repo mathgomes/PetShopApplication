@@ -369,3 +369,30 @@ footer .logo {
 	width: 34px;
 	height: 32px;
 }
+
+#posiOssoBranco
+{
+	top:20px;
+	height: 70px;
+	width:70px;
+}
+.painel_de_servico input[type = text]
+{
+	
+	display: block;
+	height: 20px;
+	border: none;
+	color: #FFFFFF;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	padding: 5px 10px;
+	margin: 10px 0;
+	text-shadow: 0 1px 0 #0F2326;
+	/* Fallback Color */
+	background: #46737B;
+	/* Firefox 3.6+ */
+	background-image: -moz-linear-gradient(#0C3617, #5C858C);
+	/* Safari 5.1+, Chrome 10+ */
+	background-image: -webkit-linear-gradient(#0C3617, #5C858C);
+}
