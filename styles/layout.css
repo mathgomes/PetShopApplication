@@ -8,7 +8,7 @@
 /* Programa geral */
 
 body {
-  background: url(../images/bg.jpg) no-repeat center center fixed; 
+  background: url(../images/bg.jpg) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -31,7 +31,7 @@ p {
 	line-height: 150%;
 }
 h1, h2, h3, h4, h5, h6 {
-	font-family: Pacifico, "Helveitca Neue", Helvetica, Arial, sans-serif;
+	font-family: Pacifico, "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-weight: lighter;
 }
 a:link, a:visited {
@@ -132,7 +132,7 @@ article.boas_vindas {
 	font-size: 15px;
 	float: left;
 }
-.wrapper h4 {
+.boas_vindas h4 {
 	font-size: 25px;
 	color: #2C5F66;
 	margin: 0 0 10px 0;
@@ -378,7 +378,7 @@ footer .logo {
 }
 .painel_de_servico input[type = text]
 {
-	
+
 	display: block;
 	height: 20px;
 	border: none;
