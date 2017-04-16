@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8" />
 	<title>Pet Shop</title>
-	<link rel="stylesheet" href="styles/layout.css" type="text/css">
+	<link rel="stylesheet" href="../styles/layout.css" type="text/css">
 	<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
 	<!--[if IE]>
 	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -18,7 +18,7 @@
 		<header>
 			<div class="wrapper">
 				<h1 class="logo"><a href="#">Pet Shop</a></h1>
-				<img class="headerImg" src="images/dog.png" alt="Dog smiling">
+				<img class="headerImg" src="../images/dog.png" alt="Dog smiling">
 			</div><!--.wrapper-->
 		</header> <!--End Header -->
 
@@ -36,26 +36,31 @@
 					</ul>
 				</nav>
 
-				<!-- A ideia é a imagem ficar na esquerda e todo o resto na direita -->
-				<article>
-					<img src="images/produtos/osso.jpg" alt="Produto" width=250 height=250 />
-					<h1>Osso de Borracha</h1>
-					<h2>Descrição</h2>
-					<p>Osso de borracha, ideal para cães de todas as idades. Vem nas cores roxo, azul e vermelho.</p>
-					<h2>Preço e Estoque</h2>
-					<p>Por <strong>R$ 4.99</strong></p>
-					<p>Quantidade em Estoque: <strong>12 unidades</strong></p>
-					<form>
-						<input type="number" placeholder="Quantidade" />
-						<input type="submit" value="Adicionar ao Carrinho" />
-					</form>
-					<h2>Frete e Prazo de Entrega</h2>
-					<form>
-						<input type="text" placeholder="Digite seu CEP" />
-						<input type="button" value="Consultar" />
-					</form>
-				</article>
+				<!-- Foto e input de alterar foto -->
+				<section>
+					<img src="images/perfil.jpg" width=250 alt="Minha foto" />
+					<h2>Alterar Foto:</h2><input type="file" />
+				</section>
 
+				<!-- Perfil do usuário -->
+				<section>
+					<h1>Meu Perfil</h1>
+					<form>
+						<input type="text" value="Fulano da Silva" placeholder="Nome" />
+						<input type="text" value="fsilva@email.com" placeholder="Endereço de e-mail" />
+						<input type="text" value="Rua dos Pinheiros, 404" placeholder="Endereço físico" />
+						<input type="text" value="(15) 9999-9999" placeholder="Telefone" />
+						<input type="submit" value="Atualizar Perfil" />
+					</form>
+					<h2>Alterar senha</h2>
+					<form>
+						<p>Uma e-mail será enviado para confirmar a alteração de senha.</p>
+						<input type="password" placeholder="Senha antiga" />
+						<input type="password" placeholder="Senha nova" />
+						<input type="password" placeholder="Digite novamente" />
+						<input type="submit" value="Atualizar Senha" />
+					</form>
+				</section>
 			</div> <!--.wrapper-->
 		</section> <!--End Content -->
 
