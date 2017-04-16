@@ -21,9 +21,8 @@ body
 #all_content
 {
 	margin: auto;
-	height: auto;
 	max-width: 960px;
-	min-width: 200px;
+	min-width: 100px;
 }
 
 p
@@ -81,7 +80,7 @@ h1.logo
 .headerImg
 {
 	position:relative;
-	top:29px;
+	top:30px;
 	float:right;
 	height:100px;
 	width:100px;
@@ -295,7 +294,6 @@ section.perfil
 
 /* footer */
 footer {
-	/*border: 1px solid black;*/
 	clear: both;
 	height: 80px;
 	color: #0A090E;
