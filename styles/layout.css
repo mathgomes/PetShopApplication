@@ -213,9 +213,34 @@ input[type=button],
 input[type=submit],
 input[type=reset]
 {
+	/* TODO */
+	border: none;
 	display: inline-block;
 	margin: 5px auto;
-	/* TODO */
+	text-align: center;
+	outline: none;
+
+	color: #666666;
+	font-weight: bold;
+
+	height: 30px;
+
+	/* Arredonda bordas */
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+
+	background: #73D873;
+	background-image: -moz-linear-gradient(#FFFFFF,#73D873);
+	background-image: -webkit-linear-gradient(#FFFFFF,#73D873);
+}
+
+input[type=button]:active,
+input[type=submit]:active,
+input[type=reset]:active
+{
+	background-image: -moz-linear-gradient(#73D873,#FFFFFF);
+	background-image: -webkit-linear-gradient(#73D873,#FFFFFF);
 }
 
 input[type=checkbox],
@@ -321,6 +346,13 @@ section.perfil_info *
 	text-align: center;
 	font-size: 2em;
 	/* TODO */
+}
+
+/* pagina de produto */
+
+.produto_info
+{
+	text-align:left;
 }
 
 /* averiguando se ja pode apagar esses aqui */
@@ -528,7 +560,7 @@ article.tabela_servico  table,tr, td
 {
 	width :10%;
 	border: 1px solid black;
-	
+
 }
 .posi_img_servico
 {
