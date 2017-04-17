@@ -355,10 +355,9 @@ footer .logo {
 }
 
 #divBusca {
-	/*background-color: #E0EEEE;
-	 border: solid 2px #5F9EA0;
-	 border-radius: 10px;*/
+	
 	height: 20px;
+	 
 	border: none;
 	color: #FFFFFF;
 	-moz-border-radius: 5px;
@@ -377,7 +376,7 @@ footer .logo {
 
 #txtBusca {
 
-	height: 20px;
+	margin-top: 2px;
 	border: none;
 	color: #FFFFFF;
 	-moz-border-radius: 5px;
@@ -385,7 +384,7 @@ footer .logo {
 	border-radius: 5px;
 	text-shadow: 0 1px 0 #0F2326;
 	width: 255px;
-	height: 30px;
+	height: 26px;
 	float: left;
 	background-color: transparent;
 	padding-left: 30px;
@@ -407,7 +406,7 @@ footer .logo {
 
 	float: left;
 	height: 32px;
-	top: 400px;
+	margin-top: 4px;
 }
 #divbntBusca {
 	position: relative;
