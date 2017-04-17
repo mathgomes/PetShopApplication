@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt" dir="ltr">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Pet Shop</title>
+	<link rel="stylesheet" href="../styles/layout.css" type="text/css">
+	<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+	<!--[if IE]>
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+</head>
+
+<body>
+	<div id="all_content">
+
+		<!-- Header -->
+		<header>
+			<div class="wrapper">
+				<h1 class="logo"><a href="#">Pet Shop</a></h1>
+				<img class="headerImg" src="../images/dog.png" alt="Dog smiling">
+			</div><!--.wrapper-->
+		</header> <!--End Header -->
+
+		<!-- Content -->
+		<section class="center_page">
+			<div class="wrapper">
+				<nav class ="navigation_bar">
+					<h3>Bem vindo, usuario !</h3>
+					<ul>
+						<li><a href="#">Perfil</a></li>
+						<li><a href="#">Meus Animais</a></li>
+						<li><a href="#">Cadastrar animais</a></li>
+						<li><a href="#">Loja</a></li>
+						<li><a href="#">Serviços</a></li>
+					</ul>
+				</nav>
+
+				<div class="centered">
+					<article class="cell">
+						<h1>Confirmar Agendamento</h1>
+						<table class="minhas_compras">
+							<tr>
+								<th></th>
+								<th></th>
+							</tr>
+
+							<!-- TODO: botar no CSS o tamanho das imagens -->
+							<!-- TODO: arrumar tamanho do input number no CSS -->
+
+							<tr>
+								<td><h2>Serviço:</h2></td>
+								<td>Banho e cortar as unhas</td>
+							</tr>
+							<tr>
+								<td><h2>Data/Horário:</h2></td>
+								<td>20/04/2017 às 16:00</td>
+							</tr>
+							<tr>
+								<td><h2>Animal:</h2></td>
+								<td>
+									<img src="../images/pets/persian.jpg" alt="frajola" />
+									<p>Frajola</p>
+								</td>
+							</tr>
+
+						</table>
+					</article>
+					<article class="cell carrinho_opcoes">
+						<h1>Preço total: R$ 15.00</h1>
+						<form>
+							<input type="text" placeholder="Número do Cartão" />
+							<select>
+								<option>Visa</option>
+								<option>MasterCard</option>
+								<option>American Express</option>
+								<option>Elo</option>
+							</select>
+							<input type="text" placeholder="Código de verificação" />
+							<input type="text" placeholder="Validade (MM/AAAA)" />
+							<input type="submit" value="Finalizar" />
+						</form>
+					</article>
+				</div>
+			</div> <!--.wrapper-->
+		</section> <!--End Content -->
+
+		<!-- Footer -->
+		<footer>
+			<div class="wrapper">
+					<div class="logo">
+						<h3>Pet Shop</h3>
+					</div>
+					<p class="copyright_notice">Copyright 2017 © <strong>Pet Shop</strong>. All Rights Reserved.</p>
+			</div> <!--.wrapper-->
+		</footer> <!--End Footer-->
+
+	</div><!--End all_content-->
+</body>
+
+</html>
