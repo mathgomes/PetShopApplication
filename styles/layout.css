@@ -192,7 +192,7 @@ input[type=number],
 input[type=email],
 input[type=tel],
 input[type=search],
-select
+select /* esse ultimo nao estiliza direito */
 {
 	border: none;
 	display: inline-block;
@@ -266,11 +266,10 @@ input[type=file]
 /* index */
 article.boas_vindas
 {
-	display: block;
+	display: inline-block;
+	width: 70%;
 	font-size: 15px;
 	padding: 10px;
-	float: left;
-
 }
 
 article.boas_vindas h1
@@ -283,11 +282,15 @@ article.boas_vindas h1
 article.painel_de_login
 {
 	padding: 10px;
-	width: 30%;
-	min-width: 250px;
+	width: 25%;
 	vertical-align: top;
 	text-align: center;
 	display: inline-block;
+}
+
+.painel_de_login input
+{
+	display:block;
 }
 
 /* perfil */
