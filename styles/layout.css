@@ -401,6 +401,11 @@ section.perfil_info *
 	border: 1px solid black;
 }
 
+table.tabela_animais
+{
+	max-width: 100%;
+}
+
 /*
 table
 {
