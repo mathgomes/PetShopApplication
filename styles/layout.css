@@ -191,13 +191,14 @@ input[type=password],
 input[type=number],
 input[type=email],
 input[type=tel],
-input[type=search]
+input[type=search],
+select
 {
 	border: none;
 	display: inline-block;
 	margin: 5px auto;
 
-	width: 300px;
+	max-width: 300px;
 	height: 30px;
 
 	text-align: center;
@@ -259,7 +260,7 @@ input[type=file]
 {
 	display: inline-block;
 	margin: 5px;
-	/* esse aqui é meio tenso de estilizar o botao... */
+	/* boa sorte estilizando esse */
 }
 
 /* index */
@@ -328,7 +329,7 @@ section.perfil_info *
 
 .store_items
 {
-	max-width: 75%;
+	max-width: 70%;
 }
 
 .store_items a
@@ -369,7 +370,7 @@ section.perfil_info *
 /* carrinho */
 
 
-.minhas_compras:
+.minhas_compras
 {
 	table_layout: fixed;
 }
@@ -377,18 +378,24 @@ section.perfil_info *
 .minhas_compras img,
 .minhas_compras input[type=number]
 {
-	width: 50px;
+	max-width: 50px;
 }
 
 .minhas_compras td
 {
-	padding: 5px;
+	padding: 0px 5px;
 }
 
-.carrinho_opcoes input
+.carrinho_opcoes input,
+.carrinho_opcoes select
 {
 	display: block;
 	width: 100%;
+}
+
+.checkout_opcoes
+{
+	border: 1px solid black;
 }
 
 /*
