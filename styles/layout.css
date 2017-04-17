@@ -619,9 +619,8 @@ footer .logo {
 	width:40px;
 }
 
-article.tabela_servico table,
-article.tr,
-article.td
+.tabela_servico tr,
+.tabela_servico td
 {
 	width :10%;
 	border: 1px solid black;
