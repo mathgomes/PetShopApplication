@@ -537,7 +537,7 @@ footer .logo {
 	-webkit-border-radius: 5px;
 	border-radius: 5px;
 	text-shadow: 0 1px 0 #0F2326;
-	width: 315px;
+	max-width: 315px;
 	height: 32px;
 	/* Fallback Color */
 	background: #46737B;
@@ -647,12 +647,23 @@ footer .logo {
 	width:80px;
 }
 /* Reposivity */
-@media screen and (max-width: 330px) {
+@media screen and (max-width: 420px) {
 	img {
 		max-width: 300px;
+	}
+	article.painel_de_login,article.boas_vindas{
+		width:100%;
 	}
 	footer p.copyright_notice {
 		position: relative;
 		top: 20px;
+	}
+	textarea.formTextArea {
+		max-width: 80px;
+	}
+}
+@media screen and (max-width: 300px) {
+	img {
+		max-width: 80px;
 	}
 }
