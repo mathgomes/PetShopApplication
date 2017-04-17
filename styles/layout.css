@@ -56,6 +56,24 @@ a:link, a:visited
 	padding: 2px;
 }
 
+.cell
+{
+	padding: 5px;
+	display: inline-block;
+	vertical-align: top;
+	text-align: center;
+}
+
+.centered
+{
+	text-align: center;
+}
+
+.centered *
+{
+	margin: auto;
+}
+
 /* Header */
 header
 {
@@ -97,6 +115,8 @@ section.center_page
 /* Barra de navegação */
 .navigation_bar
 {
+	display: inline-block;
+	width: 100%;
 	box-shadow: inset 0 -1px 2px #66888E;
 }
 
@@ -168,14 +188,10 @@ input[type=email],
 input[type=tel],
 input[type=search]
 {
-	display: block;
+	display: inline-block;
 	border: none;
 
-	width: -moz-calc(100% - 10px);
-	width: -webkit-calc(100% - 10px);
-	width: -ms-calc(100% - 10px);
-	width: calc(100% - 10px);
-
+	width: 300px;
 	height: 30px;
 
 	text-align: center;
@@ -204,6 +220,13 @@ input[type=reset]
 	/* TODO */
 }
 
+input[type=file]
+{
+	display: inline-block;
+	margin: 5px;
+	/* esse aqui é meio tenso de estilizar o botao... */
+}
+
 /* index */
 article.boas_vindas
 {
@@ -230,34 +253,29 @@ article.painel_de_login
 	text-align: center;
 	display: inline-block;
 }
+
 /* perfil */
-aside
-{
-	max-width: 40%;
-	vertical-align: top;
-	text-align: center;
-	display: inline-block;
-}
 
-aside *
-{
-	display: block;
-}
-
-/* TODO botar mais coisa p destacar aqui? */
 h1.perfil
 {
 	text-align: center;
 }
 
-section.perfil
+section.perfil_foto
 {
-	width: 60%;
-	min-width: 250px;
-	vertical-align: top;
-	text-align: center;
-	display: inline-block;
-	padding: 10px;
+	width: 30%;
+}
+
+section.perfil_foto *,
+section.perfil_info *
+{
+	max-width: 100%;
+	display: block;
+}
+
+section.perfil_foto img
+{
+	width: 100%;
 }
 
 /* averiguando se ja pode apagar esses aqui */
