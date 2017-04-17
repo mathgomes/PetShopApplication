@@ -61,7 +61,6 @@ a:link, a:visited
 	padding: 5px;
 	display: inline-block;
 	vertical-align: top;
-	text-align: center;
 }
 
 .centered
@@ -188,8 +187,9 @@ input[type=email],
 input[type=tel],
 input[type=search]
 {
-	display: inline-block;
 	border: none;
+	display: inline-block;
+	margin: 5px auto;
 
 	width: 300px;
 	height: 30px;
@@ -198,8 +198,6 @@ input[type=search]
 	text-shadow: 0 1px 0 #0F2326;
 	color: #FFFFFF;
 	outline: none;
-
-	margin: 5px auto;
 
 	/* Arredonda bordas */
 	-moz-border-radius: 5px;
@@ -216,7 +214,13 @@ input[type=submit],
 input[type=reset]
 {
 	display: inline-block;
-	margin: 5px;
+	margin: 5px auto;
+	/* TODO */
+}
+
+input[type=checkbox],
+input[type=radio]
+{
 	/* TODO */
 }
 
@@ -261,9 +265,14 @@ h1.perfil
 	text-align: center;
 }
 
-section.perfil_foto
+.perfil_foto
 {
 	width: 30%;
+}
+
+.perfil_foto img
+{
+	width: 100%;
 }
 
 section.perfil_foto *,
@@ -273,9 +282,45 @@ section.perfil_info *
 	display: block;
 }
 
-section.perfil_foto img
+/* loja */
+
+.store_search
+{
+	max-width: 25%;
+}
+
+.store_search input[type=text]
+{
+	width: auto;
+	max-width: 100%;
+}
+
+.store_items
+{
+	max-width: 75%;
+}
+
+.store_items article
+{
+	/* TODO: fazer o nro de itens por linha mudar
+	 * conforme redimensiona a janela
+	 */
+
+	display: inline-block;
+	width: (20% - 10px);
+	text-align: center;
+}
+
+.store_items article *
 {
 	width: 100%;
+}
+
+.store_items .paginas
+{
+	text-align: center;
+	font-size: 2em;
+	/* TODO */
 }
 
 /* averiguando se ja pode apagar esses aqui */
@@ -373,10 +418,9 @@ footer .logo {
 }
 
 #divBusca {
-	/*background-color: #E0EEEE;
-	 border: solid 2px #5F9EA0;
-	 border-radius: 10px;*/
+
 	height: 20px;
+
 	border: none;
 	color: #FFFFFF;
 	-moz-border-radius: 5px;
@@ -395,7 +439,7 @@ footer .logo {
 
 #txtBusca {
 
-	height: 20px;
+	margin-top: 2px;
 	border: none;
 	color: #FFFFFF;
 	-moz-border-radius: 5px;
@@ -403,7 +447,7 @@ footer .logo {
 	border-radius: 5px;
 	text-shadow: 0 1px 0 #0F2326;
 	width: 255px;
-	height: 30px;
+	height: 26px;
 	float: left;
 	background-color: transparent;
 	padding-left: 30px;
@@ -425,7 +469,7 @@ footer .logo {
 
 	float: left;
 	height: 32px;
-	top: 400px;
+	margin-top: 4px;
 }
 #divbntBusca {
 	position: relative;
