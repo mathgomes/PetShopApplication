@@ -166,6 +166,12 @@ section.center_page
 	font-weight: bold;
 }
 
+table
+{
+	border-collapse: collapse;
+	text-align: center;
+}
+
 /* Caixas de texto */
 /* Se combinar esses dois não funciona */
 ::-moz-placeholder
@@ -325,6 +331,11 @@ section.perfil_info *
 	max-width: 75%;
 }
 
+.store_items a
+{
+	color: #666666;
+}
+
 .store_items article
 {
 	/* TODO: fazer o nro de itens por linha mudar
@@ -332,7 +343,7 @@ section.perfil_info *
 	 */
 
 	display: inline-block;
-	width: (20% - 10px);
+	width: calc(25% - 10px);
 	text-align: center;
 }
 
@@ -354,6 +365,58 @@ section.perfil_info *
 {
 	text-align:left;
 }
+
+/* carrinho */
+
+
+.minhas_compras:
+{
+	table_layout: fixed;
+}
+
+.minhas_compras img,
+.minhas_compras input[type=number]
+{
+	width: 50px;
+}
+
+.minhas_compras td
+{
+	padding: 5px;
+}
+
+.carrinho_opcoes input
+{
+	display: block;
+	width: 100%;
+}
+
+/*
+table
+{
+	border-collapse: collapse
+}
+
+.minhas_compras tr
+{
+	border: 1px solid black;
+}
+
+.minhas_compras tr td
+{
+	border: 1px solid black;
+}
+
+.minhas_compras tr td img
+{
+	border: 1px solid black;
+	width: 10%;
+}
+
+
+*/
+
+
 
 /* averiguando se ja pode apagar esses aqui */
 /* paineis de cadastro
@@ -556,7 +619,9 @@ footer .logo {
 	width:40px;
 }
 
-article.tabela_servico  table,tr, td
+article.tabela_servico table,
+article.tr,
+article.td
 {
 	width :10%;
 	border: 1px solid black;
