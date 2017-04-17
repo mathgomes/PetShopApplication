@@ -454,7 +454,24 @@ footer .logo {
 	height: 70px;
 	width:70px;
 }
+#posiSeta
+{
+	position: relative;
+	height: 40px;
+	width:40px;
+}
 
+article.tabela_servico  table,tr, td
+{
+	width :10%;
+	border: 1px solid black;
+	
+}
+.posi_img_servico
+{
+	height: 50px;
+	width:80px;
+}
 /* Reposivity */
 @media screen and (max-width: 330px) {
 	img {
