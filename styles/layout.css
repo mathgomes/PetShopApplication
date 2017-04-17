@@ -1,0 +1,644 @@
+/*
+ HTML 5 Template Name: Pet Shop
+ File: Layout CSS
+ Author:
+ Author URI:
+ */
+
+/* Programa geral */
+body
+{
+	background: url(../images/bg.jpg) no-repeat center center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	color: #666666;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 12px;
+}
+
+#all_content
+{
+	margin: auto;
+	max-width: 960px;
+	min-width: 200px;
+}
+
+p
+{
+	line-height: 150%;
+}
+
+h1 { font-size: 2em; }
+h2 { font-size: 1.5em; }
+h3 { font-size: 1.17em; }
+h4 { font-size: 1.12em; }
+h5 { font-size: .83em; }
+h6 { font-size: .75em; }
+
+h1, h2, h3, h4, h5, h6
+{
+	font-family: Pacifico, "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-weight: lighter;
+}
+
+a:link, a:visited
+{
+	color: #168FAD;
+	text-decoration: none;
+}
+
+.wrapper
+{
+	/* isso aqui corta a pata do cachorro:
+	 * overflow: hidden; */
+	padding: 2px;
+}
+
+.cell
+{
+	padding: 5px;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.centered
+{
+	text-align: center;
+}
+
+.centered *
+{
+	margin: auto;
+}
+
+/* Header */
+header
+{
+	height: 110px;
+	background: #F4F8F9;
+	background-image: -moz-linear-gradient(#FFFFFF,#98FB98);
+	background-image: -webkit-linear-gradient(#FFFFFF,#98FB98);
+}
+
+h1.logo
+{
+	/*border: 1px solid black;*/
+	display: block;
+	width: 128px;
+	/*height: 128px;*/
+	/*background: url('../images/logo.jpg') no-repeat;*/
+	float: left;
+	/*text-indent: -5000px;*/
+}
+
+.headerImg
+{
+	position:relative;
+	top:30px;
+	float:right;
+	height:100px;
+	width:100px;
+}
+
+/* Conteudo */
+section.center_page
+{
+	min-height: 400px;
+	height: 80%;
+	background: #73D873;
+	box-shadow: inset 0 5px 9px #66888E;
+}
+
+/* Barra de navegação */
+.navigation_bar
+{
+	display: inline-block;
+	width: 100%;
+	box-shadow: inset 0 -1px 2px #66888E;
+}
+
+.navigation_bar *
+{
+	display: inline-block;
+}
+
+.navigation_bar h3
+{
+	margin-left: 10px;
+}
+
+.navigation_bar li
+{
+	width: 120px;
+	height: 20px;
+	margin: 0 10px 0 0;
+	border: 1px solid #CDE0E4;
+	text-align: center;
+
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+
+	-moz-box-shadow: 0 5px 9px #66888E;
+	-webkit-box-shadow: 0 5px 9px #66888E;
+	box-shadow: 0 5px 9px #66888E;
+
+	background: #73D873;
+	background-image: -moz-linear-gradient(#FFFFFF,#73D873);
+	background-image: -webkit-linear-gradient(#FFFFFF,#73D873);
+}
+
+.navigation_bar li:hover
+{
+	/* Fallback Color */
+	background: #FFFFFF;
+	/* Firefox 3.6+ */
+	background-image: -moz-linear-gradient(#FFFFFF, #E8F4F6);
+	/* Safari 5.1+, Chrome 10+ */
+	background-image: -webkit-linear-gradient(#FFFFFF, #E8F4F6);
+}
+
+.navigation_bar li a
+{
+	color: #2C6069;
+	font-weight: bold;
+}
+
+table
+{
+	border-collapse: collapse;
+	text-align: center;
+}
+
+/* Caixas de texto */
+/* Se combinar esses dois não funciona */
+::-moz-placeholder
+{
+	color: #CAE3D0;
+	opacity: 1;
+}
+
+::-webkit-input-placeholder
+{
+	color: #CAE3D0;
+	opacity: 1;
+}
+
+input[type=text],
+input[type=password],
+input[type=number],
+input[type=email],
+input[type=tel],
+input[type=search]
+{
+	border: none;
+	display: inline-block;
+	margin: 5px auto;
+
+	width: 300px;
+	height: 30px;
+
+	text-align: center;
+	text-shadow: 0 1px 0 #0F2326;
+	color: #FFFFFF;
+	outline: none;
+
+	/* Arredonda bordas */
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+
+	background: #46737B;
+	background-image: -moz-linear-gradient(#0C3617, #5C858C);
+	background-image: -webkit-linear-gradient(#0C3617, #5C858C);
+}
+
+input[type=button],
+input[type=submit],
+input[type=reset]
+{
+	/* TODO */
+	border: none;
+	display: inline-block;
+	margin: 5px auto;
+	text-align: center;
+	outline: none;
+
+	color: #666666;
+	font-weight: bold;
+
+	height: 30px;
+
+	/* Arredonda bordas */
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+
+	background: #73D873;
+	background-image: -moz-linear-gradient(#FFFFFF,#73D873);
+	background-image: -webkit-linear-gradient(#FFFFFF,#73D873);
+}
+
+input[type=button]:active,
+input[type=submit]:active,
+input[type=reset]:active
+{
+	background-image: -moz-linear-gradient(#73D873,#FFFFFF);
+	background-image: -webkit-linear-gradient(#73D873,#FFFFFF);
+}
+
+input[type=checkbox],
+input[type=radio]
+{
+	/* TODO */
+}
+
+input[type=file]
+{
+	display: inline-block;
+	margin: 5px;
+	/* esse aqui é meio tenso de estilizar o botao... */
+}
+
+/* index */
+article.boas_vindas
+{
+	display: block;
+	font-size: 15px;
+	padding: 10px;
+	float: left;
+
+}
+
+article.boas_vindas h1
+{
+	margin: 0px;
+	color: #2C5F66;
+	clear: both;
+}
+
+article.painel_de_login
+{
+	padding: 10px;
+	width: 30%;
+	min-width: 250px;
+	vertical-align: top;
+	text-align: center;
+	display: inline-block;
+}
+
+/* perfil */
+
+h1.perfil
+{
+	text-align: center;
+}
+
+.perfil_foto
+{
+	width: 30%;
+}
+
+.perfil_foto img
+{
+	width: 100%;
+}
+
+section.perfil_foto *,
+section.perfil_info *
+{
+	max-width: 100%;
+	display: block;
+}
+
+/* loja */
+
+.store_search
+{
+	max-width: 25%;
+}
+
+.store_search input[type=text]
+{
+	width: auto;
+	max-width: 100%;
+}
+
+.store_items
+{
+	max-width: 75%;
+}
+
+.store_items a
+{
+	color: #666666;
+}
+
+.store_items article
+{
+	/* TODO: fazer o nro de itens por linha mudar
+	 * conforme redimensiona a janela
+	 */
+
+	display: inline-block;
+	width: calc(25% - 10px);
+	text-align: center;
+}
+
+.store_items article *
+{
+	width: 100%;
+}
+
+.store_items .paginas
+{
+	text-align: center;
+	font-size: 2em;
+	/* TODO */
+}
+
+/* pagina de produto */
+
+.produto_info
+{
+	text-align:left;
+}
+
+/* carrinho */
+
+
+.minhas_compras:
+{
+	table_layout: fixed;
+}
+
+.minhas_compras img,
+.minhas_compras input[type=number]
+{
+	width: 50px;
+}
+
+.minhas_compras td
+{
+	padding: 5px;
+}
+
+.carrinho_opcoes input
+{
+	display: block;
+	width: 100%;
+}
+
+/*
+table
+{
+	border-collapse: collapse
+}
+
+.minhas_compras tr
+{
+	border: 1px solid black;
+}
+
+.minhas_compras tr td
+{
+	border: 1px solid black;
+}
+
+.minhas_compras tr td img
+{
+	border: 1px solid black;
+	width: 10%;
+}
+
+
+*/
+
+
+
+/* averiguando se ja pode apagar esses aqui */
+/* paineis de cadastro
+.painel_de_cadastro input[type=text] {
+	display: block;
+	height: 20px;
+	border: none;
+	color: #FFFFFF;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	padding: 5px 100px;
+	margin: 10px 0;
+	text-shadow: 0 1px 0 #0F2326;
+}
+/*
+.painel_de_cadastro input[type=number] {
+	display: block;
+	height: 20px;
+	border: none;
+	color: #FFFFFF;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	padding: 5px 10px;
+	margin: 10px 0;
+	text-shadow: 0 1px 0 #0F2326;
+}
+
+.painel_de_cadastro input[type=number], input[type=text] {
+	background: #46737B;
+	background-image: -moz-linear-gradient(#0C3617, #5C858C);
+	background-image: -webkit-linear-gradient(#0C3617, #5C858C);
+}*/
+
+
+/* footer */
+footer {
+	clear: both;
+	height: 20%;
+	min-height: 80px;
+	color: #0A090E;
+	/* Fallback Color */
+	background: #F4F8F9;
+	/* Firefox 3.6+ */
+	background-image: -moz-linear-gradient(#73D873,#3C8E3C);
+	/* Safari 5.1+, Chrome 10+ */
+	background-image: -webkit-linear-gradient(#73D873,#3C8E3C);
+	box-shadow: inset 0 -1px 9px #66888E;
+}
+
+footer p.copyright_notice {
+	/*border: 1px solid black;*/
+	position: relative;
+	top: 40px;
+}
+
+footer .logo {
+	/*border: 1px solid black;*/
+	float: right;
+	max-width: 100px;
+	height: 80px;
+	text-align: start;
+	line-height: 60px;
+	/*background: url('images/logo.png') no-repeat;*/
+	/*text-indent: -5000px;*/
+}
+
+.formTextArea {
+	display: block;
+	height: 60px;
+	border: none;
+	color: #FFFFFF;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	padding: 5px 100px;
+	margin: 1px 0;
+	text-shadow: 1 1px 1 #0F2326;
+	/* Fallback Color */
+	background: #46737B;
+	/* Firefox 3.6+ */
+	background-image: -moz-linear-gradient(#0C3617, #5C858C);
+	/* Safari 5.1+, Chrome 10+ */
+	background-image: -webkit-linear-gradient(#0C3617, #5C858C);
+}
+
+#posiPesquisa {
+
+	margin-top: 1px;
+	float: right;
+	width: 25px;
+	height: 25px;
+}
+
+#divBusca {
+
+	height: 20px;
+
+	border: none;
+	color: #FFFFFF;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	text-shadow: 0 1px 0 #0F2326;
+	width: 315px;
+	height: 32px;
+	/* Fallback Color */
+	background: #46737B;
+	/* Firefox 3.6+ */
+	background-image: -moz-linear-gradient(#0C3617, #5C858C);
+	/* Safari 5.1+, Chrome 10+ */
+	background-image: -webkit-linear-gradient(#0C3617, #5C858C);
+}
+
+#txtBusca {
+
+	margin-top: 2px;
+	border: none;
+	color: #FFFFFF;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	text-shadow: 0 1px 0 #0F2326;
+	width: 255px;
+	height: 26px;
+	float: left;
+	background-color: transparent;
+	padding-left: 30px;
+	font-size: 18px;
+	border: none;
+	/* Fallback Color */
+	background: #46737B;
+	/* Firefox 3.6+ */
+	background-image: -moz-linear-gradient(#0C3617, #5C858C);
+	/* Safari 5.1+, Chrome 10+ */
+	background-image: -webkit-linear-gradient(#0C3617, #5C858C);
+}
+
+#divBusca img {
+	float: left;
+}
+
+#btnBusca {
+
+	float: left;
+	height: 32px;
+	margin-top: 4px;
+}
+#divbntBusca {
+	position: relative;
+	/*background-color: #E0EEEE;
+	 border: solid 2px #5F9EA0;
+	 border-radius: 10px;*/
+	height: 200px;
+	top: 87px;
+	left: 215px;
+	border: none;
+	color: #FFFFFF;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	padding: 0px 10px;
+	margin: 1px 100;
+	text-shadow: 0 1px 0 #0F2326;
+	width: 34px;
+	height: 32px;
+}
+.divbntBuscaAltProd
+{
+	position: relative;
+	/*background-color: #E0EEEE;
+	 border: solid 2px #5F9EA0;
+	 border-radius: 10px;*/
+	height: 200px;
+	top: 80px;
+	left: 215px;
+	border: none;
+	color: #FFFFFF;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	padding: 0px 10px;
+	margin: 1px 100;
+	text-shadow: 0 1px 0 #0F2326;
+	width: 34px;
+	height: 32px;
+}
+
+#posiOssoBranco
+{
+	top:20px;
+	height: 70px;
+	width:70px;
+}
+#posiSeta
+{
+	position: relative;
+	height: 40px;
+	width:40px;
+}
+
+article.tabela_servico table,
+article.tr,
+article.td
+{
+	width :10%;
+	border: 1px solid black;
+
+}
+.posi_img_servico
+{
+	height: 50px;
+	width:80px;
+}
+/* Reposivity */
+@media screen and (max-width: 330px) {
+	img {
+		max-width: 300px;
+	}
+	footer p.copyright_notice {
+		position: relative;
+		top: 20px;
+	}
+}

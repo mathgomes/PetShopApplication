@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt" dir="ltr">
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Cadastro Produto</title>
+		<link rel="stylesheet" href="../styles/layout.css" type="text/css">
+		<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+		<!--[if IE]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+		<div id="all_content">
+
+			<!-- Header -->
+			<header>
+				<div class="wrapper">
+					<h1 class="logo"><a href="#">Pet Shop</a></h1>
+					<img class="headerImg" src="../images/dog.png" alt="Dog smiling">
+				</div><!--.wrapper-->
+			</header>
+			<!--End Header -->
+			<!-- Content -->
+			<section class="center_page">
+				<div class="wrapper">
+					<nav class ="navigation_bar">
+						<h3>Bem vindo, admin !</h3>
+						<ul>
+							<li><a href="#">Cadastrar Cliente</a></li>
+							<li><a href="#">Gerenciar Produtos</a></li>
+							<li><a href="#">Gerenciar Servi~ços</a></li>
+							<li><a href="#">Estatísticas</a></li>
+						</ul>
+					</nav>
+					<article class="painel_de_cadastro">
+						<h4>Cadastro de Produto</h4>
+						<form>
+							<input type="text" value = "" placeholder="Nome Produto" name="name">
+							<input type="text" value = "" placeholder="Preço Produto" name="name">
+							<input type="number" value="" placeholder="quantidade em estoque" name="name" >
+							<input type="number" value="" placeholder="quantidade vendida" name="name">
+							<textarea class="formTextArea" placeholder = "Descrição Produto"></textarea>
+							<br />
+							<h4>Foto do produto</h4>
+							<input type="file" value="Foto produto" class="button_1">
+							</input>
+							<br />
+							<input type="submit" value="Cadastrar"  />
+						</form>
+					</article>
+				</div>
+				<!--.wrapper-->
+			</section>
+			<!--End Content -->
+
+			<!-- Footer -->
+			<footer>
+				<div class="wrapper">
+					<div class="logo">
+						<h3>Pet Shop</h3>
+					</div>
+					<p class="copyright_notice">
+						Copyright 2017 © <strong>Pet Shop</strong>. All Rights Reserved.
+					</p>
+				</div>
+				<!--.wrapper-->
+			</footer>
+			<!--End Footer-->
+
+		</div><!--End all_content-->
+	</body>
+
+</html>

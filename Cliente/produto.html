@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt" dir="ltr">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Pet Shop</title>
+	<link rel="stylesheet" href="../styles/layout.css" type="text/css">
+	<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+	<!--[if IE]>
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+</head>
+
+<body>
+	<div id="all_content">
+
+		<!-- Header -->
+		<header>
+			<div class="wrapper">
+				<h1 class="logo"><a href="#">Pet Shop</a></h1>
+				<img class="headerImg" src="../images/dog.png" alt="Dog smiling">
+			</div><!--.wrapper-->
+		</header> <!--End Header -->
+
+		<!-- Content -->
+		<section class="center_page">
+			<div class="wrapper">
+				<nav class ="navigation_bar">
+					<h3>Bem vindo, usuario !</h3>
+					<ul>
+						<li><a href="#">Perfil</a></li>
+						<li><a href="#">Meus Animais</a></li>
+						<li><a href="#">Cadastrar animais</a></li>
+						<li><a href="#">Loja</a></li>
+						<li><a href="#">Serviços</a></li>
+					</ul>
+				</nav>
+
+				<!-- A ideia é a imagem ficar na esquerda e todo o resto na direita -->
+				<article class="centered">
+					<section class="perfil_foto cell">
+						<img src="../images/produtos/osso.jpg" alt="Produto" />
+					</section>
+
+					<section class="produto_info cell">
+						<h1>Osso de Borracha</h1>
+						<h2>Descrição</h2>
+						<p>
+							Osso de borracha, ideal para cães de todas as idades.
+							Vem nas cores roxo, azul e vermelho.
+						</p>
+						<h2>Preço e Estoque</h2>
+						<p class="cell">Por <strong>R$ 4.99</strong></p>
+						<p class="cell">Estoque: <strong>12 unidades</strong></p>
+						<form>
+							<input type="number" placeholder="Quantidade" />
+							<input type="submit" value="Adicionar ao Carrinho" />
+						</form>
+						<h2>Frete e Prazo de Entrega</h2>
+						<form>
+							<input type="text" placeholder="Digite seu CEP" />
+							<input type="button" value="Consultar" />
+						</form>
+					</section>
+				</article>
+
+			</div> <!--.wrapper-->
+		</section> <!--End Content -->
+
+		<!-- Footer -->
+		<footer>
+			<div class="wrapper">
+					<div class="logo">
+						<h3>Pet Shop</h3>
+					</div>
+					<p class="copyright_notice">Copyright 2017 © <strong>Pet Shop</strong>. All Rights Reserved.</p>
+			</div> <!--.wrapper-->
+		</footer> <!--End Footer-->
+
+	</div><!--End all_content-->
+</body>
+
+</html>
