@@ -604,6 +604,17 @@ footer .logo {
 	height: 50px;
 	width:80px;
 }
+
+section.cadastro_cliente h2, section.cadastro_cliente h1, section.cadastro_cliente input[type=submit]
+{
+	text-align: center;
+}
+section.cadastro_cliente input[type=text] ,input[type=tel], input[type=email] , input[type=password]
+{
+	display: block;
+	width:100%;
+	
+}
 /* Reposivity */
 @media screen and (max-width: 420px) {
 	img {
