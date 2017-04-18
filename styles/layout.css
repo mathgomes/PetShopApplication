@@ -589,7 +589,7 @@ section.cadastro_cliente h2, section.cadastro_cliente h1, section.cadastro_clien
 {
 	text-align: center;
 }
-section.cadastro_cliente input[type=text] ,input[type=tel], input[type=email] , input[type=password]
+section.cadastro_cliente input[type=text] ,input[type=tel], input[type=email] , input[type=password], input[type=checkbox]
 {
 	display: block;
 	width:100%;
