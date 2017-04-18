@@ -335,11 +335,6 @@ section.perfil_info *
 	max-width: 70%;
 }
 
-.store_items a
-{
-	color: #666666;
-}
-
 .store_items article
 {
 	/* TODO: fazer o nro de itens por linha mudar
@@ -356,11 +351,16 @@ section.perfil_info *
 	width: 100%;
 }
 
-.store_items .paginas
+.paginas
 {
 	text-align: center;
 	font-size: 2em;
 	/* TODO */
+}
+
+.paginas a
+{
+	color: #666666;
 }
 
 /* pagina de produto */
@@ -405,68 +405,6 @@ table.tabela_animais
 {
 	max-width: 100%;
 }
-
-/*
-table
-{
-	border-collapse: collapse
-}
-
-.minhas_compras tr
-{
-	border: 1px solid black;
-}
-
-.minhas_compras tr td
-{
-	border: 1px solid black;
-}
-
-.minhas_compras tr td img
-{
-	border: 1px solid black;
-	width: 10%;
-}
-
-
-*/
-
-
-
-/* averiguando se ja pode apagar esses aqui */
-/* paineis de cadastro
-.painel_de_cadastro input[type=text] {
-	display: block;
-	height: 20px;
-	border: none;
-	color: #FFFFFF;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	border-radius: 5px;
-	padding: 5px 100px;
-	margin: 10px 0;
-	text-shadow: 0 1px 0 #0F2326;
-}
-/*
-.painel_de_cadastro input[type=number] {
-	display: block;
-	height: 20px;
-	border: none;
-	color: #FFFFFF;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	border-radius: 5px;
-	padding: 5px 10px;
-	margin: 10px 0;
-	text-shadow: 0 1px 0 #0F2326;
-}
-
-.painel_de_cadastro input[type=number], input[type=text] {
-	background: #46737B;
-	background-image: -moz-linear-gradient(#0C3617, #5C858C);
-	background-image: -webkit-linear-gradient(#0C3617, #5C858C);
-}*/
-
 
 /* footer */
 footer {
