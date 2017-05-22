@@ -1,66 +1,95 @@
 
 			<div class="wrapper">
-				<nav class="navbar navbar-default">
-					<div class="container-fluid">
-						<div class="navbar-header">
-							<a class="navbar-brand" href="#">Ben Vindo, Usuário</a>
-						</div>
-						<ul class="nav navbar-nav">
-							<li><a id="perfil" href="#">Perfil</a></li>
-							<li><a id="animais" href="#">Meus Animais</a></li>
-							<li><a id="loja" href="#">Loja</a></li>
-							<li><a id="servicos" href="#">Serviços</a></li>
-							<li><a id="carrinho" href="#">Carrinho</a></li>
-						</ul>
-					</div>
-				</nav>
+  <nav class = "navbar navbar-default" role = "navigation">
+     
+     <div class = "navbar-header">
+        <button type = "button" class = "navbar-toggle" 
+           data-toggle = "collapse" data-target = "#example-navbar-collapse">
+           <span class = "sr-only">Toggle navigation</span>
+           <span class = "icon-bar"></span>
+           <span class = "icon-bar"></span>
+           <span class = "icon-bar"></span>
+        </button>
+        <a class = "navbar-brand" href = "#">Bem Vindo, Usuário</a>
+     </div>
+     
+     <div class = "collapse navbar-collapse" id = "example-navbar-collapse">
+        <ul class = "nav navbar-nav">
+            <li><a id="perfil" href="#">Perfil</a></li>
+            <li><a id="animais" href="#">Meus Animais</a></li>
+            <li><a id="loja" href="#">Loja</a></li>
+            <li><a id="servicos" href="#">Serviços</a></li>
+            <li><a id="carrinho" href="#">Carrinho</a></li>
+            <!--
+            <li class = "dropdown">
+              <a href = "#" class = "dropdown-toggle" data-toggle = "dropdown">
+                 Java 
+                 <b class = "caret"></b>
+              </a>
+              
+              <ul class = "dropdown-menu">
+                 <li><a href = "#">jmeter</a></li>
+                 <li><a href = "#">EJB</a></li>
+                 <li><a href = "#">Jasper Report</a></li>
+                 
+                 <li class = "divider"></li>
+                 <li><a href = "#">Separated link</a></li>
+                 
+                 <li class = "divider"></li>
+                 <li><a href = "#">One more separated link</a></li>
+              </ul>
+            </li>-->
+        </ul>
+     </div>
+     
+  </nav>
 
-				<div class="centered">
-				<article class="cell">
-					<h1>Carrinho</h1>
-					<table class="minhas_compras">
-						<tr>
-							<th><!-- Imagem --></th>
-							<th>Nome do Produto</th>
-							<th>Preço</th>
-							<th>Qtde.</th>
-							<th><!-- Remover --></th>
-						</tr>
+<div class="centered">
+<article class="cell">
+	<h1>Carrinho</h1>
+	<table class="minhas_compras">
+		<tr>
+			<th><!-- Imagem --></th>
+			<th>Nome do Produto</th>
+			<th>Preço</th>
+			<th>Qtde.</th>
+			<th><!-- Remover --></th>
+		</tr>
 
-						<!-- TODO: botar no CSS o tamanho das imagens -->
-						<!-- TODO: arrumar tamanho do input number no CSS -->
+		<!-- TODO: botar no CSS o tamanho das imagens -->
+		<!-- TODO: arrumar tamanho do input number no CSS -->
 
-						<tr>
-							<td><img src="../images/produtos/racao.jpg" /></td>
-							<td>Ração para gatos 1kg</td>
-							<td>R$ 24.99</td>
-							<td><input type="number" value="1" /></td>
-							<td><input type="submit" value="Remover" /></td>
-						</tr>
+		<tr>
+			<td><img src="../images/produtos/racao.jpg" /></td>
+			<td>Ração para gatos 1kg</td>
+			<td>R$ 24.99</td>
+			<td><input type="number" value="1" /></td>
+			<td><input type="submit" value="Remover" /></td>
+		</tr>
 
-						<tr>
-							<td><img src="../images/produtos/osso.jpg" /></td>
-							<td>Osso de borracha</td>
-							<td>R$ 4.99</td>
-							<td><input type="number" value="2" /></td>
-							<td><input type="button" value="Remover" /></td>
-						</tr>
+		<tr>
+			<td><img src="../images/produtos/osso.jpg" /></td>
+			<td>Osso de borracha</td>
+			<td>R$ 4.99</td>
+			<td><input type="number" value="2" /></td>
+			<td><input type="button" value="Remover" /></td>
+		</tr>
 
-						<tr>
-							<td><img src="../images/produtos/alpiste.jpg" /></td>
-							<td>Alpiste 500g</td>
-							<td>R$ 14.99</td>
-							<td><input type="number" value="2" /></td>
-							<td><input type="button" value="Remover" /></td>
-						</tr>
-					</table>
-				</article>
+		<tr>
+			<td><img src="../images/produtos/alpiste.jpg" /></td>
+			<td>Alpiste 500g</td>
+			<td>R$ 14.99</td>
+			<td><input type="number" value="2" /></td>
+			<td><input type="button" value="Remover" /></td>
+		</tr>
+	</table>
+</article>
 
-				<article class="cell carrinho_opcoes">
-					<h1>Preço total: R$ 64.95</h1>
-					<input type="submit" value="Continuar Comprando" />
-					<input type="submit" value="Esvaziar Carrinho" />
-					<input type="submit" value="Ir Para Pagamento" />
-				</article>
-				</div>
-			</div> <!--.wrapper-->
+<article class="cell carrinho_opcoes">
+	<h1>Preço total: R$ 64.95</h1>
+	<input type="submit" value="Continuar Comprando" />
+	<input type="submit" value="Esvaziar Carrinho" />
+	<input type="submit" value="Ir Para Pagamento" />
+</article>
+</div>
+</div> <!--.wrapper-->

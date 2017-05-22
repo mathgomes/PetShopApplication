@@ -116,12 +116,11 @@ section#center_page
 }
 
 /* Barra de navegação */
-nav.navbar.navbar-default
+nav.navbar,nav.navbar-default
 {
 	margin: 0px;
 	padding: 0px;
 	border: none;
-	display: inline-block;
 	width: 100%;
 	background: #73D873;
 	background-image: -moz-linear-gradient(#FFFFFF,#73D873);
