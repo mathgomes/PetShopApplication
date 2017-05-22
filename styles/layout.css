@@ -1,8 +1,9 @@
 /*
- HTML 5 Template Name: Pet Shop
- File: Layout CSS
- Author:
- Author URI:
+File: Layout CSS
+Authors: 
+	Hugo Moraes Dzin, 8532186
+	Matheus Gomes da Silva Horta, 8532321
+	Rogiel dos Santos Silva, 8061793
  */
 
 /* Programa geral */
@@ -14,11 +15,11 @@ body
 	-o-background-size: cover;
 	background-size: cover;
 	color: #666666;
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-family: Pacifico,"Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size: 12px;
 }
 
-#all_content
+.all_content
 {
 	margin: auto;
 	max-width: 960px;
@@ -74,8 +75,11 @@ a:link, a:visited
 }
 
 /* Header */
-header
+header.page-header
 {
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
 	height: 110px;
 	background: #F4F8F9;
 	background-image: -moz-linear-gradient(#FFFFFF,#98FB98);
@@ -103,7 +107,7 @@ h1.logo
 }
 
 /* Conteudo */
-section.center_page
+section#center_page
 {
 	min-height: 400px;
 	height: 80%;
@@ -112,11 +116,24 @@ section.center_page
 }
 
 /* Barra de navegação */
-.navigation_bar
+nav.navbar.navbar-default
 {
+	margin: 0px;
+	padding: 0px;
+	border: none;
 	display: inline-block;
 	width: 100%;
-	box-shadow: inset 0 -1px 2px #66888E;
+	background: #73D873;
+	background-image: -moz-linear-gradient(#FFFFFF,#73D873);
+	background-image: -webkit-linear-gradient(#FFFFFF,#73D873);
+
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+
+	-moz-box-shadow: 0 5px 9px #66888E;
+	-webkit-box-shadow: 0 5px 9px #66888E;
+	box-shadow: 0 5px 9px #66888E;
 }
 
 .navigation_bar *
@@ -448,14 +465,7 @@ footer p.copyright_notice {
 }
 
 footer .logo {
-	/*border: 1px solid black;*/
-	float: right;
-	max-width: 100px;
-	height: 80px;
-	text-align: start;
-	line-height: 60px;
-	/*background: url('images/logo.png') no-repeat;*/
-	/*text-indent: -5000px;*/
+
 }
 
 .formTextArea {
