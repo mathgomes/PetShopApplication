@@ -1,0 +1,89 @@
+<div class="wrapper">
+  <nav class = "navbar navbar-default" role = "navigation">
+     
+     <div class = "navbar-header">
+        <button type = "button" class = "navbar-toggle" 
+           data-toggle = "collapse" data-target = "#example-navbar-collapse">
+           <span class = "sr-only">Toggle navigation</span>
+           <span class = "icon-bar"></span>
+           <span class = "icon-bar"></span>
+           <span class = "icon-bar"></span>
+        </button>
+        <a class = "navbar-brand" href = "#">Bem Vindo, Usuário</a>
+     </div>
+     
+     <div class = "collapse navbar-collapse" id = "example-navbar-collapse">
+        <ul class = "nav navbar-nav">
+            <li><a id="perfilAdm" href="#">Perfil</a></li>
+            <li class = "dropdown">
+              <a id="userAdm" href = "#" class = "dropdown-toggle" data-toggle = "dropdown">
+                 Gerenciar Usuários 
+                 <b class = "caret"></b>
+              </a>
+              
+              <ul class = "dropdown-menu">
+                 <li><a href = "#">Buscar usuário</a></li>
+                 <li><a href = "#">Cadastrar usuário</a></li>
+              </ul>
+            </li>
+            <li class = "dropdown">
+              <a id="prodAdm" href = "#" class = "dropdown-toggle" data-toggle = "dropdown">
+                 Gerenciar Produtos 
+                 <b class = "caret"></b>
+              </a>
+              
+              <ul class = "dropdown-menu">
+                 <li><a href = "#">Buscar Produto</a></li>
+                 <li><a href = "#">Cadastrar Produto</a></li>
+              </ul>
+            </li>
+            <li class = "dropdown">
+              <a id="servAdm" href = "#" class = "dropdown-toggle" data-toggle = "dropdown">
+                 Gerenciar Serviços 
+                 <b class = "caret"></b>
+              </a>
+              
+              <ul class = "dropdown-menu">
+                 <li><a href = "#">Buscar Serviço</a></li>
+                 <li><a href = "#">Cadastrar Serviço</a></li>
+              </ul>
+            </li>
+            <li><a id="ganhos" href="#">Receita</a></li>
+        </ul>
+     </div>
+     
+  </nav>
+</div>
+
+	<h1 class="perfil">Fulano da Silva</h1>
+
+	<!-- Foto e input de alterar foto -->
+	<div class="centered">
+		<section class="perfil_foto cell">
+			<img src="images/perfil.jpg" alt="Minha foto" />
+			<input type="file" />
+			<input type="submit" value="Alterar Foto" />
+		</section>
+
+		<!-- Perfil do usuário -->
+		<section class="perfil_info cell">
+			<form>
+				<h2>Administrador</h1><input type="checkbox" />
+				<h2>Cliente</h1><input type="checkbox" />
+				<input type="text" value="Fulano da Silva" placeholder="Nome" />
+				<input type="email" value="fsilva@email.com" placeholder="Endereço de e-mail" />
+				<input type="text" value="Rua dos Pinheiros, 404" placeholder="Endereço físico" />
+				<input type="tel" value="(15) 9999-9999" placeholder="Telefone" />
+				<input type="submit" value="Atualizar" />
+			</form>
+			<h2>Alterar senha</h2>
+			<form>
+				<input type="password" placeholder="Senha antiga" />
+				<input type="password" placeholder="Senha nova" />
+				<input type="password" placeholder="Digite novamente" />
+				<input type="submit" />
+			</form>
+		</section>
+	</div>
+</div> <!--.wrapper-->
+</section> <!--End Content -->

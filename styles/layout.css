@@ -31,7 +31,7 @@ p
 	line-height: 150%;
 }
 
-h1 { font-size: 2em; }
+/*h1 { font-size: 2em; }
 h2 { font-size: 1.5em; }
 h3 { font-size: 1.17em; }
 h4 { font-size: 1.12em; }
@@ -42,7 +42,7 @@ h1, h2, h3, h4, h5, h6
 {
 	font-family: Pacifico, "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-weight: lighter;
-}
+}*/
 
 a:link, a:visited
 {
@@ -88,6 +88,7 @@ header.page-header
 
 h1.logo
 {
+	font-family: Pacifico, "Helvetica Neue", Helvetica, Arial, sans-serif;
 	/*border: 1px solid black;*/
 	display: block;
 	width: 128px;
@@ -135,7 +136,7 @@ nav.navbar,nav.navbar-default
 	box-shadow: 0 5px 9px #66888E;
 }
 
-.navigation_bar *
+/*.navigation_bar *
 {
 	display: inline-block;
 }
@@ -168,11 +169,8 @@ nav.navbar,nav.navbar-default
 
 .navigation_bar li:hover
 {
-	/* Fallback Color */
 	background: #FFFFFF;
-	/* Firefox 3.6+ */
 	background-image: -moz-linear-gradient(#FFFFFF, #E8F4F6);
-	/* Safari 5.1+, Chrome 10+ */
 	background-image: -webkit-linear-gradient(#FFFFFF, #E8F4F6);
 }
 
@@ -180,7 +178,7 @@ nav.navbar,nav.navbar-default
 {
 	color: #2C6069;
 	font-weight: bold;
-}
+}*/
 
 table
 {
@@ -291,6 +289,7 @@ input[type=file]
 /* index */
 article.boas_vindas
 {
+
 	display: inline-block;
 	width: 70%;
 	font-size: 15px;
@@ -461,8 +460,8 @@ footer h5.copyright_notice {
 	vertical-align: middle;
 }
 
-footer .logo {
-
+footer h3 {
+	font-family: Pacifico, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .formTextArea {

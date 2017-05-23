@@ -29,6 +29,9 @@ $(document).ready(function(){
 	$("input#login").click(function(){
 		$("section#center_page").load("Admin/funcoesAdmin.html");
 	});
+	$(document).on("click","a#perfilAdm",function(){
+    	$("section#center_page").load("Admin/perfil.html");
+	});
 	/*
 	$(document).on("click","a#animais",function(){
     	$("section#center_page").load("Cliente/situacaoAnimais.html");
