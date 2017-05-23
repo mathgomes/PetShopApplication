@@ -6,9 +6,10 @@ Authors:
 	Rogiel dos Santos Silva, 8061793
  */
 $(document).ready(function(){
-	$("input#login").click(function(){
+	//Client
+	/*$("input#login").click(function(){
 		$("section#center_page").load("Cliente/funcoesCliente.html");
-	});
+	});*/
 	$(document).on("click","a#perfil",function(){
     	$("section#center_page").load("Cliente/perfil.html");
 	});
@@ -24,4 +25,21 @@ $(document).ready(function(){
 	$(document).on("click","a#carrinho",function(){
     	$("section#center_page").load("Cliente/carrinho.html");
 	});
+	//Admin
+	$("input#login").click(function(){
+		$("section#center_page").load("Admin/funcoesAdmin.html");
+	});
+	/*
+	$(document).on("click","a#animais",function(){
+    	$("section#center_page").load("Cliente/situacaoAnimais.html");
+	});
+	$(document).on("click","a#loja",function(){
+    	$("section#center_page").load("Cliente/loja.html");
+	});
+	$(document).on("click","a#servicos",function(){
+    	$("section#center_page").load("Cliente/horarioServico.html");
+	});
+	$(document).on("click","a#carrinho",function(){
+    	$("section#center_page").load("Cliente/carrinho.html");
+	});*/
 });

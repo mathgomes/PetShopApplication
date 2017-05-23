@@ -1,54 +1,57 @@
-<!DOCTYPE html>
-<html lang="pt" dir="ltr">
-
-<head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Pet Shop</title>
-	<link rel="stylesheet" href="../styles/layout.css" type="text/css">
-	<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
-	<!--[if IE]>
-	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
-</head>
-
-<body>
-	<div id="all_content">
-
-		<!-- Header -->
-		<header>
-			<div class="wrapper">
-				<h1 class="logo"><a href="#">Pet Shop</a></h1>
-				<img class="headerImg" src="../images/dog.png" alt="Dog smiling">
-			</div><!--.wrapper-->
-		</header> <!--End Header -->
-
-		<!-- Content -->
-		<section class="center_page">
-			<div class="wrapper">
-				<nav class ="navigation_bar">
-					<h3>Bem vindo, admin !</h3>
-					<ul>
-						<li><a href="#">Cadastrar Cliente</a></li>
-						<li><a href="#">Gerenciar Produtos</a></li>
-						<li><a href="#">Gerenciar Serviços</a></li>
-						<li><a href="#">Estatísticas</a></li>
-					</ul>
-				</nav>
-			</div> <!--.wrapper-->
-		</section> <!--End Content -->
-
-		<!-- Footer -->
-		<footer>
-			<div class="wrapper">
-					<div class="logo">
-						<h3>Pet Shop</h3>
-					</div>
-					<p class="copyright_notice">Copyright 2017 © <strong>Pet Shop</strong>. All Rights Reserved.</p>
-			</div> <!--.wrapper-->
-		</footer> <!--End Footer-->
-
-	</div><!--End all_content-->
-</body>
-
-</html>
+<div class="wrapper">
+  <nav class = "navbar navbar-default" role = "navigation">
+     
+     <div class = "navbar-header">
+        <button type = "button" class = "navbar-toggle" 
+           data-toggle = "collapse" data-target = "#example-navbar-collapse">
+           <span class = "sr-only">Toggle navigation</span>
+           <span class = "icon-bar"></span>
+           <span class = "icon-bar"></span>
+           <span class = "icon-bar"></span>
+        </button>
+        <a class = "navbar-brand" href = "#">Bem Vindo, Usuário</a>
+     </div>
+     
+     <div class = "collapse navbar-collapse" id = "example-navbar-collapse">
+        <ul class = "nav navbar-nav">
+            <li><a id="perfil" href="#">Perfil</a></li>
+            <li class = "dropdown">
+              <a id="userAdm" href = "#" class = "dropdown-toggle" data-toggle = "dropdown">
+                 Gerenciar Usuários 
+                 <b class = "caret"></b>
+              </a>
+              
+              <ul class = "dropdown-menu">
+                 <li><a href = "#">Buscar usuário</a></li>
+                 <li><a href = "#">Cadastrar usuário</a></li>
+              </ul>
+            </li>
+            <li><a id="loja" href="#">Loja</a></li>
+            <li class = "dropdown">
+              <a id="prodAdm" href = "#" class = "dropdown-toggle" data-toggle = "dropdown">
+                 Gerenciar Produtos 
+                 <b class = "caret"></b>
+              </a>
+              
+              <ul class = "dropdown-menu">
+                 <li><a href = "#">Buscar Produto</a></li>
+                 <li><a href = "#">Cadastrar Produto</a></li>
+              </ul>
+            </li>
+            <li class = "dropdown">
+              <a id="servAdm" href = "#" class = "dropdown-toggle" data-toggle = "dropdown">
+                 Gerenciar Serviços 
+                 <b class = "caret"></b>
+              </a>
+              
+              <ul class = "dropdown-menu">
+                 <li><a href = "#">Buscar Serviço</a></li>
+                 <li><a href = "#">Cadastrar Serviço</a></li>
+              </ul>
+            </li>
+            <li><a id="ganhos" href="#">Receita</a></li>
+        </ul>
+     </div>
+     
+  </nav>
+</div>
