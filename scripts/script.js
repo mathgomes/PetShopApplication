@@ -7,9 +7,9 @@ Authors:
  */
 $(document).ready(function(){
 	//Client
-	/*$("input#login").click(function(){
+	$("input#login").click(function(){
 		$("section#center_page").load("Cliente/funcoesCliente.html");
-	});*/
+	});
 	$(document).on("click","a#perfil",function(){
     	$("section#center_page").load("Cliente/perfil.html");
 	});
@@ -26,9 +26,10 @@ $(document).ready(function(){
     	$("section#center_page").load("Cliente/carrinho.html");
 	});
 	//Admin
+	/*
 	$("input#login").click(function(){
 		$("section#center_page").load("Admin/funcoesAdmin.html");
-	});
+	});*/
 	$(document).on("click","a#perfilAdm",function(){
     	$("section#center_page").load("Admin/perfil.html");
 	});

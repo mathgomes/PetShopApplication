@@ -46,7 +46,7 @@ h1, h2, h3, h4, h5, h6
 
 a:link, a:visited
 {
-	color: #168FAD;
+	color: #0e9660;
 	text-decoration: none;
 }
 
@@ -460,7 +460,7 @@ footer h5.copyright_notice {
 	vertical-align: middle;
 }
 
-footer h3 {
+.logo {
 	font-family: Pacifico, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
@@ -621,6 +621,26 @@ section.cadastro_cliente input[type=text] ,section.cadastro_cliente input[type=t
 	width:100%;
 	
 }
+
+h1.clientPhrase {
+    font: 600 1.5em/1 'Raleway', sans-serif;
+    color: #2E8B57;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: .5em;
+    position: relative;
+    top:100px;
+    opacity: 0.5;
+}
+h2.centerLogo {
+	color: #2E8B57;
+	font-size: 500%;
+    text-align: center;
+    opacity: 0.5;
+    position: relative;
+    top:140px;
+}
+
 /* Reposivity */
 @media screen and (max-width: 430px) {
 	img {
