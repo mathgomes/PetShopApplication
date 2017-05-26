@@ -1,133 +1,88 @@
+
 <div class="wrapper">
-	<nav class = "navbar navbar-default" role = "navigation">
+	<article class="centered">
+		<h1>Meus Animais</h1>
+		<table style="max-width: 100%" class="tabela_animais">
+			<tr>
+				<th><!-- Imagem --></th>
+				<th>Nome</th>
+				<th>Raça</th>
+				<th>Idade</th>
+				<th>Serviço</th>
+				<th>Status</th>
+				<th><!-- Botao de apagar --></th>
+			</tr>
 
-	<div class = "navbar-header">
-		<button type = "button" class = "navbar-toggle" 
-		data-toggle = "collapse" data-target = "#example-navbar-collapse">
-		<span class = "sr-only">Toggle navigation</span>
-		<span class = "icon-bar"></span>
-		<span class = "icon-bar"></span>
-		<span class = "icon-bar"></span>
-		</button>
-		<a class = "navbar-brand" href = "#">Bem Vindo, Usuário</a>
-	</div>
+			<tr>
+				<td><img src="images/pets/poodle.jpg" alt="Pet" height=30 width=30 /></td>
+				<td>Totó</td>
+				<td>Poodle</td>
+				<td>5 anos</td>
+				<td>Banho e Tosa</td>
+				<td>Aguardando dono buscar</td>
+				<td><input type="button" value="Apagar" /></td>
+			</tr>
 
-	<div class = "collapse navbar-collapse" id = "example-navbar-collapse">
-		<ul class = "nav navbar-nav">
-			<li><a id="perfil" href="#">Perfil</a></li>
-			<li><a id="animais" href="#">Meus Animais</a></li>
-			<li><a id="loja" href="#">Loja</a></li>
-			<li><a id="servicos" href="#">Serviços</a></li>
-			<li><a id="carrinho" href="#">Carrinho</a></li>
-			<!--
-			<li class = "dropdown">
-			<a href = "#" class = "dropdown-toggle" data-toggle = "dropdown">
-			 Java 
-			 <b class = "caret"></b>
-			</a>
+			<tr>
+				<td><img src="images/pets/cat.jpg" alt="Pet" height=30 width=30 /></td>
+				<td>Bichano</td>
+				<td>Gato</td>
+				<td>6 meses</td>
+				<td>Castração</td>
+				<td>Agendado para 20/04/2017 às 16:00</td>
+				<td><input type="button" value="Apagar" /></td>
+			</tr>
+			<tr>
 
-			<ul class = "dropdown-menu">
-			 <li><a href = "#">jmeter</a></li>
-			 <li><a href = "#">EJB</a></li>
-			 <li><a href = "#">Jasper Report</a></li>
-			 
-			 <li class = "divider"></li>
-			 <li><a href = "#">Separated link</a></li>
-			 
-			 <li class = "divider"></li>
-			 <li><a href = "#">One more separated link</a></li>
-			</ul>
-			</li>-->
-		</ul>
-	</div>
+			<tr>
+				<td><img src="images/pets/persian.jpg" alt="Pet" height=30 width=30 /></td>
+				<td>Frajola</td>
+				<td>Persa</td>
+				<td>9 anos</td>
+				<td>-</td>
+				<td>-</td>
+				<td><input type="button" value="Apagar" /></td>
+			</tr>
 
-	</nav>
-</div>
+			<tr>
+				<td><img src="images/pets/parrot1.jpg" alt="Pet" height=30 width=30 /></td>
+				<td>Currupaco</td>
+				<td>Papagaio</td>
+				<td>2 anos</td>
+				<td>-</td>
+				<td>-</td>
+				<td><input type="button" value="Apagar" /></td>
+			</tr>
 
-			<div class="wrapper">
-				<article class="centered">
-					<h1>Meus Animais</h1>
-					<table style="max-width: 100%" class="tabela_animais">
-						<tr>
-							<th><!-- Imagem --></th>
-							<th>Nome</th>
-							<th>Raça</th>
-							<th>Idade</th>
-							<th>Serviço</th>
-							<th>Status</th>
-							<th><!-- Botao de apagar --></th>
-						</tr>
+			<tr>
+				<td><img src="images/pets/parrot2.jpg" alt="Pet" height=30 width=30 /></td>
+				<td>Louro José</td>
+				<td>Papagaio</td>
+				<td>2 anos</td>
+				<td>-</td>
+				<td>-</td>
+				<td><input type="button" value="Apagar" /></td>
+			</tr>
 
-						<tr>
-							<td><img src="images/pets/poodle.jpg" alt="Pet" height=30 width=30 /></td>
-							<td>Totó</td>
-							<td>Poodle</td>
-							<td>5 anos</td>
-							<td>Banho e Tosa</td>
-							<td>Aguardando dono buscar</td>
-							<td><input type="button" value="Apagar" /></td>
-						</tr>
+			<tr>
+				<td><img src="images/pets/canary.jpg" alt="Pet" height=30 width=30 /></td>
+				<td>Piu-Piu</td>
+				<td>Canário</td>
+				<td>1 ano</td>
+				<td>-</td>
+				<td>-</td>
+				<td><input type="button" value="Apagar" /></td>
+			</tr>
+		</table>
+	</article>
+	<article class="centered painel_de_cadastro">
+		<h1>Novo Animal</h1>
+		<form>
+			<input type="text" value="" placeholder="Nome do Animal" name="name" />
+			<input type="text" value="" placeholder="Raça" name="name" />
+			<input type="text" value="" placeholder="Idade" name="name" /><br/>
+			<input type="file" value="" class="button_1" />
+			<input type="submit" value="Cadastrar" />
+		</form>
+	</article>
 
-						<tr>
-							<td><img src="images/pets/cat.jpg" alt="Pet" height=30 width=30 /></td>
-							<td>Bichano</td>
-							<td>Gato</td>
-							<td>6 meses</td>
-							<td>Castração</td>
-							<td>Agendado para 20/04/2017 às 16:00</td>
-							<td><input type="button" value="Apagar" /></td>
-						</tr>
-						<tr>
-
-						<tr>
-							<td><img src="images/pets/persian.jpg" alt="Pet" height=30 width=30 /></td>
-							<td>Frajola</td>
-							<td>Persa</td>
-							<td>9 anos</td>
-							<td>-</td>
-							<td>-</td>
-							<td><input type="button" value="Apagar" /></td>
-						</tr>
-
-						<tr>
-							<td><img src="images/pets/parrot1.jpg" alt="Pet" height=30 width=30 /></td>
-							<td>Currupaco</td>
-							<td>Papagaio</td>
-							<td>2 anos</td>
-							<td>-</td>
-							<td>-</td>
-							<td><input type="button" value="Apagar" /></td>
-						</tr>
-
-						<tr>
-							<td><img src="images/pets/parrot2.jpg" alt="Pet" height=30 width=30 /></td>
-							<td>Louro José</td>
-							<td>Papagaio</td>
-							<td>2 anos</td>
-							<td>-</td>
-							<td>-</td>
-							<td><input type="button" value="Apagar" /></td>
-						</tr>
-
-						<tr>
-							<td><img src="images/pets/canary.jpg" alt="Pet" height=30 width=30 /></td>
-							<td>Piu-Piu</td>
-							<td>Canário</td>
-							<td>1 ano</td>
-							<td>-</td>
-							<td>-</td>
-							<td><input type="button" value="Apagar" /></td>
-						</tr>
-					</table>
-				</article>
-				<article class="centered painel_de_cadastro">
-					<h1>Novo Animal</h1>
-					<form>
-						<input type="text" value="" placeholder="Nome do Animal" name="name" />
-						<input type="text" value="" placeholder="Raça" name="name" />
-						<input type="text" value="" placeholder="Idade" name="name" /><br/>
-						<input type="file" value="" class="button_1" />
-						<input type="submit" value="Cadastrar" />
-					</form>
-				</article>
-			</div> <!--.wrapper-->

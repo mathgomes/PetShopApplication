@@ -7,9 +7,11 @@
  */
 $(document).ready(function() {
 	//Client
-	/*	$("input#login").click(function(){
-	 $("section#center_page").load("Cliente/funcoesCliente.html");
-	 });*/
+	$("input#login").click(function(){
+	 	$("section#center_page").load("Cliente/funcoesCliente.html");
+	 	$(".wrapper").css("display", "block");
+	 	$(".wrapper .client").css("display", "block");
+	 });
 	$(document).on("click", "a#perfil", function() {
 		$("section#center_page").load("Cliente/perfil.html");
 	});
@@ -27,15 +29,17 @@ $(document).ready(function() {
 	});
 	//Admin
 
-	$("input#login").click(function() {
-		$("section#center_page").load("Admin/funcoesAdmin.html");
-	});
+/*	 	$("input#login").click(function(){
+	 	$("section#center_page").load("Admin/funcoesAdmin.html");
+	 	$(".wrapper").css("display", "block");
+	 	$(".wrapper .admin").css("display", "block");
+	 });
 	$(document).on("click", "a#perfilAdm", function() {
 		$("section#center_page").load("Admin/perfil.html");
 	});
 	$(document).on("click", "a#cadastrarUsuario", function() {
 		$("section#center_page").load("Admin/cadastrarUsuario.html");
-	});
+	});*/
 
 	/*
 	 $(document).on("click","a#animais",function(){
