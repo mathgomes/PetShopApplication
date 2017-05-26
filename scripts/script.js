@@ -7,11 +7,11 @@
  */
 $(document).ready(function() {
 	//Client
-	$("input#login").click(function(){
+/*	$("input#login").click(function(){
 	 	$("section#center_page").load("Cliente/funcoesCliente.html");
 	 	$(".wrapper").css("display", "block");
 	 	$(".wrapper .client").css("display", "block");
-	 });
+	 });*/
 	$(document).on("click", "a#perfil", function() {
 		$("section#center_page").load("Cliente/perfil.html");
 	});
@@ -29,7 +29,7 @@ $(document).ready(function() {
 	});
 	//Admin
 
-/*	 	$("input#login").click(function(){
+	 $("input#login").click(function(){
 	 	$("section#center_page").load("Admin/funcoesAdmin.html");
 	 	$(".wrapper").css("display", "block");
 	 	$(".wrapper .admin").css("display", "block");
@@ -39,19 +39,17 @@ $(document).ready(function() {
 	});
 	$(document).on("click", "a#cadastrarUsuario", function() {
 		$("section#center_page").load("Admin/cadastrarUsuario.html");
-	});*/
-
-	/*
-	 $(document).on("click","a#animais",function(){
-	 $("section#center_page").load("Cliente/situacaoAnimais.html");
-	 });
-	 $(document).on("click","a#loja",function(){
-	 $("section#center_page").load("Cliente/loja.html");
-	 });
-	 $(document).on("click","a#servicos",function(){
-	 $("section#center_page").load("Cliente/horarioServico.html");
-	 });
-	 $(document).on("click","a#carrinho",function(){
-	 $("section#center_page").load("Cliente/carrinho.html");
-	 });*/
+	});
+	$(document).on("click", "a#buscarUsuario", function() {
+		
+	});
+	$(document).on("click", "a#cadastrarProduto", function() {
+		$("section#center_page").load("Admin/cadastroProduto.html");
+	});
+	$(document).on("click", "a#cadastrarServico", function() {
+		$("section#center_page").load("Admin/registroServico.html");
+	});
+	$(document).on("click", "a#ganhos", function() {
+		$("section#center_page").load("Admin/estatisticas.html");
+	});
 }); 
