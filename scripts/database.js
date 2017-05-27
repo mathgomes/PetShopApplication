@@ -156,6 +156,9 @@ function _dbPopulate(db) {
 var LOGIN_OK = 0;
 var WRONG_USER = 1;
 var WRONG_PASS = 2;
+// Returns an object {error, data}
+// error = LOGIN_OK, WRONG_USER or WRONG_PASS
+// data is undefined unless error == LOGIN_OK
 function dbUserLogin(username, password, callback) {
 	console.log('Login attempt: ' + username + ', ' + password);
 
