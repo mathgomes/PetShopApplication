@@ -139,6 +139,11 @@ nav.navbar,nav.navbar-default
 	z-index: 1;
 }
 
+div.nav.nav-pills{
+	width: 2px;
+	height: 2px;
+}
+
 /*.navigation_bar *
 {
 	display: inline-block;
