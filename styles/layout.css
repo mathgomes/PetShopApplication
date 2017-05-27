@@ -21,7 +21,7 @@ body
 
 .container
 {
-	max-width: 1000px;
+	max-width: 1100px;
 	min-width: 200px;
 }
 
@@ -285,8 +285,6 @@ input[type=radio]
 input[type=file]
 {
 	display: inline-block;
-	margin: 5px;
-	/* boa sorte estilizando esse */
 }
 
 /* index */
@@ -315,9 +313,10 @@ article.painel_de_login
 	display: inline-block;
 }
 
-.painel_de_login input
+.painel_de_login input, .painel_de_login *
 {
 	display:block;
+	width: 100%;
 }
 
 /* perfil */
@@ -329,12 +328,12 @@ h1.perfil
 
 .perfil_foto
 {
-	width: 30%;
+	width: 50%;
 }
 
 .perfil_foto img
 {
-	width: 100%;
+
 }
 
 section.perfil_foto *,
