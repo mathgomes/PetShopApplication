@@ -31,7 +31,7 @@ $(document).ready(function() {
 
 	 $("input#login").click(function(){
 	 	$("section#center_page").load("Admin/funcoesAdmin.html");
-		$("#nav_wrapper").load("Cliente/carrinho.html");
+		$("#nav_wrapper").load("Admin/navbar.html");
 	 });
 	$(document).on("click", "a#perfilAdm", function() {
 		$("section#center_page").load("Admin/perfil.html");
