@@ -210,7 +210,7 @@ input[type=email],
 input[type=tel],
 input[type=search],
 input[type=date],
-select /* esse ultimo nao estiliza direito */
+select
 {
 	border: none;
 	display: inline-block;
@@ -475,7 +475,7 @@ footer h5.copyright_notice {
 	-webkit-border-radius: 5px;
 	border-radius: 5px;
 	padding: 5px 100px;
-	margin: 1px 0;
+	margin: auto;
 	text-shadow: 1 1px 1 #0F2326;
 	/* Fallback Color */
 	background: #46737B;
@@ -642,7 +642,10 @@ h2.centerLogo {
     position: relative;
     top:140px;
 }
-
+input.form-control, div.form-group, .form-group input, .painel_de_cadastro *, .painel_de_servico * {
+	display: block;
+	text-align: center;
+}
 /* Reposivity */
 @media screen and (max-width: 430px) {
 	img {
