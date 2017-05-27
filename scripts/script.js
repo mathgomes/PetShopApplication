@@ -50,6 +50,10 @@ $(document).ready(function() {
 		$("section#center_page").load("Admin/registroServico.html");
 	});
 	$(document).on("click", "a#ganhos", function() {
-		$("section#center_page").load("Admin/estatisticas.html");
+		$("section#center_page").load("Admin/estatisticas.html",function(data){
+			$('#example').DataTable();
+
+		});
 	});
+
 }); 
