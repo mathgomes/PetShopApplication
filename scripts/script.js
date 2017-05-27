@@ -53,7 +53,6 @@ $(document).ready(function() {
 	$(document).on("click", "a#ganhos", function() {
 		$("section#center_page").load("Admin/estatisticas.html", function(data) {
 			$('#example').DataTable();
-
 		});
 	});
 	$(document).on("click", "input#inputBuscaCliente", function() {
