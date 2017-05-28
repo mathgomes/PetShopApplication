@@ -53,6 +53,24 @@
  *   in_use:  true or false
  *   service: id from table 'services'
  *   animal:  id from table 'animals'
+ *
+ * shopping_carts:
+ *   id:        auto-generated key
+ *   user:      id from table 'users'
+ *   items:     array of objects { product, amount }
+ *   * product: id from table 'products'
+ *   * amount:  number
+ *
+ * product_sales:
+ *   id:      auto-generated key
+ *   product: id from table 'products'
+ *   price:   number
+ *   amount:  number
+ *
+ * service_sales:
+ *   id:      auto-generated key
+ *   service: id from table 'services'
+ *   price:   number
  */
 
 var DB_NAME = 'petshop';
@@ -112,20 +130,36 @@ function dbDelete() {
 
 // Called by onupgradeneeded. Create object stores and indices
 function _dbCreateTables(db) {
+
+	// Shorthand functions
+	function newStore(name) {
+		return db.createObjectStore(name, {keyPath: 'id', autoIncrement: true});
+	}
+
+	function newIndex(store, field, is_unique) {
+		store.createIndex(field, field, {unique: is_unique});
+	}
+
 	console.log('Creating tables');
 
-	var users = db.createObjectStore('users', {keyPath: 'id', autoIncrement: true});
-	var animals = db.createObjectStore('animals', {keyPath: 'id', autoIncrement: true});
-	var products = db.createObjectStore('products', {keyPath: 'id', autoIncrement: true});
-	var services = db.createObjectStore('services', {keyPath: 'id', autoIncrement: true});
-	var timeslots = db.createObjectStore('timeslots', {keyPath: 'id', autoIncrement: true});
+	var users     = newStore('users');
+	var animals   = newStore('animals');
+	var products  = newStore('products');
+	var services  = newStore('services');
+	var timeslots = newStore('timeslots');
+	var shopping_carts = newStore('shopping_carts');
+	var product_sales  = newStore('product_sales');
+	var service_sales  = newStore('service_sales');
 
-	users.createIndex('username', 'username', {unique: true});
-	users.createIndex('email', 'email', {unique: true});
-	animals.createIndex('owner', 'owner', {unique: false});
-	products.createIndex('name', 'name', {unique: false});
-	services.createIndex('name', 'name', {unique: false});
-	timeslots.createIndex('date', 'date', {unique: false});
+	newIndex(users, 'username', true);
+	newIndex(users, 'email', true);
+	newIndex(animals, 'owner', false);
+	newIndex(products, 'name', false);
+	newIndex(services, 'name', false);
+	newIndex(timeslots, 'date', false);
+	newIndex(shopping_carts, 'user', true);
+	newIndex(service_sales, 'service', false);
+	newIndex(product_sales, 'product', false);
 }
 
 
