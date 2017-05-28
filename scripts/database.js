@@ -5,7 +5,12 @@
 /* FUNCTIONS IMPLEMENTED SO FAR
  *  dbInit()
  *  dbDelete()
+ *
  *  dbUserLogin(user, pass, callback)
+ *  dbGetAnimals(owner, callback)
+ *
+ *  dbCreateUser(entry, callback)
+ *  dbUpdateUser(username, updated_entry, callback)
  */
 
 /* TABLE LIST
