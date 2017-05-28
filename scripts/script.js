@@ -6,12 +6,11 @@
  Rogiel dos Santos Silva, 8061793
  */
 $(document).ready(function() {
-	//Client
-	/*	$("input#login").click(function(){
+	//Customer
+		$("input#login").click(function(){
 	 $("section#center_page").load("Cliente/funcoesCliente.html");
-	 $(".wrapper").css("display", "block");
-	 $(".wrapper .client").css("display", "block");
-	 });*/
+	 $("#nav_wrapper").load("Cliente/navbar.html");
+	 });
 	$(document).on("click", "a#perfil", function() {
 		$("section#center_page").load("Cliente/perfil.html");
 	});
@@ -29,10 +28,10 @@ $(document).ready(function() {
 	});
 	//Admin
 
-	 $("input#login").click(function(){
-	 	$("section#center_page").load("Admin/funcoesAdmin.html");
-		$("#nav_wrapper").load("Admin/navbar.html");
-	 });
+	 //$("input#login").click(function(){
+	 //	$("section#center_page").load("Admin/funcoesAdmin.html");
+	 //   $("#nav_wrapper").load("Admin/navbar.html");
+	 //});
 	$(document).on("click", "a#perfilAdm", function() {
 		$("section#center_page").load("Admin/perfil.html");
 	});

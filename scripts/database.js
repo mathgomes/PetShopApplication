@@ -36,20 +36,23 @@
  *   age:   number
  *
  * products:
- *   id:          auto-generated key
- *   name:        string
- *   photo:       string (image URL)
- *   description: string
- *   price:       number
- *   stock:       number
- *   sold_amount: number
+ *   id:           auto-generated key
+ *   name:         string
+ *   photo:        string (image URL)
+ *   description:  string
+ *   price:        number
+ *   stock:        number
+ *   sold_amount:  number
+ *   total_income: number
  *
  * services:
- *   id:          auto-generated key
- *   name:        string
- *   photo:       string (image URL)
- *   description: string
- *   price:       number
+ *   id:           auto-generated key
+ *   name:         string
+ *   photo:        string (image URL)
+ *   description:  string
+ *   price:        number
+ *   sold_amount:  number
+ *   total_income: number
  *
  * timeslots:
  *   id:      auto-generated key
@@ -65,17 +68,6 @@
  *   items:     array of objects { product, amount }
  *   * product: id from table 'products'
  *   * amount:  number
- *
- * product_sales:
- *   id:      auto-generated key
- *   product: id from table 'products'
- *   price:   number
- *   amount:  number
- *
- * service_sales:
- *   id:      auto-generated key
- *   service: id from table 'services'
- *   price:   number
  */
 
 function _test_cbk(result) {
@@ -178,8 +170,6 @@ function _dbCreateTables(db) {
 	newIndex(services, 'name', false);
 	newIndex(timeslots, 'date', false);
 	newIndex(shopping_carts, 'user', true);
-	newIndex(service_sales, 'service', false);
-	newIndex(product_sales, 'product', false);
 }
 
 
@@ -256,7 +246,7 @@ function _dbGetIndex(objStore, indexName, mode, callback) {
 // Sets callback functions for the request
 // The callback will receive a {success, error} object
 // On sucess -> {true, undefined}
-// On error  -> {false, DOMException}
+// On error  -> {false, (error name)}
 function _dbRequestResult(request, callback) {
 	request.onsuccess = function(event) {
 		callback({
@@ -268,7 +258,7 @@ function _dbRequestResult(request, callback) {
 	request.onerror = function(event) {
 		callback({
 			success: false,
-			error: event.target.error
+			error: event.target.error.name
 		});
 	};
 }
@@ -323,6 +313,7 @@ function dbGetAnimals(owner, callback) {
 		var request = index.openCursor(keyRange);
 		request .onerror = _dbErrorHandler;
 
+		// TODO standardize callback parameter to {success, error, data}
 		var animals = [];
 		request.onsuccess = function(event) {
 			var cursor = event.target.result;
@@ -339,12 +330,15 @@ function dbGetAnimals(owner, callback) {
 }
 
 
+function _dbEmptyChecker(entry) {
+	return true;
+}
 
 // Tries to add a new entry to table 'users', passing a result object
 // (see _dbRequestResult)
 // If the entry already exists, error.name == 'ConstraintError'
 function dbCreateUser(entry, callback) {
-	console.log('Creating user: ' + entry.name);
+/*	console.log('Creating user: ' + entry.name);
 
 	// TODO check correctness of entry
 
@@ -352,6 +346,24 @@ function dbCreateUser(entry, callback) {
 		var request = store.add(entry);
 		_dbRequestResult(request, callback);
 	});
+*/
+	_dbCreateEntry(entry, 'users', _dbEmptyChecker, callback);
+}
+
+function _dbCreateEntry(entry, store, checker, callback) {
+	console.log('Creating entry:', entry, 'in store ' + store);
+
+	var is_correct = checker(entry);
+
+	if(is_correct) {
+		_dbGetStore(store, 'readwrite', function(store) {
+			var request = store.add(entry);
+			_dbRequestResult(request, callback);
+		});
+	}
+	else {
+		console.log('Checker: invalid entry');
+	}
 }
 
 
