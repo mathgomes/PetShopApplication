@@ -73,6 +73,21 @@
  *   price:   number
  */
 
+function _test_cbk(result) {
+	console.log('Test result callback');
+	console.log(result);
+}
+
+var _test_entry = {
+	address: 'rua 5 de maio',
+	email: 'fulano@gmeio.com',
+	is_admin: false,
+	name: 'fulano da silva',
+	password: '1234',
+	photo: 'images/fulano.jpg',
+	username: 'fsilva',
+};
+
 var DB_NAME = 'petshop';
 var DB_VERSION = 1;
 
@@ -173,17 +188,19 @@ function _dbPopulate(db) {
 		'readwrite');
 	var users = trans.objectStore('users');
 
-	users.add({
+	var req = users.add({
 		is_admin: true,
 		username: 'admin',
 		password: 'admin',
 		name: 'Minhoca Gomes',
 		photo: 'images/perfil.jpg',
-		address: undefined
+		email: 'minhoca@petshop.com',
+		address: undefined,
 	});
 
 	animals = trans.objectStore('animals');
 
+	// Arrumar depois: nao tem todos os campos necessarios
 	animals.add({
 		owner: 1,
 		name: 'frajola'
@@ -202,34 +219,64 @@ function _dbPopulate(db) {
 
 
 
-// Connects to the DB_NAME database and invokes the callback,
-// passing the requested IDBIndex object as argument
-function _dbGetIndex(objStore, indexName, callback) {
+
+// Connects to the DB_NAME database and passes the
+// requested store as argument to the callback
+function _dbGetStore(objStore, mode, callback) {
 	var request = window.indexedDB.open(DB_NAME);
 	request.onerror = _dbErrorHandler;
 
 	request.onsuccess = function(event) {
 		var db = event.target.result;
-		var transaction = db.transaction(objStore)
+		var transaction = db.transaction(objStore, mode);
 		var store = transaction.objectStore(objStore);
-		var index = store.index(indexName);
 
-		callback(index);
+		callback(store);
 	}
 }
 
 
 
-var LOGIN_OK = 0;
-var WRONG_USER = 1;
-var WRONG_PASS = 2;
-// Returns an object {error, data}
-// error = LOGIN_OK, WRONG_USER or WRONG_PASS
-// data is undefined unless error == LOGIN_OK
+// Connects to the DB_NAME database and passes the
+// requested store and index as argument to the callback
+function _dbGetIndex(objStore, indexName, mode, callback) {
+	_dbGetStore(objStore, mode, function(store) {
+		index = store.index(indexName);
+		callback(store, index);
+	});
+}
+
+
+
+// Sets callback functions for the request
+// The callback will receive a {success, error} object
+// On sucess -> {true, undefined}
+// On error  -> {false, DOMException}
+function _dbRequestResult(request, callback) {
+	request.onsuccess = function(event) {
+		callback({
+			success: true,
+			error: undefined
+		});
+	};
+
+	request.onerror = function(event) {
+		callback({
+			success: false,
+			error: event.target.error
+		});
+	};
+}
+
+
+
+// Returns a result object {success, error, data}
+// On success -> {true, undefined, (user record)}
+// On error   -> {false, 'LoginError', undefined}
 function dbUserLogin(username, password, callback) {
 	console.log('Login attempt: ' + username + ', ' + password);
 
-	_dbGetIndex('users', 'username', function(index) {
+	_dbGetIndex('users', 'username', 'readonly', function(store, index) {
 		// Attempt login
 		var request = index.get(username);
 		request.onerror = _dbErrorHandler;
@@ -237,19 +284,21 @@ function dbUserLogin(username, password, callback) {
 		request.onsuccess = function(event) {
 			var entry = event.target.result;
 
-			var error = LOGIN_OK;
+			var success = true;
+			var error = undefined;
 
-			// Login not found
+			// Invalid username
 			if(entry == undefined) {
-				error = WRONG_USER;
+				error = 'LoginError';
 			}
 			// Wrong password
 			else if(entry.password != password) {
-				error = WRONG_PASS
+				error = 'LoginError';
 				entry = undefined;
 			}
 
 			callback({
+				success: success,
 				error: error,
 				data: entry
 			});
@@ -264,7 +313,7 @@ function dbUserLogin(username, password, callback) {
 function dbGetAnimals(owner, callback) {
 	console.log('Getting animals from user ID: ' + owner);
 
-	_dbGetIndex('animals', 'owner', function(index) {
+	_dbGetIndex('animals', 'owner', 'readonly', function(store, index) {
 		var keyRange = IDBKeyRange.only(owner);
 		var request = index.openCursor(keyRange);
 		request .onerror = _dbErrorHandler;
@@ -286,4 +335,47 @@ function dbGetAnimals(owner, callback) {
 
 
 
-// CRUD Operations
+// Tries to add a new entry to table 'users', passing a result object
+// (see _dbRequestResult)
+// If the entry already exists, error.name == 'ConstraintError'
+function dbCreateUser(entry, callback) {
+	console.log('Creating user: ' + entry.name);
+
+	// TODO check correctness of entry
+
+	_dbGetStore('users', 'readwrite', function(store) {
+		var request = store.add(entry);
+		_dbRequestResult(request, callback);
+	});
+}
+
+
+
+// TODO explain
+function dbUpdateUser(username, updated_entry, callback) {
+	_dbGetIndex('users', 'username', 'readwrite', function(store, index) {
+		var request = index.get(username);
+		request.onerror = _dbErrorHandler;
+
+		request.onsuccess = function(event) {
+			var entry = event.target.result;
+
+			// Check which fields will be updated
+			var fields = ['password', 'name', 'photo', 'phone', 'email', 'address'];
+			fields.forEach(function(field) {
+				if(updated_entry[field] != undefined) {
+					entry[field] = updated_entry[field];
+				}
+			});
+
+			if(entry.is_admin) {
+				entry.address = undefined;
+			}
+
+			var request = store.put(entry);
+			_dbRequestResult(request, callback);
+		};
+	});
+}
+
+
