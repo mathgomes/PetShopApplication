@@ -139,16 +139,49 @@ function _dbPopulate(db) {
 		'readwrite');
 	var users = trans.objectStore('users');
 
-	var data = {
+	users.add({
 		is_admin: true,
 		username: 'admin',
 		password: 'admin',
 		name: 'Minhoca Gomes',
 		photo: 'images/perfil.jpg',
 		address: undefined
-	};
+	});
 
-	users.add(data);
+	animals = trans.objectStore('animals');
+
+	animals.add({
+		owner: 1,
+		name: 'frajola'
+	});
+
+	animals.add({
+		owner: 1,
+		name: 'piu piu'
+	});
+
+	animals.add({
+		owner: 1,
+		name: 'brutus'
+	});
+}
+
+
+
+// Connects to the DB_NAME database and invokes the callback,
+// passing the requested IDBIndex object as argument
+function _dbGetIndex(objStore, indexName, callback) {
+	var request = window.indexedDB.open(DB_NAME);
+	request.onerror = _dbErrorHandler;
+
+	request.onsuccess = function(event) {
+		var db = event.target.result;
+		var transaction = db.transaction(objStore)
+		var store = transaction.objectStore(objStore);
+		var index = store.index(indexName);
+
+		callback(index);
+	}
 }
 
 
@@ -162,16 +195,7 @@ var WRONG_PASS = 2;
 function dbUserLogin(username, password, callback) {
 	console.log('Login attempt: ' + username + ', ' + password);
 
-	var request = window.indexedDB.open(DB_NAME);
-	request.onerror = _dbErrorHandler;
-
-	request.onsuccess = function(event) {
-		// Get login index
-		var db = event.target.result;
-		var transaction = db.transaction("users")
-		var store = transaction.objectStore("users");
-		var index = store.index("username");
-
+	_dbGetIndex('users', 'username', function(index) {
 		// Attempt login
 		var request = index.get(username);
 		request.onerror = _dbErrorHandler;
@@ -196,5 +220,36 @@ function dbUserLogin(username, password, callback) {
 				data: entry
 			});
 		};
-	};
+	});
 }
+
+
+
+// Retrieves all animals from the specified owner, passing
+// an array of animals as argument to the callback
+function dbGetAnimals(owner, callback) {
+	console.log('Getting animals from user ID: ' + owner);
+
+	_dbGetIndex('animals', 'owner', function(index) {
+		var keyRange = IDBKeyRange.only(owner);
+		var request = index.openCursor(keyRange);
+		request .onerror = _dbErrorHandler;
+
+		var animals = [];
+		request.onsuccess = function(event) {
+			var cursor = event.target.result;
+			if(cursor) {
+				animals.push(cursor.value);
+				cursor.continue();
+			}
+			else {
+				// Finished
+				callback(animals);
+			}
+		};
+	});
+}
+
+
+
+// CRUD Operations
