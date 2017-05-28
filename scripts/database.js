@@ -160,8 +160,6 @@ function _dbCreateTables(db) {
 	var services  = newStore('services');
 	var timeslots = newStore('timeslots');
 	var shopping_carts = newStore('shopping_carts');
-	var product_sales  = newStore('product_sales');
-	var service_sales  = newStore('service_sales');
 
 	newIndex(users, 'username', true);
 	newIndex(users, 'email', true);
