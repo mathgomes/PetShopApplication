@@ -6,11 +6,18 @@
  *  dbInit()
  *  dbDelete()
  *
- *  dbUserLogin(user, pass, callback)
- *  dbGetAnimals(owner, callback)
+ *  _dbCreateRecord(record, store, checker, callback)
+ *  TODO _dbReadRecord(record_id, store, callback)
+ *  _dbReadFromIndex(key, store, index, callback)
+ *  TODO _dbUpdateRecord(record_id, new_record, store, updater, callback)
+ *  _dbUpdateFromIndex(key, new_record, store, index, updater, callback)
+ *  _dbDeleteRecord(record_id, store, callback)
  *
- *  dbCreateUser(entry, callback)
- *  dbUpdateUser(username, updated_entry, callback)
+ *  dbUserLogin(user, pass, callback)
+ *
+ *  CRUD callbacks are invoked with a result object as paremeter:
+ *  on success: {success: true,  error: undefined, data: (varies with function)}
+ *  on error:   {success: false, error: (string),  data: undefined}
  */
 
 /* TABLE LIST
@@ -62,20 +69,19 @@
  *   service: id from table 'services'
  *   animal:  id from table 'animals'
  *
- * shopping_carts:
+ * cart_items:
  *   id:        auto-generated key
  *   user:      id from table 'users'
- *   items:     array of objects { product, amount }
- *   * product: id from table 'products'
- *   * amount:  number
+ *   product: id from table 'products'
+ *   amount:  number
  */
 
-function _test_cbk(result) {
+function _test_callback(result) {
 	console.log('Test result callback');
 	console.log(result);
 }
 
-var _test_entry = {
+var _test_record = {
 	address: 'rua 5 de maio',
 	email: 'fulano@gmeio.com',
 	is_admin: false,
@@ -85,8 +91,11 @@ var _test_entry = {
 	username: 'fsilva',
 };
 
+
+
 var DB_NAME = 'petshop';
 var DB_VERSION = 1;
+
 
 
 if(!window.indexedDB) {
@@ -101,19 +110,18 @@ function _dbErrorHandler(event) {
 
 
 
-var _force_populate = true;
 function dbInit() {
 	var request = window.indexedDB.open(DB_NAME, DB_VERSION);
-	var should_populate = _force_populate;
-
 	request.onerror = _dbErrorHandler;
+
+	var should_populate = false;
 
 	request.onupgradeneeded = function(event) {
 		console.log('dbInit:onupgradeneeded');
 		var db = event.target.result;
 
 		should_populate = true;
-		_dbCreateTables(db);
+		_dbCreateStores(db);
 	};
 
 	request.onsuccess = function(event) {
@@ -140,8 +148,9 @@ function dbDelete() {
 
 
 
-// Called by onupgradeneeded. Create object stores and indices
-function _dbCreateTables(db) {
+// Called by dbInit:onupgradeneeded
+function _dbCreateStores(db) {
+	console.log('Creating stores');
 
 	// Shorthand functions
 	function newStore(name) {
@@ -152,27 +161,25 @@ function _dbCreateTables(db) {
 		store.createIndex(field, field, {unique: is_unique});
 	}
 
-	console.log('Creating tables');
+	var users      = newStore('users');
+	var animals    = newStore('animals');
+	var products   = newStore('products');
+	var services   = newStore('services');
+	var timeslots  = newStore('timeslots');
+	var cart_items = newStore('cartitems');
 
-	var users     = newStore('users');
-	var animals   = newStore('animals');
-	var products  = newStore('products');
-	var services  = newStore('services');
-	var timeslots = newStore('timeslots');
-	var shopping_carts = newStore('shopping_carts');
-
-	newIndex(users, 'username', true);
-	newIndex(users, 'email', true);
-	newIndex(animals, 'owner', false);
-	newIndex(products, 'name', false);
-	newIndex(services, 'name', false);
-	newIndex(timeslots, 'date', false);
-	newIndex(shopping_carts, 'user', true);
+	newIndex(users,      'username', true);
+	newIndex(users,      'email',    true);
+	newIndex(animals,    'owner',    false);
+	newIndex(products,   'name',     false);
+	newIndex(services,   'name',     false);
+	newIndex(timeslots,  'date',     false);
+	newIndex(cart_items, 'user',     false);
 }
 
 
 
-// Initialize database with data
+// Called by dbInit:onsuccess if dbInit:onupgradeneeded was also triggered
 function _dbPopulate(db) {
 	console.log('Populating database');
 
@@ -212,7 +219,6 @@ function _dbPopulate(db) {
 
 
 
-
 // Connects to the DB_NAME database and passes the
 // requested store as argument to the callback
 function _dbGetStore(objStore, mode, callback) {
@@ -231,10 +237,10 @@ function _dbGetStore(objStore, mode, callback) {
 
 
 // Connects to the DB_NAME database and passes the
-// requested store and index as argument to the callback
+// requested store and index as arguments to the callback
 function _dbGetIndex(objStore, indexName, mode, callback) {
 	_dbGetStore(objStore, mode, function(store) {
-		index = store.index(indexName);
+		var index = store.index(indexName);
 		callback(store, index);
 	});
 }
@@ -242,30 +248,162 @@ function _dbGetIndex(objStore, indexName, mode, callback) {
 
 
 // Sets callback functions for the request
-// The callback will receive a {success, error} object
-// On sucess -> {true, undefined}
-// On error  -> {false, (error name)}
 function _dbRequestResult(request, callback) {
 	request.onsuccess = function(event) {
 		callback({
 			success: true,
-			error: undefined
+			error: undefined,
+			data: undefined,
 		});
 	};
 
 	request.onerror = function(event) {
 		callback({
 			success: false,
-			error: event.target.error.name
+			error: event.target.error.name,
+			data: undefined,
 		});
 	};
 }
 
 
 
-// Returns a result object {success, error, data}
-// On success -> {true, undefined, (user record)}
-// On error   -> {false, 'LoginError', undefined}
+// Used by dbCreate functions
+function _dbEmptyChecker(record) {
+	return true;
+}
+
+
+
+// Tries to add a new record to the requested store,
+// Record already exists -> result.error = 'ConstraintError'
+// Record is invalid     -> result.error = 'InvalidRecordError'
+function _dbCreateRecord(record, store, checker, callback) {
+	console.log('Creating record:', record, 'into ' + store);
+
+	var is_valid = checker(record);
+
+	if(is_valid) {
+		_dbGetStore(store, 'readwrite', function(store) {
+			var request = store.add(record);
+			_dbRequestResult(request, callback);
+		});
+	}
+	else {
+		console.log('dbCreateRecord: invalid record');
+		callback({
+			success: false,
+			error: 'InvalidRecordError',
+			data: undefined,
+		});
+	}
+}
+
+
+
+function _dbReadRecord(record_id, store, callback) {
+	console.log('Reading record: ', record_id, 'from ' + store);
+
+	// TODO fix
+	_dbGetStore(store, 'readonly', function(store) {
+		var request = store.get(record_id);
+		_dbRequestResult(request, callback);
+	});
+}
+
+
+
+// TODO explain (result.data)
+function _dbReadFromIndex(key, store, index, callback) {
+	console.log('Reading records with key: ', key, 'from ' + index + ':' + store);
+
+	_dbGetIndex(store, index, 'readonly', function(store, index) {
+		var key_range = IDBKeyRange.only(key);
+		var request = index.openCursor(key_range);
+		request.onerror = _dbErrorHandler;
+
+		var result = {
+			success: true,
+			error: undefined,
+			data: [],
+		};
+
+		request.onsuccess = function(event) {
+			var cursor = event.target.result;
+			if(cursor) {
+				result.data.push(cursor.value);
+				cursor.continue();
+			}
+			else {
+				callback(result);
+			}
+		};
+	});
+}
+
+
+
+// Used by dbUpdate functions
+function _dbEmptyUpdater(old_record, new_record) {
+	return new_record;
+}
+
+
+
+// TODO
+function _dbUpdateRecord(record_id, new_record, store, updater, callback) {
+	console.log('Updating record:', record_id, 'from ' + store);
+
+	_dbGetStore(store, 'readwrite', function(store) {
+		var request = store.get(record_id);
+		request.onerror = _dbErrorHandler;
+
+		request.onsuccess = function(event) {
+			var old_record = event.target.result;
+
+			var record = updater(old_record, new_record);
+
+			var request = store.put(record);
+			_dbRequestResult(request, callback);
+		}
+	});
+}
+
+
+// TODO explain (updater)
+function _dbUpdateFromIndex(key, new_record, store, index, updater, callback) {
+	console.log('Updating record with:', key, 'from ' + index + ':' + store);
+
+	_dbGetIndex(store, index, 'readwrite', function(store, index) {
+		var request = index.get(key);
+		request.onerror = _dbErrorHandler;
+
+		request.onsuccess = function(event) {
+			var old_record = event.target.result;
+
+			var record = updater(old_record, new_record);
+
+			var request = store.put(record);
+			_dbRequestResult(request, callback);
+		};
+	});
+}
+
+
+
+function _dbDeleteRecord(record_id, store, callback) {
+	console.log('Deleting record:', record_id, 'from ' + store);
+
+	_dbGetStore(store, 'readwrite', function(store) {
+		var request = store.delete(record_id);
+		_dbRequestResult(request, callback);
+	});
+}
+
+
+
+// On success: result.data = (user object)
+// On error:   result.error = 'LoginError'
 function dbUserLogin(username, password, callback) {
 	console.log('Login attempt: ' + username + ', ' + password);
 
@@ -275,122 +413,79 @@ function dbUserLogin(username, password, callback) {
 		request.onerror = _dbErrorHandler;
 
 		request.onsuccess = function(event) {
-			var entry = event.target.result;
+			var record = event.target.result;
 
-			var success = true;
-			var error = undefined;
+			var result = {
+				success: true,
+				error: undefined,
+				data: record,
+			};
 
-			// Invalid username
-			if(entry == undefined) {
-				error = 'LoginError';
+			// Invalid username or wrong password
+			if(record == undefined || record.password != password) {
+				result = {
+					success: false,
+					error: 'LoginError',
+					data: undefined,
+				};
 			}
-			// Wrong password
-			else if(entry.password != password) {
-				error = 'LoginError';
-				entry = undefined;
-			}
 
-			callback({
-				success: success,
-				error: error,
-				data: entry
-			});
+			callback(result);
 		};
 	});
 }
 
 
 
-// Retrieves all animals from the specified owner, passing
-// an array of animals as argument to the callback
-function dbGetAnimals(owner, callback) {
-	console.log('Getting animals from user ID: ' + owner);
-
-	_dbGetIndex('animals', 'owner', 'readonly', function(store, index) {
-		var keyRange = IDBKeyRange.only(owner);
-		var request = index.openCursor(keyRange);
-		request .onerror = _dbErrorHandler;
-
-		// TODO standardize callback parameter to {success, error, data}
-		var animals = [];
-		request.onsuccess = function(event) {
-			var cursor = event.target.result;
-			if(cursor) {
-				animals.push(cursor.value);
-				cursor.continue();
-			}
-			else {
-				// Finished
-				callback(animals);
-			}
-		};
-	});
+// Wrappers for _dbCreateRecord
+function dbCreateUser(record, callback) {
+	_dbCreateRecord(record, 'users', _dbEmptyChecker, callback);
 }
 
-
-function _dbEmptyChecker(entry) {
-	return true;
+function dbCreateAnimal(record, callback) {
+	_dbCreateRecord(record, 'animals', _dbEmptyChecker, callback);
 }
 
-// Tries to add a new entry to table 'users', passing a result object
-// (see _dbRequestResult)
-// If the entry already exists, error.name == 'ConstraintError'
-function dbCreateUser(entry, callback) {
-/*	console.log('Creating user: ' + entry.name);
-
-	// TODO check correctness of entry
-
-	_dbGetStore('users', 'readwrite', function(store) {
-		var request = store.add(entry);
-		_dbRequestResult(request, callback);
-	});
-*/
-	_dbCreateEntry(entry, 'users', _dbEmptyChecker, callback);
+function dbCreateProduct(record, callback) {
+	_dbCreateRecord(record, 'products', _dbEmptyChecker, callback);
 }
 
-function _dbCreateEntry(entry, store, checker, callback) {
-	console.log('Creating entry:', entry, 'in store ' + store);
+function dbCreateService(record, callback) {
+	_dbCreateRecord(record, 'services', _dbEmptyChecker, callback);
+}
 
-	var is_correct = checker(entry);
+function dbCreateTimeslot(record, callback) {
+	_dbCreateRecord(record, 'timeslots', _dbEmptyChecker, callback);
+}
 
-	if(is_correct) {
-		_dbGetStore(store, 'readwrite', function(store) {
-			var request = store.add(entry);
-			_dbRequestResult(request, callback);
-		});
-	}
-	else {
-		console.log('Checker: invalid entry');
-	}
+function _dbCreateCartItem(record, callback) {
+	_dbCreateRecord(record, 'cartitems', _dbEmptyChecker, callback);
 }
 
 
 
-// TODO explain
-function dbUpdateUser(username, updated_entry, callback) {
-	_dbGetIndex('users', 'username', 'readwrite', function(store, index) {
-		var request = index.get(username);
-		request.onerror = _dbErrorHandler;
-
-		request.onsuccess = function(event) {
-			var entry = event.target.result;
-
-			// Check which fields will be updated
-			var fields = ['password', 'name', 'photo', 'phone', 'email', 'address'];
-			fields.forEach(function(field) {
-				if(updated_entry[field] != undefined) {
-					entry[field] = updated_entry[field];
-				}
-			});
-
-			if(entry.is_admin) {
-				entry.address = undefined;
-			}
-
-			var request = store.put(entry);
-			_dbRequestResult(request, callback);
-		};
-	});
+// Wrappers for _dbDeleteRecord
+function dbDeleteUser(id, callback) {
+	_dbDeleteRecord(id, 'users', callback);
 }
 
+function dbDeleteAnimal(id, callback) {
+	_dbDeleteRecord(id, 'animals', callback);
+}
+
+function dbDeleteProduct(id, callback) {
+	_dbDeleteRecord(id, 'products', callback);
+}
+
+function dbDeleteService(id, callback) {
+	_dbDeleteRecord(id, 'services', callback);
+}
+
+function dbDeleteTimeSlot(id, callback) {
+	_dbDeleteRecord(id, 'timeslots', callback);
+}
+
+function dbDeleteCartItem(id, callback) {
+	_dbDeleteRecord(id, 'cartitems', callback);
+}
 
