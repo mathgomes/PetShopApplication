@@ -17,7 +17,7 @@
  *
  *  CRUD callbacks are invoked with a result object as paremeter:
  *  on success: {success: true,  error: undefined, data: (varies with function)}
- *  on error:   {success: false, error: (string),  data: undefined}
+ *  on error:   {success: false, error: (error name),  data: undefined}
  */
 
 /* TABLE LIST
@@ -104,6 +104,7 @@ if(!window.indexedDB) {
 
 
 
+// Meant for _dbGetIndex, _dbGetStore etc
 function _dbErrorHandler(event) {
 	console.log('Database error: ' + event.target.errorCode);
 }
@@ -248,12 +249,13 @@ function _dbGetIndex(objStore, indexName, mode, callback) {
 
 
 // Sets callback functions for the request
+// Meant for record CRUD functions
 function _dbRequestResult(request, callback) {
 	request.onsuccess = function(event) {
 		callback({
 			success: true,
 			error: undefined,
-			data: undefined,
+			data: event.target.result,
 		});
 	};
 
@@ -304,7 +306,6 @@ function _dbCreateRecord(record, store, checker, callback) {
 function _dbReadRecord(record_id, store, callback) {
 	console.log('Reading record: ', record_id, 'from ' + store);
 
-	// TODO fix
 	_dbGetStore(store, 'readonly', function(store) {
 		var request = store.get(record_id);
 		_dbRequestResult(request, callback);
@@ -320,7 +321,6 @@ function _dbReadFromIndex(key, store, index, callback) {
 	_dbGetIndex(store, index, 'readonly', function(store, index) {
 		var key_range = IDBKeyRange.only(key);
 		var request = index.openCursor(key_range);
-		request.onerror = _dbErrorHandler;
 
 		var result = {
 			success: true,
@@ -328,6 +328,7 @@ function _dbReadFromIndex(key, store, index, callback) {
 			data: [],
 		};
 
+		_dbRequestResult(request, callback);
 		request.onsuccess = function(event) {
 			var cursor = event.target.result;
 			if(cursor) {
@@ -350,17 +351,17 @@ function _dbEmptyUpdater(old_record, new_record) {
 
 
 
-// TODO
+// updater is a function that takes the old and new records,
+// and returns a valid record that can be added to the store
 function _dbUpdateRecord(record_id, new_record, store, updater, callback) {
 	console.log('Updating record:', record_id, 'from ' + store);
 
 	_dbGetStore(store, 'readwrite', function(store) {
 		var request = store.get(record_id);
-		request.onerror = _dbErrorHandler;
 
+		_dbRequestResult(request, callback);
 		request.onsuccess = function(event) {
 			var old_record = event.target.result;
-
 			var record = updater(old_record, new_record);
 
 			var request = store.put(record);
@@ -370,17 +371,18 @@ function _dbUpdateRecord(record_id, new_record, store, updater, callback) {
 }
 
 
-// TODO explain (updater)
+
+// updater is a function that takes the old and new records,
+// and returns a valid record that can be added to the store
 function _dbUpdateFromIndex(key, new_record, store, index, updater, callback) {
 	console.log('Updating record with:', key, 'from ' + index + ':' + store);
 
 	_dbGetIndex(store, index, 'readwrite', function(store, index) {
 		var request = index.get(key);
-		request.onerror = _dbErrorHandler;
 
+		_dbRequestResult(request, callback);
 		request.onsuccess = function(event) {
 			var old_record = event.target.result;
-
 			var record = updater(old_record, new_record);
 
 			var request = store.put(record);
@@ -402,6 +404,7 @@ function _dbDeleteRecord(record_id, store, callback) {
 
 
 
+// TODO refactor
 // On success: result.data = (user object)
 // On error:   result.error = 'LoginError'
 function dbUserLogin(username, password, callback) {
