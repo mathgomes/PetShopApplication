@@ -352,7 +352,7 @@ section.perfil_info *
 
 
 
-.store_search input[type=text]
+/*.store_search input[type=text]
 {
 	width: auto;
 	
@@ -365,9 +365,9 @@ section.perfil_info *
 
 .store_items article
 {
-	/* TODO: fazer o nro de itens por linha mudar
+	 TODO: fazer o nro de itens por linha mudar
 	 * conforme redimensiona a janela
-	 */
+	 
 
 	display: inline-block;
 	width: calc(25% - 10px);
@@ -378,7 +378,11 @@ section.perfil_info *
 {
 	width: 100%;
 }
-
+*/
+.item {
+	display: inline-block;
+	margin: 2px;
+}
 .paginas
 {
 	text-align: center;
@@ -400,10 +404,8 @@ section.perfil_info *
 
 .sectionImagens
 {
+	display: inline-block;
 	width: 70%;
-	height: 70%;
-	margin-top: -500px;
-	margin-left: 250px;
 	
 }
 
