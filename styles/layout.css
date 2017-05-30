@@ -30,7 +30,7 @@ p
 	line-height: 150%;
 }
 
-/*h1 { font-size: 2em; }
+h1 { font-size: 2em; }
 h2 { font-size: 1.5em; }
 h3 { font-size: 1.17em; }
 h4 { font-size: 1.12em; }
@@ -39,9 +39,9 @@ h6 { font-size: .75em; }
 
 h1, h2, h3, h4, h5, h6
 {
-	font-family: Pacifico, "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-weight: lighter;
-}*/
+}
 
 a:link, a:visited
 {
@@ -144,49 +144,6 @@ div.nav.nav-pills{
 	height: 2px;
 }
 
-/*.navigation_bar *
-{
-	display: inline-block;
-}
-
-.navigation_bar h3
-{
-	margin-left: 10px;
-}
-
-.navigation_bar li
-{
-	width: 120px;
-	height: 20px;
-	margin: 0 10px 0 0;
-	border: 1px solid #CDE0E4;
-	text-align: center;
-
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	border-radius: 5px;
-
-	-moz-box-shadow: 0 5px 9px #66888E;
-	-webkit-box-shadow: 0 5px 9px #66888E;
-	box-shadow: 0 5px 9px #66888E;
-
-	background: #73D873;
-	background-image: -moz-linear-gradient(#FFFFFF,#73D873);
-	background-image: -webkit-linear-gradient(#FFFFFF,#73D873);
-}
-
-.navigation_bar li:hover
-{
-	background: #FFFFFF;
-	background-image: -moz-linear-gradient(#FFFFFF, #E8F4F6);
-	background-image: -webkit-linear-gradient(#FFFFFF, #E8F4F6);
-}
-
-.navigation_bar li a
-{
-	color: #2C6069;
-	font-weight: bold;
-}*/
 
 table
 {
@@ -356,14 +313,14 @@ section.perfil_info *
 {
 	width: auto;
 	
-}
+}*/
 
 .store_items
 {
-	max-width: 70%;
+	padding-top: 20px;
 }
 
-.store_items article
+/*.store_items article
 {
 	 TODO: fazer o nro de itens por linha mudar
 	 * conforme redimensiona a janela
@@ -381,7 +338,10 @@ section.perfil_info *
 */
 .item {
 	display: inline-block;
-	margin: 2px;
+	margin-top: 5px;
+}
+.item img{
+	box-shadow: 1px 1px 10px 2px black;
 }
 .paginas
 {
