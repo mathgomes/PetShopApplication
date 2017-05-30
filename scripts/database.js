@@ -6,12 +6,12 @@
  *  dbInit()
  *  dbDelete()
  *
- *  _dbCreateRecord(record, store, checker, callback)
- *  TODO _dbReadRecord(record_id, store, callback)
- *  _dbReadFromIndex(key, store, index, callback)
- *  TODO _dbUpdateRecord(record_id, new_record, store, updater, callback)
- *  _dbUpdateFromIndex(key, new_record, store, index, updater, callback)
- *  _dbDeleteRecord(record_id, store, callback)
+ *  dbCreateRecord(record, store, callback)
+ *  dbReadRecord(record_id, store, callback)
+ *  dbReadFromIndex(key, store, index, callback)
+ *  dbUpdateRecord(record_id, new_record, store, callback)
+ *  dbUpdateFromIndex(key, new_record, store, index, callback)
+ *  dbDeleteRecord(record_id, store, callback)
  *
  *  dbUserLogin(user, pass, callback)
  *
@@ -51,6 +51,8 @@
  *   stock:        number
  *   sold_amount:  number
  *   total_income: number
+ *   type:         'food', 'toy', 'medicine', 'accessory' or 'other'
+ *   animal:       'cat', 'dog', 'bird' or 'other'
  *
  * services:
  *   id:           auto-generated key
@@ -169,13 +171,17 @@ function _dbCreateStores(db) {
 	var timeslots  = newStore('timeslots');
 	var cart_items = newStore('cartitems');
 
-	newIndex(users,      'username', true);
-	newIndex(users,      'email',    true);
-	newIndex(animals,    'owner',    false);
-	newIndex(products,   'name',     false);
-	newIndex(services,   'name',     false);
-	newIndex(timeslots,  'date',     false);
-	newIndex(cart_items, 'user',     false);
+	newIndex(users, 'username', true);
+	newIndex(users, 'email', true);
+	newIndex(animals, 'owner', false);
+
+	newIndex(products, 'name', false);
+	newIndex(products, 'type', false);
+	newIndex(products, 'animal', false);
+
+	newIndex(services, 'name', false);
+	newIndex(timeslots, 'date', false);
+	newIndex(cart_items, 'user', false);
 }
 
 
@@ -204,16 +210,19 @@ function _dbPopulate(db) {
 	// Arrumar depois: nao tem todos os campos necessarios
 	animals.add({
 		owner: 1,
+		breed: 1,
 		name: 'frajola'
 	});
 
 	animals.add({
-		owner: 1,
+		owner: 2,
+		breed: 1,
 		name: 'piu piu'
 	});
 
 	animals.add({
 		owner: 1,
+		breed: 2,
 		name: 'brutus'
 	});
 }
@@ -314,13 +323,11 @@ function _dbReadRecord(record_id, store, callback) {
 
 
 
-// TODO explain (result.data)
-function _dbReadFromIndex(key, store, index, callback) {
-	console.log('Reading records with key: ', key, 'from ' + index + ':' + store);
-
+// Read using an index and a key range
+// result.data == (array of records)
+function _dbReadWithKeyRange(keyRange, store, index, callback) {
 	_dbGetIndex(store, index, 'readonly', function(store, index) {
-		var key_range = IDBKeyRange.only(key);
-		var request = index.openCursor(key_range);
+		var request = index.openCursor(keyRange);
 
 		var result = {
 			success: true,
@@ -332,7 +339,9 @@ function _dbReadFromIndex(key, store, index, callback) {
 		request.onsuccess = function(event) {
 			var cursor = event.target.result;
 			if(cursor) {
-				result.data.push(cursor.value);
+				if(_dbKeyFilterOk(index.keyPath, keyRange, cursor.value)) {
+					result.data.push(cursor.value);
+				}
 				cursor.continue();
 			}
 			else {
@@ -340,6 +349,17 @@ function _dbReadFromIndex(key, store, index, callback) {
 			}
 		};
 	});
+}
+
+
+
+// Read all records with the specified key
+// result.data == (array of records)
+function _dbReadFromIndex(key, store, index, callback) {
+	console.log('Reading records with key: ', key, 'from ' + index + ':' + store);
+
+	var keyRange = IDBKeyRange.only(key);
+	_dbReadWithKeyPath(keyRange, store, index, callback);
 }
 
 
@@ -403,92 +423,74 @@ function _dbDeleteRecord(record_id, store, callback) {
 }
 
 
+// Wrappers
+function dbCreateRecord(record, store, callback) {
+	_dbCreateRecord(record, store, _dbEmptyChecker, callback);
+}
 
-// TODO refactor
+function dbReadRecord(record_id, store, callback) {
+	_dbReadRecord(record_id, store, callback);
+}
+
+function dbReadFromIndex(key, store, index, callback) {
+	_dbReadFromIndex(key, store, index, callback);
+}
+
+function dbUpdateRecord(record_id, new_record, store, callback) {
+	_dbUpdateRecord(record_id, new_record, store, _dbEmptyUpdater, callback);
+}
+
+function dbUpdateFromIndex(key, new_record, store, index, callback) {
+	_dbUpdateFromIndex(key, new_record, store, index, _dbEmptyUpdater, callback);
+}
+
+function dbDeleteRecord(record_id, store, callback) {
+	_dbDeleteRecord(record_id, store, callback);
+}
+
+
 // On success: result.data = (user object)
 // On error:   result.error = 'LoginError'
 function dbUserLogin(username, password, callback) {
 	console.log('Login attempt: ' + username + ', ' + password);
 
-	_dbGetIndex('users', 'username', 'readonly', function(store, index) {
-		// Attempt login
-		var request = index.get(username);
-		request.onerror = _dbErrorHandler;
-
-		request.onsuccess = function(event) {
-			var record = event.target.result;
-
-			var result = {
-				success: true,
-				error: undefined,
-				data: record,
-			};
-
-			// Invalid username or wrong password
-			if(record == undefined || record.password != password) {
-				result = {
-					success: false,
-					error: 'LoginError',
-					data: undefined,
-				};
-			}
-
-			callback(result);
+	_dbReadFromIndex(username, 'users', 'username', function(result) {
+		var login_error = {
+			success: false,
+			error: 'LoginError',
+			data: undefined
 		};
+
+		if(result.success == false || result.data.password != password) {
+			callback(login_error);
+		}
+		else {
+			callback(result);
+		}
 	});
 }
 
 
-
-// Wrappers for _dbCreateRecord
-function dbCreateUser(record, callback) {
-	_dbCreateRecord(record, 'users', _dbEmptyChecker, callback);
+// Check if all elements of <contained> can be found in <container>
+_containsAll(container, contained) {
+	contained.every( function(e) {
+		return (container.indexOf(e) != -1);
+	});
 }
 
-function dbCreateAnimal(record, callback) {
-	_dbCreateRecord(record, 'animals', _dbEmptyChecker, callback);
+function dbShopSearch(types, animals, sorting, callback) {
+	var _all_types = ['food', 'toy', 'medicine', 'accessory', 'other'];
+	var _all_animals = ['cat', 'dog', 'bird', 'other'];
+
+	var search_all_types = false;
+	var search_all_animals = false;
+
+	if(types.length == 0 || _containsAll(types, _all_types)) {
+		search_all_types = true;
+	}
+
+	if(animals.length == 0 || _containsAll(animals, _all_animals)) {
+		search_all_animals = true;
+	}
+	// TODO
 }
-
-function dbCreateProduct(record, callback) {
-	_dbCreateRecord(record, 'products', _dbEmptyChecker, callback);
-}
-
-function dbCreateService(record, callback) {
-	_dbCreateRecord(record, 'services', _dbEmptyChecker, callback);
-}
-
-function dbCreateTimeslot(record, callback) {
-	_dbCreateRecord(record, 'timeslots', _dbEmptyChecker, callback);
-}
-
-function _dbCreateCartItem(record, callback) {
-	_dbCreateRecord(record, 'cartitems', _dbEmptyChecker, callback);
-}
-
-
-
-// Wrappers for _dbDeleteRecord
-function dbDeleteUser(id, callback) {
-	_dbDeleteRecord(id, 'users', callback);
-}
-
-function dbDeleteAnimal(id, callback) {
-	_dbDeleteRecord(id, 'animals', callback);
-}
-
-function dbDeleteProduct(id, callback) {
-	_dbDeleteRecord(id, 'products', callback);
-}
-
-function dbDeleteService(id, callback) {
-	_dbDeleteRecord(id, 'services', callback);
-}
-
-function dbDeleteTimeSlot(id, callback) {
-	_dbDeleteRecord(id, 'timeslots', callback);
-}
-
-function dbDeleteCartItem(id, callback) {
-	_dbDeleteRecord(id, 'cartitems', callback);
-}
-
