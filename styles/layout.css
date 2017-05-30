@@ -350,15 +350,12 @@ section.perfil_info *
 
 /* loja */
 
-.store_search
-{
-	max-width: 25%;
-}
+
 
 .store_search input[type=text]
 {
 	width: auto;
-	max-width: 100%;
+	
 }
 
 .store_items
@@ -401,6 +398,36 @@ section.perfil_info *
 	text-align:left;
 }
 
+.sectionImagens
+{
+	width: 70%;
+	height: 70%;
+	margin-top: -500px;
+	margin-left: 250px;
+	
+}
+
+.sectionImagens article {
+	
+	display: inline-block;
+	text-align: center;
+	
+	
+	/*padding-left: 200px;*/
+	
+}
+
+section.sectionImagens img {
+	
+	
+	width: 200px;
+	height:200px;
+	box-shadow: 1px 1px 10px 2px black;
+	/*margin-left: 100px;
+	
+	margin-top: 50px;*/
+	margin: 20px;
+}
 /* carrinho */
 
 
