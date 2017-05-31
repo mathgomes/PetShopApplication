@@ -25,6 +25,11 @@
  *  on error:   {success: false, error: (error name),  data: undefined}
  */
 
+
+/* image object: { type, data }
+ * { type: 'url',  data: (image url) }
+ * { type: 'file', data (FileReader result) }
+
 /* TABLE LIST
  * users:
  *   id:       auto-generated key
@@ -32,7 +37,7 @@
  *   username: string, unique
  *   password: string
  *   name:     string
- *   photo:    string (image URL)
+ *   photo:    (image object)
  *   phone:    string
  *   email:    string, unique
  *   address:
@@ -43,14 +48,14 @@
  *   id:    auto-generated key
  *   owner: id from table 'users'
  *   name:  string
- *   photo: string (image URL)
+ *   photo: (image object)
  *   breed: string
  *   age:   number
  *
  * products:
  *   id:           auto-generated key
  *   name:         string
- *   photo:        string (image URL)
+ *   photo:        (image object)
  *   description:  string
  *   price:        number
  *   stock:        number
@@ -62,7 +67,7 @@
  * services:
  *   id:           auto-generated key
  *   name:         string
- *   photo:        string (image URL)
+ *   photo:        (image object)
  *   description:  string
  *   price:        number
  *   sold_amount:  number
@@ -205,8 +210,8 @@ function _dbPopulate(db) {
 		is_admin: true,
 		username: 'admin',
 		password: 'admin',
-		name: 'Minhoca Gomes',
-		photo: 'images/perfil.jpg',
+		name: 'Matheus Gomes',
+		photo: {type: 'url', data: 'images/perfil.jpg'},
 		email: 'minhoca@petshop.com',
 		address: undefined,
 	});
@@ -216,30 +221,19 @@ function _dbPopulate(db) {
 		username: 'hdzin',
 		password: '1234',
 		name: 'Hugo Dzin',
-		photo: 'images/perfil.jpg',
-		email: 'hugo@dzin.com',
+		photo: {type: 'url', data: 'images/perfil.jpg'},
+		email: 'hugo@cliente.com',
 		address: 'São Carlos',
 	});
 
-	animals = trans.objectStore('animals');
-
-	// Arrumar depois: nao tem todos os campos necessarios
-	animals.add({
-		owner: 1,
-		breed: 1,
-		name: 'frajola'
-	});
-
-	animals.add({
-		owner: 2,
-		breed: 1,
-		name: 'piu piu'
-	});
-
-	animals.add({
-		owner: 1,
-		breed: 2,
-		name: 'brutus'
+	users.add({
+		is_admin: false,
+		username: 'rsilva',
+		password: '4321',
+		name: 'Rogiel Silva',
+		photo: {type: 'url', data: 'images/perfil.jpg'},
+		email: 'rogiel@cliente.com',
+		address: 'São Carlos',
 	});
 }
 

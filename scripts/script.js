@@ -5,34 +5,45 @@
  * Rogiel dos Santos Silva, 8061793
  */
 
-$(document).ready(function() {
-	dbInit();
 
+function setLoginAction() {
 	$('input#login').click(function() {
 		var username = $('input#username').val();
 		var password = $('input#password').val();
 
-		console.log(username);
-		console.log(password);
-
 		dbUserLogin(username, password, function(result) {
 			console.log(result);
 			if(result.success) {
+				var page;
+				var navbar;
 				if(result.data[0].is_admin) {
-					$("section#center_page").load("Admin/funcoesAdmin.html");
-					$("#nav_wrapper").load("Admin/navbar.html");
+					page = 'Admin/funcoesAdmin.html';
+					navbar = 'Admin/navbar.html';
 				}
 				else {
-					$("section#center_page").load("Cliente/funcoesCliente.html");
-					$("#nav_wrapper").load("Cliente/navbar.html");
+					page = 'Cliente/funcoesCliente.html';
+					navbar = 'Cliente/navbar.html';
 				}
+				$('section#center_page').load(page);
+				$('#nav_wrapper').load(navbar, function() {
+					$('#username').html(username);
+				});
 			}
 			else {
-				// Escrever na pagina que o login deu errado
+				// TODO Escrever na pagina que o login deu errado
 			}
 		});
 	});
+}
 
+
+
+$(document).ready(function() {
+	dbInit();
+
+	setLoginAction();
+
+	$('a#
 	//Customer
 	$(document).on("click", "a#perfil", function() {
 		$("section#center_page").load("Cliente/perfil.html");
