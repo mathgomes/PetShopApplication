@@ -461,7 +461,7 @@ function dbUserLogin(username, password, callback) {
 			data: undefined
 		};
 
-		if(result.success == false || result.data[0] == undefined) {
+		if(result.success == false || result.data[0].password != password) {
 			callback(login_error);
 		}
 		else {
