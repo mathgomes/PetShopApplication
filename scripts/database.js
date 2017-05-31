@@ -1,4 +1,10 @@
-// TODO botar os nomes que nem os outros arquivos
+/*
+ File: database.js
+ Authors:
+ Hugo Moraes Dzin, 8532186
+ Matheus Gomes da Silva Horta, 8532321
+ Rogiel dos Santos Silva, 8061793
+ */
 
 // Functions and variables that start with _ are PRIVATE to this file
 
