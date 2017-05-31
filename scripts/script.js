@@ -42,8 +42,6 @@ $(document).ready(function() {
 	dbInit();
 
 	setLoginAction();
-
-	$('a#
 	//Customer
 	$(document).on("click", "a#perfil", function() {
 		$("section#center_page").load("Cliente/perfil.html");
