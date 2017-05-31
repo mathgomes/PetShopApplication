@@ -1,9 +1,8 @@
-/*
- File: database.js
- Authors:
- Hugo Moraes Dzin, 8532186
- Matheus Gomes da Silva Horta, 8532321
- Rogiel dos Santos Silva, 8061793
+/* File: script.js
+ * Authors:
+ * Hugo Moraes Dzin, 8532186
+ * Matheus Gomes da Silva Horta, 8532321
+ * Rogiel dos Santos Silva, 8061793
  */
 
 // Functions and variables that start with _ are PRIVATE to this file
@@ -199,9 +198,10 @@ function _dbPopulate(db) {
 	var trans = db.transaction(
 		['users', 'animals', 'products', 'services', 'timeslots'],
 		'readwrite');
+
 	var users = trans.objectStore('users');
 
-	var req = users.add({
+	users.add({
 		is_admin: true,
 		username: 'admin',
 		password: 'admin',
@@ -209,6 +209,16 @@ function _dbPopulate(db) {
 		photo: 'images/perfil.jpg',
 		email: 'minhoca@petshop.com',
 		address: undefined,
+	});
+
+	users.add({
+		is_admin: false,
+		username: 'hdzin',
+		password: '1234',
+		name: 'Hugo Dzin',
+		photo: 'images/perfil.jpg',
+		email: 'hugo@dzin.com',
+		address: 'São Carlos',
 	});
 
 	animals = trans.objectStore('animals');
@@ -329,11 +339,14 @@ function _dbReadRecord(record_id, store, callback) {
 
 
 
-// Read using an index and a key range
+// Read all records with the specified key
 // result.data == (array of records)
-function _dbReadWithKeyRange(keyRange, store, index, callback) {
+function _dbReadFromIndex(key, store, index, callback) {
+	console.log('Reading records with key: ', key, 'from ' + index + ':' + store);
+
 	_dbGetIndex(store, index, 'readonly', function(store, index) {
-		var request = index.openCursor(keyRange);
+		var key_range = IDBKeyRange.only(key);
+		var request = index.openCursor(key_range);
 
 		var result = {
 			success: true,
@@ -345,9 +358,7 @@ function _dbReadWithKeyRange(keyRange, store, index, callback) {
 		request.onsuccess = function(event) {
 			var cursor = event.target.result;
 			if(cursor) {
-				if(_dbKeyFilterOk(index.keyPath, keyRange, cursor.value)) {
-					result.data.push(cursor.value);
-				}
+				result.data.push(cursor.value);
 				cursor.continue();
 			}
 			else {
@@ -355,17 +366,6 @@ function _dbReadWithKeyRange(keyRange, store, index, callback) {
 			}
 		};
 	});
-}
-
-
-
-// Read all records with the specified key
-// result.data == (array of records)
-function _dbReadFromIndex(key, store, index, callback) {
-	console.log('Reading records with key: ', key, 'from ' + index + ':' + store);
-
-	var keyRange = IDBKeyRange.only(key);
-	_dbReadWithKeyPath(keyRange, store, index, callback);
 }
 
 
@@ -467,7 +467,7 @@ function dbUserLogin(username, password, callback) {
 			data: undefined
 		};
 
-		if(result.success == false || result.data.password != password) {
+		if(result.success == false || result.data[0].password != password) {
 			callback(login_error);
 		}
 		else {
@@ -476,9 +476,8 @@ function dbUserLogin(username, password, callback) {
 	});
 }
 
-
 // Check if all elements of <contained> can be found in <container>
-_containsAll(container, contained) {
+function _containsAll(container, contained) {
 	contained.every( function(e) {
 		return (container.indexOf(e) != -1);
 	});

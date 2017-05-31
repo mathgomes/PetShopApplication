@@ -1,22 +1,39 @@
-/*
- File: script.js
- Authors:
- Hugo Moraes Dzin, 8532186
- Matheus Gomes da Silva Horta, 8532321
- Rogiel dos Santos Silva, 8061793
+/* File: script.js
+ * Authors:
+ * Hugo Moraes Dzin, 8532186
+ * Matheus Gomes da Silva Horta, 8532321
+ * Rogiel dos Santos Silva, 8061793
  */
 
-
 $(document).ready(function() {
+	dbInit();
 
-	//Client
-	$("input#login").click(function(){
-	 	$("section#center_page").load("Cliente/funcoesCliente.html");
-		$("#nav_wrapper").load("Cliente/navbar.html");
-	 });
+	$('input#login').click(function() {
+		var username = $('input#username').val();
+		var password = $('input#password').val();
 
+		console.log(username);
+		console.log(password);
 
+		dbUserLogin(username, password, function(result) {
+			console.log(result);
+			if(result.success) {
+				if(result.data[0].is_admin) {
+					$("section#center_page").load("Admin/funcoesAdmin.html");
+					$("#nav_wrapper").load("Admin/navbar.html");
+				}
+				else {
+					$("section#center_page").load("Cliente/funcoesCliente.html");
+					$("#nav_wrapper").load("Cliente/navbar.html");
+				}
+			}
+			else {
+				// Escrever na pagina que o login deu errado
+			}
+		});
+	});
 
+	//Customer
 	$(document).on("click", "a#perfil", function() {
 		$("section#center_page").load("Cliente/perfil.html");
 	});
@@ -52,16 +69,6 @@ $(document).ready(function() {
 
 
 	//Admin
-
-
-
-
-
-	/* $("input#login").click(function(){
-	 	$("section#center_page").load("Admin/funcoesAdmin.html");
-		$("#nav_wrapper").load("Admin/navbar.html");
-	 });*/
-
 
 	$(document).on("click", "a#perfilAdm", function() {
 		$("section#center_page").load("Admin/perfil.html");
