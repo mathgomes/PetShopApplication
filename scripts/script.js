@@ -68,11 +68,16 @@ function loadNavBar(user_data) {
 	$('#cNavProfile').click(function() {
 		loadPage('Cliente/perfil.html', loadCustomerProfile);
 	});
+
+	$('#cNavServices').click(function() {
+		loadPage('Cliente/horarioServico.html');
+	});
 }
 
 
 
 function loadCustomerProfile() {
+	// Load user data
 	dbReadRecord(loggedUserId(), 'users', function(result) {
 		var data = result.data;
 
@@ -88,6 +93,31 @@ function loadCustomerProfile() {
 
 		for(var id in fields) {
 			$(id).val(fields[id]);
+		}
+	});
+
+	// Picture update callback
+	$('#cProfileUpdatePhoto').click(function() {
+		var file = $('#cProfileFile').prop('files')[0];
+		if(file) {
+			var fr = new FileReader();
+			fr.onload = updateProfilePhoto;
+			fr.readAsDataURL(file);
+		}
+	});
+}
+
+
+
+// Reads the image from #cProfilePhoto and updates the
+// user record on the database
+function updateProfilePhoto(event) {
+	var new_photo = event.target.result;
+	$('#cProfilePhoto').attr('src', new_photo);
+	dbReadRecord(loggedUserId(), 'users', function(result) {
+		if(result.success) {
+			result.data.photo = new_photo;
+			dbUpdateRecord(loggedUserId(), result.data, 'users', _test_callback);
 		}
 	});
 }
@@ -113,7 +143,8 @@ $(document).ready(function() {
 	$(document).on("click", "a#loja", function() {
 		$("#indexCenterPage").load("Cliente/loja.html");
 	});
-	$(document).on("click", "a#servicos", function() {
+	$(document).on("click", "#cNavServices", function() {
+		console.log('oi');
 		$("#indexCenterPage").load("Cliente/horarioServico.html");
 	});
 
