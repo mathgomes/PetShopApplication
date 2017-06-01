@@ -5,6 +5,14 @@
  * Rogiel dos Santos Silva, 8061793
  */
 
+// For website testing
+function _go() {
+	$('#indexUsername').val('hdzin');
+	$('#indexPassword').val('1234');
+	$('#indexLoginButton').click();
+}
+
+
 
 function loggedUserId(user_id) {
 	if(user_id) {
@@ -18,9 +26,11 @@ function loggedUserId(user_id) {
 }
 
 
+
 function loadPage(page, callback) {
 	$('#indexCenterPage').load(page, callback);
 }
+
 
 
 
