@@ -445,6 +445,33 @@ function _dbDeleteRecord(record_id, store, callback) {
 
 
 
+// Wrappers
+function dbCreateRecord(record, store, callback) {
+	_dbCreateRecord(record, store, _dbEmptyChecker, callback);
+}
+
+function dbReadRecord(record_id, store, callback) {
+	_dbReadRecord(record_id, store, callback);
+}
+
+function dbReadFromIndex(key, store, index, callback) {
+	dbReadFromIndex(key, store, index, callback);
+}
+
+function dbUpdateRecord(record_id, new_record, store, callback) {
+	_dbUpdateRecord(record_id, new_record, store, _dbEmptyUpdater, callback);
+}
+
+function dbUpdateFromIndex(key, new_record, store, index, callback) {
+	_dbUpdateFromIndex(key, new_record, store, index, _dbEmptyUpdater, callback);
+}
+
+function dbDeleteRecord(record_id, store, callback) {
+	_dbDeleteRecord(record_id, store, callback)
+}
+
+
+
 // On success: result.data = (user object)
 // On error:   result.error = 'LoginError'
 function dbUserLogin(username, password, callback) {
