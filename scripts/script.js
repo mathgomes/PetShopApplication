@@ -7,9 +7,9 @@
 
 
 function setLoginAction() {
-	$('input#login').click(function() {
-		var username = $('input#username').val();
-		var password = $('input#password').val();
+	$('#indexLoginButton').click(function() {
+		var username = $('#indexUsername').val();
+		var password = $('#indexPassword').val();
 
 		dbUserLogin(username, password, function(result) {
 			console.log(result);
@@ -24,8 +24,8 @@ function setLoginAction() {
 					page = 'Cliente/funcoesCliente.html';
 					navbar = 'Cliente/navbar.html';
 				}
-				$('section#center_page').load(page);
-				$('#nav_wrapper').load(navbar, function() {
+				$('#indexCenterPage').load(page);
+				$('#indexNavWrapper').load(navbar, function() {
 					$('#username').html(username);
 				});
 			}
@@ -44,74 +44,74 @@ $(document).ready(function() {
 	setLoginAction();
 	//Customer
 	$(document).on("click", "a#perfil", function() {
-		$("section#center_page").load("Cliente/perfil.html");
+		$("#indexCenterPage").load("Cliente/perfil.html");
 	});
 
 
 	$(document).on("click", "a#animais", function() {
-		$("section#center_page").load("Cliente/situacaoAnimais.html");
+		$("#indexCenterPage").load("Cliente/situacaoAnimais.html");
 	});
 
 
 	$(document).on("click", "a#loja", function() {
-		$("section#center_page").load("Cliente/loja.html");
+		$("#indexCenterPage").load("Cliente/loja.html");
 	});
 	$(document).on("click", ".item img", function() {
-		$("section#center_page").load("Cliente/compraProduto.html");
+		$("#indexCenterPage").load("Cliente/compraProduto.html");
 	});
 	$(document).on("click", "#purchaseForm #confirm", function() {
-		$("section#center_page").load("Cliente/carrinho.html");
+		$("#indexCenterPage").load("Cliente/carrinho.html");
 	});
 	$(document).on("click", ".carrinho_opcoes #checkout", function() {
-		$("section#center_page").load("Cliente/checkout.html");
+		$("#indexCenterPage").load("Cliente/checkout.html");
 	});
 
 
 	$(document).on("click", "a#servicos", function() {
-		$("section#center_page").load("Cliente/horarioServico.html");
+		$("#indexCenterPage").load("Cliente/horarioServico.html");
 	});
 
 
 	$(document).on("click", "a#carrinho", function() {
-		$("section#center_page").load("Cliente/carrinho.html");
+		$("#indexCenterPage").load("Cliente/carrinho.html");
 	});
 
 
 	//Admin
 
 	$(document).on("click", "a#perfilAdm", function() {
-		$("section#center_page").load("Admin/perfil.html");
+		$("#indexCenterPage").load("Admin/perfil.html");
 	});
 
 
 	$(document).on("click", "a#cadastrarUsuario", function() {
-		$("section#center_page").load("Admin/cadastrarUsuario.html");
+		$("#indexCenterPage").load("Admin/cadastrarUsuario.html");
 	});
 
 
 	$(document).on("click", "a#buscarUsuario", function() {
-		$("section#center_page").load("Admin/buscarUsuario.html");
+		$("#indexCenterPage").load("Admin/buscarUsuario.html");
 	});
 
 
 	$(document).on("click", "a#cadastrarProduto", function() {
-		$("section#center_page").load("Admin/cadastrarProduto.html");
+		$("#indexCenterPage").load("Admin/cadastrarProduto.html");
 	});
 
 
 	$(document).on("click", "a#cadastrarServico", function() {
-		$("section#center_page").load("Admin/cadastrarServico.html");
+		$("#indexCenterPage").load("Admin/cadastrarServico.html");
 	});
 
 
 	$(document).on("click", "a#ganhos", function() {
-		$("section#center_page").load("Admin/estatisticas.html", function(data) {
+		$("#indexCenterPage").load("Admin/estatisticas.html", function(data) {
 			$('#example').DataTable();
 		});
 	});
 
 	$(document).on("click", "input#inputBuscaCliente", function() {
-		$("section#center_page").load("Admin/alteraExcluiUsuario.html");
+		$("#indexCenterPage").load("Admin/alteraExcluiUsuario.html");
 	});
 });
 

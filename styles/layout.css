@@ -1,6 +1,6 @@
 /*
 File: Layout CSS
-Authors: 
+Authors:
 	Hugo Moraes Dzin, 8532186
 	Matheus Gomes da Silva Horta, 8532321
 	Rogiel dos Santos Silva, 8061793
@@ -108,7 +108,7 @@ h1.logo
 }
 
 /* Conteudo */
-section#center_page
+#indexCenterPage
 {
 	min-height: 400px;
 	height: 80%;
@@ -312,7 +312,7 @@ section.perfil_info *
 /*.store_search input[type=text]
 {
 	width: auto;
-	
+
 }*/
 
 .store_items
@@ -324,7 +324,7 @@ section.perfil_info *
 {
 	 TODO: fazer o nro de itens por linha mudar
 	 * conforme redimensiona a janela
-	 
+
 
 	display: inline-block;
 	width: calc(25% - 10px);
@@ -366,27 +366,27 @@ section.perfil_info *
 {
 	display: inline-block;
 	width: 70%;
-	
+
 }
 
 .sectionImagens article {
-	
+
 	display: inline-block;
 	text-align: center;
-	
-	
+
+
 	/*padding-left: 200px;*/
-	
+
 }
 
 section.sectionImagens img {
-	
-	
+
+
 	width: 200px;
 	height:200px;
 	box-shadow: 1px 1px 10px 2px black;
 	/*margin-left: 100px;
-	
+
 	margin-top: 50px;*/
 	margin: 20px;
 }
@@ -615,7 +615,7 @@ section.cadastro_cliente input[type=text] ,section.cadastro_cliente input[type=t
 {
 	display: block;
 	width:100%;
-	
+
 }
 
 h1.clientPhrase {
