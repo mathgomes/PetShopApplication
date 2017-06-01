@@ -78,22 +78,32 @@ function loadNavBar(user_data) {
 
 function loadCustomerProfile() {
 	// Load user data
+	var fields = {
+		'name': '#cProfileName',
+		'email': '#cProfileEmail',
+		'address': '#cProfileAddress',
+		'phone': '#cProfilePhone',
+	};
+
 	dbReadRecord(loggedUserId(), 'users', function(result) {
 		var data = result.data;
 
 		$('#cTitle').html(data.name);
 		$('#cProfilePhoto').attr('src', data.photo);
 
-		var fields = {
-			'#cProfileName': data.name,
-			'#cProfileEmail': data.email,
-			'#cProfileAddress': data.address,
-			'#cProfilePhone': data.phone,
-		};
-
 		for(var id in fields) {
-			$(id).val(fields[id]);
+			$(fields[id]).val(data[id]);
 		}
+	});
+
+	// Profile update callback
+	$('#cProfileUpdate').click(function() {
+		dbReadRecord(loggedUserId(), 'users', function(result) {
+			for(var id in fields) {
+				result.data[id] = $(fields[id]).val();
+			}
+			dbUpdateRecord(loggedUserId(), result.data, 'users', _test_callback);
+		});
 	});
 
 	// Picture update callback
@@ -114,6 +124,7 @@ function loadCustomerProfile() {
 function updateProfilePhoto(event) {
 	var new_photo = event.target.result;
 	$('#cProfilePhoto').attr('src', new_photo);
+
 	dbReadRecord(loggedUserId(), 'users', function(result) {
 		if(result.success) {
 			result.data.photo = new_photo;
