@@ -26,9 +26,7 @@
  */
 
 
-/* image object: { type, data }
- * { type: 'url',  data: (image url) }
- * { type: 'file', data (FileReader result) }
+/* image object: normal URL or FileReader result (reader.readAsDataURL) */
 
 /* TABLE LIST
  * users:
@@ -211,7 +209,8 @@ function _dbPopulate(db) {
 		username: 'admin',
 		password: 'admin',
 		name: 'Matheus Gomes',
-		photo: {type: 'url', data: 'images/perfil.jpg'},
+		photo: 'images/perfil.jpg',
+		phone: '(99) 1111-1111',
 		email: 'minhoca@petshop.com',
 		address: undefined,
 	});
@@ -221,7 +220,8 @@ function _dbPopulate(db) {
 		username: 'hdzin',
 		password: '1234',
 		name: 'Hugo Dzin',
-		photo: {type: 'url', data: 'images/perfil.jpg'},
+		photo: 'images/pets/canary.jpg',
+		phone: '(99) 2222-2222',
 		email: 'hugo@cliente.com',
 		address: 'São Carlos',
 	});
@@ -231,7 +231,8 @@ function _dbPopulate(db) {
 		username: 'rsilva',
 		password: '4321',
 		name: 'Rogiel Silva',
-		photo: {type: 'url', data: 'images/perfil.jpg'},
+		photo: 'images/pets/parrot2.jpg',
+		phone: '(99) 3333-3333',
 		email: 'rogiel@cliente.com',
 		address: 'São Carlos',
 	});
@@ -267,23 +268,37 @@ function _dbGetIndex(objStore, indexName, mode, callback) {
 
 
 
+// Creates a successful result object
+function _dbSuccess(data) {
+	return {
+		success: true,
+		error: undefined,
+		data: data,
+	};
+}
+
+
+
+// Creates an unsuccessful result object
+function _dbFailure(error) {
+	return {
+		success: false,
+		error: error,
+		data: undefined,
+	};
+}
+
+
+
 // Sets callback functions for the request
 // Meant for record CRUD functions
 function _dbRequestResult(request, callback) {
 	request.onsuccess = function(event) {
-		callback({
-			success: true,
-			error: undefined,
-			data: event.target.result,
-		});
+		callback(_dbSuccess(undefined));
 	};
 
 	request.onerror = function(event) {
-		callback({
-			success: false,
-			error: event.target.error.name,
-			data: undefined,
-		});
+		callback(_dbFailure(event.target.error.name));
 	};
 }
 
@@ -296,11 +311,18 @@ function _dbEmptyChecker(record) {
 
 
 
+// Used by dbUpdate functions
+function _dbEmptyUpdater(old_record, new_record) {
+	return new_record;
+}
+
+
+
 // Tries to add a new record to the requested store,
 // Record already exists -> result.error = 'ConstraintError'
 // Record is invalid     -> result.error = 'InvalidRecordError'
 function _dbCreateRecord(record, store, checker, callback) {
-	console.log('Creating record:', record, 'into ' + store);
+	console.log('Creating record', record, 'into', store);
 
 	var is_valid = checker(record);
 
@@ -311,62 +333,61 @@ function _dbCreateRecord(record, store, checker, callback) {
 		});
 	}
 	else {
-		console.log('dbCreateRecord: invalid record');
-		callback({
-			success: false,
-			error: 'InvalidRecordError',
-			data: undefined,
-		});
+		callback(_dbFailure('InvalidRecordError'));
 	}
 }
 
 
 
+// ID doesn't exist -> result.error = 'NotFoundError'
 function _dbReadRecord(record_id, store, callback) {
-	console.log('Reading record: ', record_id, 'from ' + store);
+	console.log('Reading record', record_id, 'from ' + store);
 
 	_dbGetStore(store, 'readonly', function(store) {
 		var request = store.get(record_id);
+
 		_dbRequestResult(request, callback);
+		request.onsuccess = function(event) {
+			var result = event.target.result;
+			if(result) {
+				callback(_dbSuccess(result));
+			}
+			else {
+				callback(_dbFailure('NotFoundError'));
+			}
+		};
 	});
 }
 
 
 
 // Read all records with the specified key
+// key doesn't exist -> result.error = 'NotFoundError'
 // result.data == (array of records)
 function _dbReadFromIndex(key, store, index, callback) {
-	console.log('Reading records with key: ', key, 'from ' + index + ':' + store);
+	console.log('Reading records with key', key, 'from', store + '/' + index);
 
 	_dbGetIndex(store, index, 'readonly', function(store, index) {
 		var key_range = IDBKeyRange.only(key);
 		var request = index.openCursor(key_range);
 
-		var result = {
-			success: true,
-			error: undefined,
-			data: [],
-		};
+		var records = [];
 
 		_dbRequestResult(request, callback);
 		request.onsuccess = function(event) {
 			var cursor = event.target.result;
 			if(cursor) {
-				result.data.push(cursor.value);
+				records.push(cursor.value);
 				cursor.continue();
 			}
+			else if(records.length != 0) {
+				callback(_dbSuccess(records));
+			}
 			else {
-				callback(result);
+				callback(_dbFailure('NotFoundError'));
 			}
 		};
 	});
-}
-
-
-
-// Used by dbUpdate functions
-function _dbEmptyUpdater(old_record, new_record) {
-	return new_record;
 }
 
 
@@ -374,7 +395,7 @@ function _dbEmptyUpdater(old_record, new_record) {
 // updater is a function that takes the old and new records,
 // and returns a valid record that can be added to the store
 function _dbUpdateRecord(record_id, new_record, store, updater, callback) {
-	console.log('Updating record:', record_id, 'from ' + store);
+	console.log('Updating record', record_id, 'from', store);
 
 	_dbGetStore(store, 'readwrite', function(store) {
 		var request = store.get(record_id);
@@ -395,7 +416,7 @@ function _dbUpdateRecord(record_id, new_record, store, updater, callback) {
 // updater is a function that takes the old and new records,
 // and returns a valid record that can be added to the store
 function _dbUpdateFromIndex(key, new_record, store, index, updater, callback) {
-	console.log('Updating record with:', key, 'from ' + index + ':' + store);
+	console.log('Updating record with key', key, 'from', store + '/' + index);
 
 	_dbGetIndex(store, index, 'readwrite', function(store, index) {
 		var request = index.get(key);
@@ -414,7 +435,7 @@ function _dbUpdateFromIndex(key, new_record, store, index, updater, callback) {
 
 
 function _dbDeleteRecord(record_id, store, callback) {
-	console.log('Deleting record:', record_id, 'from ' + store);
+	console.log('Deleting record', record_id, 'from', store);
 
 	_dbGetStore(store, 'readwrite', function(store) {
 		var request = store.delete(record_id);
@@ -423,44 +444,16 @@ function _dbDeleteRecord(record_id, store, callback) {
 }
 
 
-// Wrappers
-function dbCreateRecord(record, store, callback) {
-	_dbCreateRecord(record, store, _dbEmptyChecker, callback);
-}
-
-function dbReadRecord(record_id, store, callback) {
-	_dbReadRecord(record_id, store, callback);
-}
-
-function dbReadFromIndex(key, store, index, callback) {
-	_dbReadFromIndex(key, store, index, callback);
-}
-
-function dbUpdateRecord(record_id, new_record, store, callback) {
-	_dbUpdateRecord(record_id, new_record, store, _dbEmptyUpdater, callback);
-}
-
-function dbUpdateFromIndex(key, new_record, store, index, callback) {
-	_dbUpdateFromIndex(key, new_record, store, index, _dbEmptyUpdater, callback);
-}
-
-function dbDeleteRecord(record_id, store, callback) {
-	_dbDeleteRecord(record_id, store, callback);
-}
-
 
 // On success: result.data = (user object)
 // On error:   result.error = 'LoginError'
 function dbUserLogin(username, password, callback) {
-	console.log('Login attempt: ' + username + ', ' + password);
+	console.log('Login attempt:', username + ', ' + password);
 
 	_dbReadFromIndex(username, 'users', 'username', function(result) {
-		var login_error = {
-			success: false,
-			error: 'LoginError',
-			data: undefined
-		};
+		var login_error = _dbFailure('LoginError');
 
+		//console.log('Login result:', result);
 		if(result.success == false || result.data[0].password != password) {
 			callback(login_error);
 		}
@@ -469,6 +462,8 @@ function dbUserLogin(username, password, callback) {
 		}
 	});
 }
+
+
 
 // Check if all elements of <contained> can be found in <container>
 function _containsAll(container, contained) {
