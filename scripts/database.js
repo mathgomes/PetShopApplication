@@ -114,7 +114,6 @@ if(!window.indexedDB) {
 
 
 
-// Meant for _dbGetIndex, _dbGetStore etc
 function _dbErrorHandler(event) {
 	console.log('Database error: ' + event.target.errorCode);
 }
@@ -127,6 +126,7 @@ function dbInit() {
 
 	var should_populate = false;
 
+	// Create object stores and indices
 	request.onupgradeneeded = function(event) {
 		console.log('dbInit:onupgradeneeded');
 		var db = event.target.result;
@@ -135,6 +135,7 @@ function dbInit() {
 		_dbCreateStores(db);
 	};
 
+	// Populate database, if necessary
 	request.onsuccess = function(event) {
 		console.log('dbInit:onsuccess');
 		var db = event.target.result;
@@ -160,6 +161,7 @@ function dbDelete() {
 
 
 // Called by dbInit:onupgradeneeded
+// Creates object stores and indices
 function _dbCreateStores(db) {
 	console.log('Creating stores');
 
@@ -195,6 +197,7 @@ function _dbCreateStores(db) {
 
 
 // Called by dbInit:onsuccess if dbInit:onupgradeneeded was also triggered
+// Adds a bunch of records to the database
 function _dbPopulate(db) {
 	console.log('Populating database');
 
@@ -237,6 +240,11 @@ function _dbPopulate(db) {
 		address: 'São Carlos',
 	});
 }
+
+
+
+// Helper functions start here
+// They are used by all CRUD functions
 
 
 
@@ -294,6 +302,7 @@ function _dbFailure(error) {
 // Meant for record CRUD functions
 function _dbRequestResult(request, callback) {
 	request.onsuccess = function(event) {
+		// Success with no data associated
 		callback(_dbSuccess(undefined));
 	};
 
@@ -303,44 +312,26 @@ function _dbRequestResult(request, callback) {
 }
 
 
-
-// Used by dbCreate functions
-function _dbEmptyChecker(record) {
-	return true;
-}
+// CRUD functions start here
+// These functions take a callback, that will be invoked with a
+// "result" {success, error, data} parameter created by _dbSuccess or _dbFailure.
 
 
 
-// Used by dbUpdate functions
-function _dbEmptyUpdater(old_record, new_record) {
-	return new_record;
-}
-
-
-
-// Tries to add a new record to the requested store,
 // Record already exists -> result.error = 'ConstraintError'
-// Record is invalid     -> result.error = 'InvalidRecordError'
-function _dbCreateRecord(record, store, checker, callback) {
+function dbCreateRecord(record, store, callback) {
 	console.log('Creating record', record, 'into', store);
 
-	var is_valid = checker(record);
-
-	if(is_valid) {
-		_dbGetStore(store, 'readwrite', function(store) {
-			var request = store.add(record);
-			_dbRequestResult(request, callback);
-		});
-	}
-	else {
-		callback(_dbFailure('InvalidRecordError'));
-	}
+	_dbGetStore(store, 'readwrite', function(store) {
+		var request = store.add(record);
+		_dbRequestResult(request, callback);
+	});
 }
 
 
 
-// ID doesn't exist -> result.error = 'NotFoundError'
-function _dbReadRecord(record_id, store, callback) {
+// No record with the specified ID -> result.error = 'NotFoundError'
+function dbReadRecord(record_id, store, callback) {
 	console.log('Reading record', record_id, 'from ' + store);
 
 	_dbGetStore(store, 'readonly', function(store) {
@@ -349,6 +340,8 @@ function _dbReadRecord(record_id, store, callback) {
 		_dbRequestResult(request, callback);
 		request.onsuccess = function(event) {
 			var result = event.target.result;
+
+			// Return a success result if found, failure result if not found
 			if(result) {
 				callback(_dbSuccess(result));
 			}
@@ -363,8 +356,8 @@ function _dbReadRecord(record_id, store, callback) {
 
 // Read all records with the specified key
 // key doesn't exist -> result.error = 'NotFoundError'
-// result.data == (array of records)
-function _dbReadFromIndex(key, store, index, callback) {
+// on success -> result.data is an array
+function dbReadFromIndex(key, store, index, callback) {
 	console.log('Reading records with key', key, 'from', store + '/' + index);
 
 	_dbGetIndex(store, index, 'readonly', function(store, index) {
@@ -392,9 +385,7 @@ function _dbReadFromIndex(key, store, index, callback) {
 
 
 
-// updater is a function that takes the old and new records,
-// and returns a valid record that can be added to the store
-function _dbUpdateRecord(record_id, new_record, store, updater, callback) {
+function dbUpdateRecord(record_id, new_record, store, callback) {
 	console.log('Updating record', record_id, 'from', store);
 
 	_dbGetStore(store, 'readwrite', function(store) {
@@ -402,9 +393,7 @@ function _dbUpdateRecord(record_id, new_record, store, updater, callback) {
 
 		_dbRequestResult(request, callback);
 		request.onsuccess = function(event) {
-			var old_record = event.target.result;
-			var record = updater(old_record, new_record);
-
+			var record  = event.target.result;
 			var request = store.put(record);
 			_dbRequestResult(request, callback);
 		}
@@ -413,9 +402,8 @@ function _dbUpdateRecord(record_id, new_record, store, updater, callback) {
 
 
 
-// updater is a function that takes the old and new records,
-// and returns a valid record that can be added to the store
-function _dbUpdateFromIndex(key, new_record, store, index, updater, callback) {
+// This function may be useless
+function dbUpdateFromIndex(key, new_record, store, index, callback) {
 	console.log('Updating record with key', key, 'from', store + '/' + index);
 
 	_dbGetIndex(store, index, 'readwrite', function(store, index) {
@@ -423,9 +411,7 @@ function _dbUpdateFromIndex(key, new_record, store, index, updater, callback) {
 
 		_dbRequestResult(request, callback);
 		request.onsuccess = function(event) {
-			var old_record = event.target.result;
-			var record = updater(old_record, new_record);
-
+			var record = event.target.result;
 			var request = store.put(record);
 			_dbRequestResult(request, callback);
 		};
@@ -434,40 +420,13 @@ function _dbUpdateFromIndex(key, new_record, store, index, updater, callback) {
 
 
 
-function _dbDeleteRecord(record_id, store, callback) {
+function dbDeleteRecord(record_id, store, callback) {
 	console.log('Deleting record', record_id, 'from', store);
 
 	_dbGetStore(store, 'readwrite', function(store) {
 		var request = store.delete(record_id);
 		_dbRequestResult(request, callback);
 	});
-}
-
-
-
-// Wrappers
-function dbCreateRecord(record, store, callback) {
-	_dbCreateRecord(record, store, _dbEmptyChecker, callback);
-}
-
-function dbReadRecord(record_id, store, callback) {
-	_dbReadRecord(record_id, store, callback);
-}
-
-function dbReadFromIndex(key, store, index, callback) {
-	dbReadFromIndex(key, store, index, callback);
-}
-
-function dbUpdateRecord(record_id, new_record, store, callback) {
-	_dbUpdateRecord(record_id, new_record, store, _dbEmptyUpdater, callback);
-}
-
-function dbUpdateFromIndex(key, new_record, store, index, callback) {
-	_dbUpdateFromIndex(key, new_record, store, index, _dbEmptyUpdater, callback);
-}
-
-function dbDeleteRecord(record_id, store, callback) {
-	_dbDeleteRecord(record_id, store, callback)
 }
 
 
