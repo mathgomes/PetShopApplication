@@ -1,9 +1,9 @@
-  <h1 class="perfil">Fulano da Silva</h1>
+  <h1 id="cTitle" class="perfil">Fulano da Silva</h1>
 
 	<!-- Foto e input de alterar foto -->
 	<div class="centered">
 		<section class="perfil_foto cell">
-			<img src="images/perfil.jpg" alt="Minha foto" />
+			<img id="cProfilePhoto" src="images/perfil.jpg" alt="Minha foto" />
 			<input type="file" />
 			<input type="submit" value="Alterar Foto" />
 		</section>
@@ -13,10 +13,10 @@
 			<form>
 				<h2>Administrador</h1><input type="checkbox" />
 				<h2>Cliente</h1><input type="checkbox" />
-				<input type="text" value="Fulano da Silva" placeholder="Nome" />
-				<input type="email" value="fsilva@email.com" placeholder="Endereço de e-mail" />
-				<input type="text" value="Rua dos Pinheiros, 404" placeholder="Endereço físico" />
-				<input type="tel" value="(15) 9999-9999" placeholder="Telefone" />
+				<input id="cProfileName" type="text" value="Fulano da Silva" placeholder="Nome" />
+				<input id="cProfileEmail" type="email" value="fsilva@email.com" placeholder="Endereço de e-mail" />
+				<input id="cProfileAddress" type="text" value="Rua dos Pinheiros, 404" placeholder="Endereço físico" />
+				<input id="cProfilePhone" type="tel" value="(15) 9999-9999" placeholder="Telefone" />
 				<input type="submit" value="Atualizar" />
 			</form>
 			<h2>Alterar senha</h2>

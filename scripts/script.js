@@ -6,6 +6,24 @@
  */
 
 
+function loggedUserId(user_id) {
+	if(user_id) {
+		// Logging in
+		localStorage.setItem('user_id', user_id);
+	}
+	else {
+		// ID retrieval
+		return parseInt(localStorage.getItem('user_id'));
+	}
+}
+
+
+function loadPage(page, callback) {
+	$('#indexCenterPage').load(page, callback);
+}
+
+
+
 function setLoginAction() {
 	$('#indexLoginButton').click(function() {
 		var username = $('#indexUsername').val();
@@ -16,6 +34,7 @@ function setLoginAction() {
 			if(result.success) {
 				var page;
 				var navbar;
+
 				if(result.data[0].is_admin) {
 					page = 'Admin/funcoesAdmin.html';
 					navbar = 'Admin/navbar.html';
@@ -24,15 +43,52 @@ function setLoginAction() {
 					page = 'Cliente/funcoesCliente.html';
 					navbar = 'Cliente/navbar.html';
 				}
-				$('#indexCenterPage').load(page);
+
+				loggedUserId(result.data[0].id);
+				loadPage(page);
+
 				$('#indexNavWrapper').load(navbar, function() {
-					$('#username').html(username);
+					loadNavBar(result.data[0]);
 				});
 			}
 			else {
 				// TODO Escrever na pagina que o login deu errado
+				// ID: indexLoginError
 			}
 		});
+	});
+}
+
+
+
+function loadNavBar(user_data) {
+	var first_name = user_data.name.split(' ')[0];
+	$('#cNavUsername').html(first_name);
+
+	$('#cNavProfile').click(function() {
+		loadPage('Cliente/perfil.html', loadCustomerProfile);
+	});
+}
+
+
+
+function loadCustomerProfile() {
+	dbReadRecord(loggedUserId(), 'users', function(result) {
+		var data = result.data;
+
+		$('#cTitle').html(data.name);
+		$('#cProfilePhoto').attr('src', data.photo);
+
+		var fields = {
+			'#cProfileName': data.name,
+			'#cProfileEmail': data.email,
+			'#cProfileAddress': data.address,
+			'#cProfilePhone': data.phone,
+		};
+
+		for(var id in fields) {
+			$(id).val(fields[id]);
+		}
 	});
 }
 
@@ -43,7 +99,8 @@ $(document).ready(function() {
 
 	setLoginAction();
 	//Customer
-	$(document).on("click", "a#perfil", function() {
+	//MEXENDO NISSO AQUI
+	/*$(document).on("click", "a#perfil", function() {
 		$("#indexCenterPage").load("Cliente/perfil.html");
 	});
 
@@ -56,6 +113,17 @@ $(document).ready(function() {
 	$(document).on("click", "a#loja", function() {
 		$("#indexCenterPage").load("Cliente/loja.html");
 	});
+	$(document).on("click", "a#servicos", function() {
+		$("#indexCenterPage").load("Cliente/horarioServico.html");
+	});
+
+
+	$(document).on("click", "a#carrinho", function() {
+		$("#indexCenterPage").load("Cliente/carrinho.html");
+	});*/
+
+
+
 	$(document).on("click", ".item img", function() {
 		$("#indexCenterPage").load("Cliente/compraProduto.html");
 	});
@@ -67,14 +135,6 @@ $(document).ready(function() {
 	});
 
 
-	$(document).on("click", "a#servicos", function() {
-		$("#indexCenterPage").load("Cliente/horarioServico.html");
-	});
-
-
-	$(document).on("click", "a#carrinho", function() {
-		$("#indexCenterPage").load("Cliente/carrinho.html");
-	});
 
 
 	//Admin
