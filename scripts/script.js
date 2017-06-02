@@ -5,6 +5,10 @@
  * Rogiel dos Santos Silva, 8061793
  */
 
+console.log('Executing script.js');
+
+
+
 // For website testing
 function _go() {
 	$('#loginUsername').val('hdzin');
@@ -14,6 +18,7 @@ function _go() {
 
 
 
+// Used to set or retrieve the user's id
 function loggedUserId(user_id) {
 	if(user_id) {
 		// Logging in
@@ -27,20 +32,39 @@ function loggedUserId(user_id) {
 
 
 
+function getUser(callback) {
+	dbReadRecord(loggedUserId(), 'users', callback);
+}
+
+
+
 function loadPage(page, callback) {
 	$('#indexCenterPage').load(page, callback);
 }
 
 
 
+function logOut() {
+	loggedUserId(undefined);
+	loadPage('login_page.html');
+}
+
+
+
+function buttonAction(button, page, callback) {
+	$(button).click(function() {
+		loadPage(page, callback);
+	});
+}
+
+
 
 function setLoginAction() {
 	$('#loginButton').click(function() {
-		var username = $('#login').val();
-		var password = $('#login').val();
+		var username = $('#loginUsername').val();
+		var password = $('#loginPassword').val();
 
 		dbUserLogin(username, password, function(result) {
-			console.log(result);
 			if(result.success) {
 				var page;
 				var navbar;
@@ -55,15 +79,17 @@ function setLoginAction() {
 				}
 
 				loggedUserId(result.data[0].id);
+
 				loadPage(page);
 
 				$('#indexNavWrapper').load(navbar, function() {
-					loadNavBar(result.data[0]);
+					loadNavbar(result.data[0]);
 				});
 			}
 			else {
+				alert('Informações de login inválidas.');
 				// TODO Escrever na pagina que o login deu errado
-				// ID: indexLoginError
+				// ID: loginError
 			}
 		});
 	});
@@ -71,77 +97,28 @@ function setLoginAction() {
 
 
 
-function loadNavBar(user_data) {
+function loadNavbar(user_data) {
 	var first_name = user_data.name.split(' ')[0];
-	$('#cNavUsername').html(first_name);
+	$('#navUsername').html(first_name);
 
-	$('#cNavProfile').click(function() {
-		loadPage('Cliente/perfil.html', loadCustomerProfile);
-	});
+	if(user_data.is_admin) {
+		adminNavbar();
+	}
+	else {
+		customerNavbar();
+	}
+}
+
+
+
+function customerNavbar() {
+	buttonAction('#cNavProfile', 'Cliente/perfil.html', customerProfile);
 
 	$('#cNavServices').click(function() {
 		loadPage('Cliente/horarioServico.html');
 	});
 }
 
-
-
-function loadCustomerProfile() {
-	// Load user data
-	var fields = {
-		'name': '#cProfileName',
-		'email': '#cProfileEmail',
-		'address': '#cProfileAddress',
-		'phone': '#cProfilePhone',
-	};
-
-	dbReadRecord(loggedUserId(), 'users', function(result) {
-		var data = result.data;
-
-		$('#cTitle').html(data.name);
-		$('#cProfilePhoto').attr('src', data.photo);
-
-		for(var id in fields) {
-			$(fields[id]).val(data[id]);
-		}
-	});
-
-	// Profile update callback
-	$('#cProfileUpdate').click(function() {
-		dbReadRecord(loggedUserId(), 'users', function(result) {
-			for(var id in fields) {
-				result.data[id] = $(fields[id]).val();
-			}
-			dbUpdateRecord(loggedUserId(), result.data, 'users', _test_callback);
-		});
-	});
-
-	// Picture update callback
-	$('#cProfileUpdatePhoto').click(function() {
-		var file = $('#cProfileFile').prop('files')[0];
-		if(file) {
-			var fr = new FileReader();
-			fr.onload = updateProfilePhoto;
-			fr.readAsDataURL(file);
-		}
-	});
-}
-
-
-
-// Reads the image from #cProfilePhoto and updates the
-// user record on the database
-function updateProfilePhoto(event) {
-	var new_photo = event.target.result;
-	$('#cProfilePhoto').attr('src', new_photo);
-
-	dbReadRecord(loggedUserId(), 'users', function(result) {
-		if(result.success) {
-			result.data.photo = new_photo;
-			dbUpdateRecord(loggedUserId(), result.data, 'users', _test_callback);
-		}
-	});
-}
 
 
 
