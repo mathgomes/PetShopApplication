@@ -47,6 +47,7 @@ function loadPage(page, callback) {
 function logOut() {
 	loggedUserId(undefined);
 	loadPage('login_page.html');
+	$('#indexNavWrapper').html('');
 }
 
 
@@ -107,18 +108,19 @@ function loadNavbar(user_data) {
 	else {
 		customerNavbar();
 	}
+
+	$('#navLogout').click(logOut);
 }
 
 
 
 function customerNavbar() {
 	buttonAction('#cNavProfile', 'Cliente/perfil.html', customerProfile);
-
-	$('#cNavServices').click(function() {
-		loadPage('Cliente/horarioServico.html');
-	});
+	buttonAction('#cNavAnimals', 'Cliente/situacaoAnimais.html');
+	buttonAction('#cNavShop', 'Cliente/loja.html');
+	buttonAction('#cNavServices', 'Cliente/horarioServico.html');
+	buttonAction('#cNavCart', 'Cliente/carrinho.html');
 }
-
 
 
 
