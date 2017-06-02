@@ -14,8 +14,7 @@
  *  dbCreateRecord(record, store, callback)
  *  dbReadRecord(record_id, store, callback)
  *  dbReadFromIndex(key, store, index, callback)
- *  dbUpdateRecord(record_id, new_record, store, callback)
- *  dbUpdateFromIndex(key, new_record, store, index, callback)
+ *  dbUpdateRecord(record, store, callback)
  *  dbDeleteRecord(record_id, store, callback)
  *
  *  dbUserLogin(user, pass, callback)
@@ -377,24 +376,18 @@ function dbReadFromIndex(key, store, index, callback) {
 
 
 
-function dbUpdateRecord(record_id, new_record, store, callback) {
-	console.log('Updating record', record_id, 'from', store);
+function dbUpdateRecord(record, store, callback) {
+	console.log('Updating record', record, 'on', store);
 
 	_dbGetStore(store, 'readwrite', function(store) {
-		var request = store.get(record_id);
-
+		var request = store.put(record);
 		_dbRequestResult(request, callback);
-		request.onsuccess = function(event) {
-			var record  = event.target.result;
-			var request = store.put(record);
-			_dbRequestResult(request, callback);
-		}
 	});
 }
 
 
 
-// This function may be useless
+/* maybe useless
 function dbUpdateFromIndex(key, new_record, store, index, callback) {
 	console.log('Updating record with key', key, 'from', store + '/' + index);
 
@@ -408,7 +401,7 @@ function dbUpdateFromIndex(key, new_record, store, index, callback) {
 			_dbRequestResult(request, callback);
 		};
 	});
-}
+}*/
 
 
 
