@@ -7,9 +7,9 @@
 
 // For website testing
 function _go() {
-	$('#indexUsername').val('hdzin');
-	$('#indexPassword').val('1234');
-	$('#indexLoginButton').click();
+	$('#loginUsername').val('hdzin');
+	$('#loginPassword').val('1234');
+	$('#loginButton').click();
 }
 
 
@@ -35,9 +35,9 @@ function loadPage(page, callback) {
 
 
 function setLoginAction() {
-	$('#indexLoginButton').click(function() {
-		var username = $('#indexUsername').val();
-		var password = $('#indexPassword').val();
+	$('#loginButton').click(function() {
+		var username = $('#login').val();
+		var password = $('#login').val();
 
 		dbUserLogin(username, password, function(result) {
 			console.log(result);
@@ -148,7 +148,8 @@ function updateProfilePhoto(event) {
 $(document).ready(function() {
 	dbInit();
 
-	setLoginAction();
+	$('#indexCenterPage').load('login_page.html', setLoginAction);
+
 	//Customer
 	//MEXENDO NISSO AQUI
 	/*$(document).on("click", "a#perfil", function() {
