@@ -86,20 +86,11 @@
  *   amount:  number
  */
 
-function _test_callback(result) {
-	console.log('Test result callback');
-	console.log(result);
-}
+console.log('Executing database.js');
 
-var _test_record = {
-	address: 'rua 5 de maio',
-	email: 'fulano@gmeio.com',
-	is_admin: false,
-	name: 'fulano da silva',
-	password: '1234',
-	photo: 'images/fulano.jpg',
-	username: 'fsilva',
-};
+if(!window.indexedDB) {
+    window.alert('No Indexed DB support');
+}
 
 
 
@@ -108,8 +99,9 @@ var DB_VERSION = 1;
 
 
 
-if(!window.indexedDB) {
-    window.alert('No Indexed DB support');
+function _test_callback(result) {
+	console.log('Test result callback');
+	console.log(result);
 }
 
 
