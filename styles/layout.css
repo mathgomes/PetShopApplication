@@ -307,35 +307,11 @@ section.perfil_info *
 
 /* loja */
 
-
-
-/*.store_search input[type=text]
-{
-	width: auto;
-
-}*/
-
 .store_items
 {
 	padding-top: 20px;
 }
 
-/*.store_items article
-{
-	 TODO: fazer o nro de itens por linha mudar
-	 * conforme redimensiona a janela
-
-
-	display: inline-block;
-	width: calc(25% - 10px);
-	text-align: center;
-}
-
-.store_items article *
-{
-	width: 100%;
-}
-*/
 .item {
 	display: inline-block;
 	margin-top: 5px;
@@ -639,6 +615,23 @@ h2.centerLogo {
 input.form-control, div.form-group, .form-group input, .painel_de_cadastro *, .painel_de_servico * {
 	display: block;
 	text-align: center;
+}
+
+/* Data table */
+
+.table-responsive {
+	max-height: 400px;
+}
+#filterInput {
+    background-image: url('http://www.clker.com/cliparts/z/1/T/u/9/2/search-icon-hi.png');
+    background-position: 5px 6px;
+    background-repeat: no-repeat;
+    background-size: 20px;
+    width: 100%;
+    font-size: 16px;
+    padding: 6px 10px 10px 20px;/
+    border: 1px solid #ddd;
+    margin-bottom: 12px;
 }
 /* Reposivity */
 @media screen and (max-width: 430px) {

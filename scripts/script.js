@@ -197,9 +197,9 @@ $(document).ready(function() {
 
 
 	$(document).on("click", "a#ganhos", function() {
-		$("#indexCenterPage").load("Admin/estatisticas.html", function(data) {
-			$('#example').DataTable();
-		});
+		$("#indexCenterPage").load("Admin/estatisticas.html",function() {
+      $("#tableDiv").load("dataTable.html");
+    });
 	});
 
 	$(document).on("click", "input#inputBuscaCliente", function() {
