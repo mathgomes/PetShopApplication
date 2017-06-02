@@ -1,4 +1,4 @@
-/* File: script.js
+/* File: database.js
  * Authors:
  * Hugo Moraes Dzin, 8532186
  * Matheus Gomes da Silva Horta, 8532321
@@ -436,12 +436,10 @@ function dbDeleteRecord(record_id, store, callback) {
 function dbUserLogin(username, password, callback) {
 	console.log('Login attempt:', username + ', ' + password);
 
-	_dbReadFromIndex(username, 'users', 'username', function(result) {
-		var login_error = _dbFailure('LoginError');
-
+	dbReadFromIndex(username, 'users', 'username', function(result) {
 		//console.log('Login result:', result);
 		if(result.success == false || result.data[0].password != password) {
-			callback(login_error);
+			callback(_dbFailure('LoginError'));
 		}
 		else {
 			callback(result);
