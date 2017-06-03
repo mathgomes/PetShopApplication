@@ -116,10 +116,16 @@ function loadNavbar(user_data) {
 
 function customerNavbar() {
 	buttonAction('#cNavProfile', 'Cliente/perfil.html', customerProfile);
-	buttonAction('#cNavAnimals', 'Cliente/situacaoAnimais.html');
+	buttonAction('#cNavAnimals', 'Cliente/situacaoAnimais.html', customerAnimals);
 	buttonAction('#cNavShop', 'Cliente/loja.html');
 	buttonAction('#cNavServices', 'Cliente/horarioServico.html');
 	buttonAction('#cNavCart', 'Cliente/carrinho.html');
+}
+
+
+
+function customerAnimals() {
+
 }
 
 

@@ -40,6 +40,8 @@ function customerProfile() {
 					result.data[f] = $(fields[f]).val();
 				}
 				dbUpdateRecord(result.data, 'users', _test_callback);
+				loadNavbar(result.data);
+				customerProfile();
 			}
 		});
 	});
