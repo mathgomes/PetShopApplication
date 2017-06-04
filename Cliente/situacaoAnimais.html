@@ -1,80 +1,96 @@
 
 <div class="wrapper">
 	<article class="centered">
-		<h1>Meus Animais</h1>
-		<table style="max-width: 100%" class="tabela_animais">
-			<tr>
-				<th><!-- Imagem --></th>
-				<th>Nome</th>
-				<th>Raça</th>
-				<th>Idade</th>
-				<th>Serviço</th>
-				<th>Status</th>
-				<th><!-- Botao de apagar --></th>
-			</tr>
+		<div id="tableDiv" class="table-responsive">
+			<h1>Meus Animais</h1>
+			<table id="myPetsTable" class="table table-striped table-bordered">
+				<input type="text" id="filterInputPet" onkeyup="filterSearch('myPetsTable','filterInputPet')" placeholder="Search for names..">
+				<thead>
+			        <tr class="b">
+						<th><!-- Imagem --></th>
+						<th>Nome</th>
+						<th>Raça</th>
+						<th>Idade</th>
+						<th>Serviço</th>
+						<th>Status</th>
+						<th><!-- Botao de apagar --></th>
+			        </tr>
+				</thead>
+				<tfoot>
+			        </tr>
+						<th><!-- Imagem --></th>
+						<th>Nome</th>
+						<th>Raça</th>
+						<th>Idade</th>
+						<th>Serviço</th>
+						<th>Status</th>
+						<th><!-- Botao de apagar --></th>
+			        </tr>
+				</tfoot>
 
-			<tbody id="cAnimalTable"></tbody>
-			<!--<tr>
-				<td><img src="images/pets/poodle.jpg" alt="Pet" height=30 width=30 /></td>
-				<td>Totó</td>
-				<td>Poodle</td>
-				<td>5 anos</td>
-				<td>Banho e Tosa</td>
-				<td>Aguardando dono buscar</td>
-				<td><input type="button" value="Apagar" /></td>
-			</tr>
+				<tbody id="cAnimalTable"></tbody>
+				<!--<tr>
+					<td><img src="images/pets/poodle.jpg" alt="Pet" height=30 width=30 /></td>
+					<td>Totó</td>
+					<td>Poodle</td>
+					<td>5 anos</td>
+					<td>Banho e Tosa</td>
+					<td>Aguardando dono buscar</td>
+					<td><input type="button" value="Apagar" /></td>
+				</tr>
 
-			<tr>
-				<td><img src="images/pets/cat.jpg" alt="Pet" height=30 width=30 /></td>
-				<td>Bichano</td>
-				<td>Gato</td>
-				<td>6 meses</td>
-				<td>Castração</td>
-				<td>Agendado para 20/04/2017 às 16:00</td>
-				<td><input type="button" value="Apagar" /></td>
-			</tr>
-			<tr>
+				<tr>
+					<td><img src="images/pets/cat.jpg" alt="Pet" height=30 width=30 /></td>
+					<td>Bichano</td>
+					<td>Gato</td>
+					<td>6 meses</td>
+					<td>Castração</td>
+					<td>Agendado para 20/04/2017 às 16:00</td>
+					<td><input type="button" value="Apagar" /></td>
+				</tr>
+				<tr>
 
-			<tr>
-				<td><img src="images/pets/persian.jpg" alt="Pet" height=30 width=30 /></td>
-				<td>Frajola</td>
-				<td>Persa</td>
-				<td>9 anos</td>
-				<td>-</td>
-				<td>-</td>
-				<td><input type="button" value="Apagar" /></td>
-			</tr>
+				<tr>
+					<td><img src="images/pets/persian.jpg" alt="Pet" height=30 width=30 /></td>
+					<td>Frajola</td>
+					<td>Persa</td>
+					<td>9 anos</td>
+					<td>-</td>
+					<td>-</td>
+					<td><input type="button" value="Apagar" /></td>
+				</tr>
 
-			<tr>
-				<td><img src="images/pets/parrot1.jpg" alt="Pet" height=30 width=30 /></td>
-				<td>Currupaco</td>
-				<td>Papagaio</td>
-				<td>2 anos</td>
-				<td>-</td>
-				<td>-</td>
-				<td><input type="button" value="Apagar" /></td>
-			</tr>
+				<tr>
+					<td><img src="images/pets/parrot1.jpg" alt="Pet" height=30 width=30 /></td>
+					<td>Currupaco</td>
+					<td>Papagaio</td>
+					<td>2 anos</td>
+					<td>-</td>
+					<td>-</td>
+					<td><input type="button" value="Apagar" /></td>
+				</tr>
 
-			<tr>
-				<td><img src="images/pets/parrot2.jpg" alt="Pet" height=30 width=30 /></td>
-				<td>Louro José</td>
-				<td>Papagaio</td>
-				<td>2 anos</td>
-				<td>-</td>
-				<td>-</td>
-				<td><input type="button" value="Apagar" /></td>
-			</tr>
+				<tr>
+					<td><img src="images/pets/parrot2.jpg" alt="Pet" height=30 width=30 /></td>
+					<td>Louro José</td>
+					<td>Papagaio</td>
+					<td>2 anos</td>
+					<td>-</td>
+					<td>-</td>
+					<td><input type="button" value="Apagar" /></td>
+				</tr>
 
-			<tr>
-				<td><img src="images/pets/canary.jpg" alt="Pet" height=30 width=30 /></td>
-				<td>Piu-Piu</td>
-				<td>Canário</td>
-				<td>1 ano</td>
-				<td>-</td>
-				<td>-</td>
-				<td><input type="button" value="Apagar" /></td>
-			</tr>-->
-		</table>
+				<tr>
+					<td><img src="images/pets/canary.jpg" alt="Pet" height=30 width=30 /></td>
+					<td>Piu-Piu</td>
+					<td>Canário</td>
+					<td>1 ano</td>
+					<td>-</td>
+					<td>-</td>
+					<td><input type="button" value="Apagar" /></td>
+				</tr>-->
+			</table>
+		</div>
 	</article>
 	<article class="centered painel_de_cadastro">
 		<h1>Novo Animal</h1>

@@ -5,12 +5,13 @@
  * Rogiel dos Santos Silva, 8061793
  */
 
- function filterSearch() {
+
+ function filterSearch(tableID, filterID) {
 
 	var input, filter, table, tr, td, i;
-	input = document.getElementById("filterInput");
+	input = document.getElementById(filterID);
 	filter = input.value.toUpperCase();
-	table = document.getElementById("tableDisplay");
+	table = document.getElementById(tableID);
 	tr = table.getElementsByTagName("tr");
 
   // Loop through all table rows, and hide those who don't match the search query
