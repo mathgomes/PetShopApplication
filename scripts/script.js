@@ -139,7 +139,7 @@ function customerAnimals() {
 		}
 
 		function img(src, alt) {
-			return '<img src="' + src + '" alt="' + alt + '" height=30 width=30>';
+			return '<img src="' + src + '" alt="' + alt + '" class="img-responsive fotoAnimal">';
 		}
 
 		if(result.success) {

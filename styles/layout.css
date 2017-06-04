@@ -633,6 +633,9 @@ input.form-control, div.form-group, .form-group input, .painel_de_cadastro *, .p
     border: 1px solid #ddd;
     margin-bottom: 12px;
 }
+img.fotoAnimal {
+	height: 40px;
+}
 /* Reposivity */
 @media screen and (max-width: 430px) {
 	img {
