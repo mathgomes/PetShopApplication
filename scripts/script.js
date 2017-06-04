@@ -219,10 +219,21 @@ $(document).ready(function() {
 		$("#indexCenterPage").load("Admin/cadastrarUsuario.html");
 	});
 
-
 	$(document).on("click", "a#buscarUsuario", function() {
-		$("#indexCenterPage").load("Admin/buscarUsuario.html");
+		$("#indexCenterPage").load("Admin/buscarUsuario.html",function() {
+      $("#tableDiv").load("dataTable.html");
+    });
 	});
+  $(document).on("click", "a#buscarProduto", function() {
+    $("#indexCenterPage").load("Admin/buscarProduto.html",function() {
+      $("#tableDiv").load("dataTable.html");
+    });
+  });
+  $(document).on("click", "a#buscarServico", function() {
+    $("#indexCenterPage").load("Admin/buscarServico.html",function() {
+      $("#tableDiv").load("dataTable.html");
+    });
+  });
 
 
 	$(document).on("click", "a#cadastrarProduto", function() {
