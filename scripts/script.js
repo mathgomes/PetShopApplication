@@ -10,12 +10,16 @@ console.log('Executing script.js');
 
 
 // For website testing
-function _go() {
+function _a() {
 	$('#loginUsername').val('hdzin');
 	$('#loginPassword').val('1234');
 	$('#loginButton').click();
 }
 
+function _s()
+{
+	$('#cNavAnimals').click();
+}
 
 
 // Used to set or retrieve the user's id
@@ -126,6 +130,35 @@ function customerNavbar() {
 
 function customerAnimals() {
 
+
+	dbReadFromIndex(loggedUserId(), 'animals', 'owner', function(result) {
+		var table_html = '';
+
+		function td(content) {
+			table_html += '<td>' + content + '</td>';
+		}
+
+		function img(src, alt) {
+			return '<img src="' + src + '" alt="' + alt + '" height=30 width=30>';
+		}
+
+		if(result.success) {
+			result.data.forEach(function(elem) {
+				console.log(elem);
+				table_html += '<tr>';
+				td(img(elem.photo, elem.name));
+				td(elem.name);
+				td(elem.breed);
+				td(elem.age + ' anos');
+				td('-');
+				td('-');
+				td('-');
+				table_html += '</tr>';
+			});
+		}
+
+		$('#cAnimalTable').html(table_html);
+	});
 }
 
 

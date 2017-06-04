@@ -73,7 +73,7 @@
  * timeslots:
  *   id:      auto-generated key
  *   date:    Date object
- *   time:    string in hh:mm format, unique key
+ *   time:    string in hh:mm format
  *   in_use:  true or false
  *   service: id from table 'services'
  *   animal:  id from table 'animals'
@@ -229,6 +229,24 @@ function _dbPopulate(db) {
 		phone: '(99) 3333-3333',
 		email: 'rogiel@cliente.com',
 		address: 'São Carlos',
+	});
+
+	var animals = trans.objectStore('animals');
+
+	animals.add({
+		owner: 2,
+		name: 'Bichano',
+		photo: 'images/pets/cat.jpg',
+		breed: 'Gato',
+		age: 5,
+	});
+
+	animals.add({
+		owner: 2,
+		name: 'frajola',
+		photo: 'images/pets/persian.jpg',
+		breed: 'Gato',
+		age: 7,
 	});
 }
 
