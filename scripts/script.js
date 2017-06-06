@@ -32,22 +32,16 @@ function loggedUserId(user_id) {
 
 
 
-function getUser(callback) {
-	dbReadRecord(loggedUserId(), 'users', callback);
+function logOut() {
+	loggedUserId(undefined);
+	loadPage('login_page.html', setLoginAction);
+	$('#indexNavWrapper').html('');
 }
 
 
 
 function loadPage(page, callback) {
 	$('#indexCenterPage').load(page, callback);
-}
-
-
-
-function logOut() {
-	loggedUserId(undefined);
-	loadPage('login_page.html', setLoginAction);
-	$('#indexNavWrapper').html('');
 }
 
 

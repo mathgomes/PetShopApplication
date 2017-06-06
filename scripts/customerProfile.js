@@ -9,6 +9,12 @@ console.log('Executing customerProfile.js');
 
 
 
+function getUser(callback) {
+	dbReadRecord(loggedUserId(), 'users', callback);
+}
+
+
+
 function customerProfile() {
 	// maps record fields to the corresponding text field ids
 	var fields = {
@@ -18,7 +24,8 @@ function customerProfile() {
 		'phone': '#cProfilePhone',
 	};
 
-	// Fill in text fields, photo and page title
+	refreshInformation(fields);
+
 	getUser(function(result) {
 		if(result.success) {
 			var data = result.data;
@@ -41,19 +48,20 @@ function customerProfile() {
 				}
 				dbUpdateRecord(result.data, 'users', _test_callback);
 				loadNavbar(result.data);
-				customerProfile();
+				refreshInformation();
 			}
 		});
 	});
 
 	// Picture update callback
 	$('#cProfileUpdatePhoto').click(function() {
-		var file = $('#cProfileFile').prop('files')[0];
+		uploadFile('#cProfileFile', updateProfilePhoto);
+		/*var file = $('#cProfileFile').prop('files')[0];
 		if(file) {
 			var fr = new FileReader();
 			fr.onload = updateProfilePhoto;
 			fr.readAsDataURL(file);
-		}
+		}*/
 	});
 
 	// Password update callback
@@ -81,6 +89,23 @@ function customerProfile() {
 
 
 
+function refreshInformation(fields) {
+	getUser(function(result) {
+		if(result.success) {
+			var data = result.data;
+
+			$('#cTitle').html(data.name);
+			$('#cProfilePhoto').attr('src', data.photo);
+
+			for(var id in fields) {
+				$(fields[id]).val(data[id]);
+			}
+		}
+	});
+}
+
+
+
 // Reads the image from #cProfilePhoto and updates the
 // user record on the database
 function updateProfilePhoto(event) {
@@ -90,7 +115,7 @@ function updateProfilePhoto(event) {
 	getUser(function(result) {
 		if(result.success) {
 			result.data.photo = new_photo;
-			dbUpdateRecord(loggedUserId(), result.data, 'users', _test_callback);
+			dbUpdateRecord(result.data, 'users', _test_callback);
 		}
 	});
 }
