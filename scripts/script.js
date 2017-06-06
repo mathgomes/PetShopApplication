@@ -44,7 +44,7 @@ function loadPage(page, callback) {
 
 function logOut() {
 	loggedUserId(undefined);
-	loadPage('login_page.html');
+	loadPage('login_page.html', setLoginAction);
 	$('#indexNavWrapper').html('');
 }
 
@@ -87,8 +87,6 @@ function setLoginAction() {
 			}
 			else {
 				alert('Informações de login inválidas.');
-				// TODO Escrever na pagina que o login deu errado
-				// ID: loginError
 			}
 		});
 	});
@@ -123,8 +121,6 @@ function customerNavbar() {
 
 
 function customerAnimals() {
-
-
 	dbReadFromIndex(loggedUserId(), 'animals', 'owner', function(result) {
 		var table_html = '';
 
@@ -136,24 +132,44 @@ function customerAnimals() {
 			return '<img src="' + src + '" alt="' + alt + '" class="img-responsive fotoAnimal">';
 		}
 
+		function button(onclick)
+		{
+			return '<input type="button" value="Apagar" onclick="' + onclick + '">';
+		}
+
 		if(result.success) {
-			result.data.forEach(function(elem) {
-				console.log(elem);
+			result.data.forEach(function(animal) {
 				table_html += '<tr>';
-				td(img(elem.photo, elem.name));
-				td(elem.name);
-				td(elem.breed);
-				td(elem.age + ' anos');
-				td('-');
-				td('-');
-				td('-');
+				td(img(animal.photo, animal.name));
+				td(animal.name);
+				td(animal.breed);
+				td(animal.age + ' anos');
+				td('-'); // TODO fazer quando servicos estiverem funcionando
+				td('-'); // TODO esse tambem
+				td(button('deleteAnimal(' + animal.id + ')'));
 				table_html += '</tr>';
 			});
 		}
 
-		console.log(table_html);
 		$('#cAnimalTable').html(table_html);
-		console.log($('#cAnimalTable').html());
+	});
+}
+
+
+
+function deleteAnimal(animal_id)
+{
+	dbDeleteRecord(animal_id, 'animals', function(result) {
+		// Update animal table
+		customerAnimals();
+
+		if(result.success) {
+			alert('Animal apagado com sucesso.');
+		}
+		else {
+			alert('Erro ao apagar animal.');
+			console.log('deleteAnimal:', result.error);
+		}
 	});
 }
 
@@ -162,20 +178,11 @@ function customerAnimals() {
 $(document).ready(function() {
 	dbInit();
 
-	$('#indexCenterPage').load('login_page.html', setLoginAction);
+	loadPage('login_page.html', setLoginAction);
 
 	//Customer
 	//MEXENDO NISSO AQUI
-	/*$(document).on("click", "a#perfil", function() {
-		$("#indexCenterPage").load("Cliente/perfil.html");
-	});
-
-
-	$(document).on("click", "a#animais", function() {
-		$("#indexCenterPage").load("Cliente/situacaoAnimais.html");
-	});
-
-
+	/*
 	$(document).on("click", "a#loja", function() {
 		$("#indexCenterPage").load("Cliente/loja.html");
 	});
