@@ -15,7 +15,7 @@
 	tr = table.getElementsByTagName("tr");
 
   // Loop through all table rows, and hide those who don't match the search query
-	for (i = 2; i < tr.length; i++) {
+	for (i = 1; i < tr.length; i++) {
 		td = tr[i].getElementsByTagName("td");
 		data = ""
 		for(j = 1; j < td.length; j++) {
