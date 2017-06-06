@@ -16,6 +16,8 @@ function _0() {
 	$('#loginButton').click();
 }
 
+
+
 // Used to set or retrieve the user's id
 function loggedUserId(user_id) {
 	if(user_id) {
@@ -54,6 +56,17 @@ function buttonAction(button, page, callback) {
 	$(button).click(function() {
 		loadPage(page, callback);
 	});
+}
+
+
+
+function uploadFile(unique_selector, callback) {
+	var file = $(unique_selector).prop('files')[0];
+	if(file) {
+		var fr = new FileReader();
+		fr.onload = callback;
+		fr.readAsDataURL(file);
+	}
 }
 
 
@@ -152,6 +165,9 @@ function customerAnimals() {
 		}
 
 		$('#cAnimalTable').html(table_html);
+		$('#cAnimalSubmit').click(function() {
+			console.log('oi');
+		});
 	});
 }
 
@@ -160,9 +176,6 @@ function customerAnimals() {
 function deleteAnimal(animal_id)
 {
 	dbDeleteRecord(animal_id, 'animals', function(result) {
-		// Update animal table
-		customerAnimals();
-
 		if(result.success) {
 			alert('Animal apagado com sucesso.');
 		}
@@ -170,7 +183,35 @@ function deleteAnimal(animal_id)
 			alert('Erro ao apagar animal.');
 			console.log('deleteAnimal:', result.error);
 		}
+
+		customerAnimals();
 	});
+}
+
+
+
+function createAnimal()
+{
+	uploadFile('#cAnimalPhoto', function(event) {
+		var record = {
+			owner: loggedUserId(),
+			name:  $('#cAnimalName').val(),
+			breed: $('#cAnimalBreed').val(),
+			age:   $('#cAnimalAge').val(),
+			photo: event.target.result,
+		};
+
+		console.log(record);
+	});
+
+	/*
+	dbCreateRecord(record, 'animals', function(result) {
+		if(result.success == false) {
+			alert('Erro ao criar animal');
+		}
+
+		customerAnimals();
+	});*/
 }
 
 

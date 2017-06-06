@@ -1,4 +1,4 @@
-/* File: script.js
+/* File: customerProfile.js
  * Authors:
  * Hugo Moraes Dzin, 8532186
  * Matheus Gomes da Silva Horta, 8532321
