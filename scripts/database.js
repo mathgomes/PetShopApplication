@@ -212,7 +212,7 @@ function _dbPopulate(db) {
 	users.add({
 		is_admin: false,
 		username: 'hdzin',
-		password: '1234',
+		password: '1',
 		name: 'Hugo Dzin',
 		photo: 'images/pets/canary.jpg',
 		phone: '(99) 2222-2222',
@@ -243,10 +243,18 @@ function _dbPopulate(db) {
 
 	animals.add({
 		owner: 2,
-		name: 'frajola',
+		name: 'Frajola',
 		photo: 'images/pets/persian.jpg',
 		breed: 'Gato',
 		age: 7,
+	});
+
+	animals.add({
+		owner: 2,
+		name: 'Totó',
+		photo: 'images/pets/poodle.jpg',
+		breed: 'Poodle',
+		age: 3,
 	});
 }
 

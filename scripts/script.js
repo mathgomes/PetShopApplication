@@ -10,17 +10,11 @@ console.log('Executing script.js');
 
 
 // For website testing
-function _a() {
+function _0() {
 	$('#loginUsername').val('hdzin');
-	$('#loginPassword').val('1234');
+	$('#loginPassword').val('1');
 	$('#loginButton').click();
 }
-
-function _s()
-{
-	$('#cNavAnimals').click();
-}
-
 
 // Used to set or retrieve the user's id
 function loggedUserId(user_id) {
@@ -157,7 +151,9 @@ function customerAnimals() {
 			});
 		}
 
+		console.log(table_html);
 		$('#cAnimalTable').html(table_html);
+		console.log($('#cAnimalTable').html());
 	});
 }
 
