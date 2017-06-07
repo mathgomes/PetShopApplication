@@ -24,7 +24,7 @@ function customerProfile() {
 		'phone': '#cProfilePhone',
 	};
 
-	refreshInformation(fields);
+	refreshProfileInfo(fields);
 
 	// Profile update callback
 	$('#cProfileUpdate').click(function() {
@@ -70,7 +70,7 @@ function customerProfile() {
 
 
 
-function refreshInformation(fields) {
+function refreshProfileInfo(fields) {
 	getUser(function(result) {
 		if(result.success) {
 			var data = result.data;
