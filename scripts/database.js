@@ -258,19 +258,31 @@ function _dbPopulate(db) {
 	products.add({
 		name: 'Osso',
 		photo: 'images/produtos/osso.jpg',
+		description: 'Osso de borracha para cães.',
 		price: 4.99,
+		stock: 10,
+		sold_amount: 0,
+		total_income: 0,
 	});
 
 	products.add({
 		name: 'Alpiste',
 		photo: 'images/produtos/alpiste.jpg',
+		description: 'Alimento para pássaros.',
 		price: 2.50,
+		stock: 5,
+		sold_amount: 0,
+		total_income: 0,
 	});
 
 	products.add({
 		name: 'Ração',
 		photo: 'images/produtos/racao.jpg',
+		description: 'Alimento para gatos',
 		price: 25.00,
+		stock: 25,
+		sold_amount: 0,
+		total_income: 0,
 	});
 }
 
@@ -484,8 +496,8 @@ function dbUserLogin(username, password, callback) {
 	console.log('Login attempt:', username + ', ' + password);
 
 	dbReadFromIndex(username, 'users', 'username', function(result) {
-		//console.log('Login result:', result);
-		if(result.success == false || result.data[0].password != password) {
+		var user_not_found = (result.success == false || result.data.length == 0);
+		if(user_not_found || result.data[0].password != password) {
 			callback(_dbFailure('LoginError'));
 		}
 		else {
