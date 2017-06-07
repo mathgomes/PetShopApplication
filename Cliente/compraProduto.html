@@ -2,27 +2,27 @@
 <!-- A ideia é a imagem ficar na esquerda e todo o resto na direita -->
 <article class="centered">
 	<section class="perfil_foto cell">
-		<img src="images/produtos/osso.jpg" alt="Produto" />
+		<img id="cProductPhoto" alt="Foto do Produto" />
 	</section>
 
 	<section class="produto_info cell">
-		<h1>Osso de Borracha</h1>
+		<h1 id="cProductTitle"></h1>
+
 		<h2>Descrição</h2>
-		<p>
-			Osso de borracha, ideal para cães de todas as idades.
-			Vem nas cores roxo, azul e vermelho.
-		</p>
+		<p id="cProductDescription"></p>
+
 		<h2>Preço e Estoque</h2>
-		<p class="cell">Por <strong>R$ 4.99</strong></p>
-		<p class="cell">Estoque: <strong>12 unidades</strong></p>
-		<form id="purchaseForm">
-			<input type="number" placeholder="Quantidade" />
-			<input id="confirm" type="button" value="Adicionar ao Carrinho" />
-		</form>
-		<h2>Frete e Prazo de Entrega</h2>
+		<p class="cell">
+			Por <strong>R$ <span id="cProductPrice"></span></strong>
+		</p>
+
+		<p class="cell">
+			Estoque: <strong><span id="cProductStock"></span> unidades</strong>
+		</p>
+
 		<form>
-			<input type="text" placeholder="Digite seu CEP" />
-			<input type="button" value="Consultar" />
+			<input id="cPurchaseAmount" type="number" placeholder="Quantidade" />
+			<input id="cAddToCart" type="button" value="Adicionar ao Carrinho" />
 		</form>
 	</section>
 </article>
