@@ -26,19 +26,6 @@ function customerProfile() {
 
 	refreshInformation(fields);
 
-	getUser(function(result) {
-		if(result.success) {
-			var data = result.data;
-
-			$('#cTitle').html(data.name);
-			$('#cProfilePhoto').attr('src', data.photo);
-
-			for(var id in fields) {
-				$(fields[id]).val(data[id]);
-			}
-		}
-	});
-
 	// Profile update callback
 	$('#cProfileUpdate').click(function() {
 		getUser(function(result) {
@@ -55,13 +42,7 @@ function customerProfile() {
 
 	// Picture update callback
 	$('#cProfileUpdatePhoto').click(function() {
-		uploadFile('#cProfileFile', updateProfilePhoto);
-		/*var file = $('#cProfileFile').prop('files')[0];
-		if(file) {
-			var fr = new FileReader();
-			fr.onload = updateProfilePhoto;
-			fr.readAsDataURL(file);
-		}*/
+		fileReaderCallback('#cProfileFile', updateProfilePhoto);
 	});
 
 	// Password update callback
