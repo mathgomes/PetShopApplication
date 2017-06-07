@@ -9,15 +9,6 @@ console.log('Executing script.js');
 
 
 
-// For website testing
-function _0() {
-	$('#loginUsername').val('hdzin');
-	$('#loginPassword').val('1');
-	$('#loginButton').click();
-}
-
-
-
 // Used to set or retrieve the user's id
 function loggedUserId(user_id) {
 	if(user_id) {
@@ -32,6 +23,7 @@ function loggedUserId(user_id) {
 
 
 
+// Sends the user back to the login page
 function logOut() {
 	loggedUserId(undefined);
 	loadPage('login_page.html', setLoginAction);
@@ -40,13 +32,14 @@ function logOut() {
 
 
 
+// Changes the page content, but not the header, navbar and footer
 function loadPage(page, callback) {
 	$('#indexCenterPage').load(page, callback);
 }
 
 
 
-function buttonAction(button, page, callback) {
+function onClickLoadPage(button, page, callback) {
 	$(button).click(function() {
 		loadPage(page, callback);
 	});
@@ -118,96 +111,27 @@ function loadNavbar(user_data) {
 
 
 function customerNavbar() {
-	buttonAction('#cNavProfile', 'Cliente/perfil.html', customerProfile);
-	buttonAction('#cNavAnimals', 'Cliente/situacaoAnimais.html', customerAnimals);
-	buttonAction('#cNavShop', 'Cliente/loja.html');
-	buttonAction('#cNavServices', 'Cliente/horarioServico.html');
-	buttonAction('#cNavCart', 'Cliente/carrinho.html');
-}
+	// Each element contains:
+	//  [0] element id of the button
+	//  [1] html page to be redirected to
+	//  [2] callback that will be invoked after the page loads
+	var button_actions = [
+		['#cNavProfile', 'Cliente/perfil.html', customerProfile],
+		['#cNavAnimals', 'Cliente/situacaoAnimais.html', customerAnimals],
+		['#cNavShop', 'Cliente/loja.html', undefined],
+		['#cNavServices', 'Cliente/horarioServico.html', undefined],
+		['#cNavCart', 'Cliente/carrinho.html', undefined],
+	];
 
-
-
-function customerAnimals() {
-	refreshAnimalTable();
-	$('#cAnimalSubmit').click(createAnimal);
-}
-
-
-
-function refreshAnimalTable() {
-	dbReadFromIndex(loggedUserId(), 'animals', 'owner', function(result) {
-		var table_html = '';
-
-		function td(content) {
-			table_html += '<td>' + content + '</td>';
-		}
-
-		function img(src, alt) {
-			return '<img src="' + src + '" alt="' + alt + '" class="img-responsive fotoAnimal">';
-		}
-
-		function button(onclick)
-		{
-			return '<input type="button" value="Apagar" onclick="' + onclick + '">';
-		}
-
-		if(result.success) {
-			result.data.forEach(function(animal) {
-				table_html += '<tr>';
-				td(img(animal.photo, animal.name));
-				td(animal.name);
-				td(animal.breed);
-				td(animal.age + ' anos');
-				td('-'); // TODO fazer quando servicos estiverem funcionando
-				td('-'); // TODO esse tambem
-				td(button('deleteAnimal(' + animal.id + ')'));
-				table_html += '</tr>';
-			});
-		}
-
-		$('#cAnimalTable').html(table_html);
+	button_actions.forEach(function(args) {
+		onClickLoadPage(args[0], args[1], args[2]);
 	});
 }
 
 
 
-function deleteAnimal(animal_id)
-{
-	dbDeleteRecord(animal_id, 'animals', function(result) {
-		if(result.success) {
-			alert('Animal apagado com sucesso.');
-		}
-		else {
-			alert('Erro ao apagar animal.');
-			console.log('deleteAnimal:', result.error);
-		}
-
-		refreshAnimalTable();
-	});
-}
-
-
-
-function createAnimal()
-{
-	fileReaderCallback('#cAnimalPhoto', function(event) {
-		var new_animal= {
-			owner: loggedUserId(),
-			name:  $('#cAnimalName').val(),
-			breed: $('#cAnimalBreed').val(),
-			age:   $('#cAnimalAge').val(),
-			photo: event.target.result,
-		};
-
-		dbCreateRecord(new_animal, 'animals', function(result) {
-			if(result.success == false) {
-				alert('Erro ao criar animal');
-			}
-			else {
-				refreshAnimalTable();
-			}
-		});
-	});
+function adminNavbar() {
+	// copy and paste from customerNavbar?
 }
 
 
