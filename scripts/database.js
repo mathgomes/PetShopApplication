@@ -253,7 +253,7 @@ function _dbPopulate(db) {
 		age: 3,
 	});
 
-	var products = trans.objStore('products');
+	var products = trans.objectStore('products');
 
 	products.add({
 		name: 'Osso',
@@ -345,6 +345,31 @@ function _dbRequestResult(request, callback) {
 }
 
 
+
+// Iterates through a cursor, stores every element into an array,
+// then invokes the callback with a result object containing the array as data
+function _dbCursorCollect(cursor_request, callback)
+{
+	var records = [];
+
+	_dbRequestResult(cursor_request, callback);
+	cursor_request.onsuccess = function(event) {
+		var cursor = event.target.result;
+
+		// There is data to read
+		if(cursor) {
+			records.push(cursor.value);
+			cursor.continue();
+		}
+		// There is no data to read
+		else {
+			callback(_dbSuccess(records));
+		}
+	};
+}
+
+
+
 // CRUD functions start here
 // These functions take a callback, that will be invoked with a
 // "result" {success, error, data} parameter created by _dbSuccess or _dbFailure.
@@ -387,6 +412,17 @@ function dbReadRecord(record_id, store, callback) {
 
 
 
+function dbReadAllRecords(store, callback) {
+	console.log('Reading all records from ' + store);
+
+	_dbGetStore(store, 'readonly', function(store) {
+		var request = store.openCursor();
+		_dbCursorCollect(request, callback);
+	});
+}
+
+
+
 // Read all records with the specified key
 // key doesn't exist -> result.error = 'NotFoundError'
 // on success -> result.data is an array
@@ -396,23 +432,7 @@ function dbReadFromIndex(key, store, index, callback) {
 	_dbGetIndex(store, index, 'readonly', function(store, index) {
 		var key_range = IDBKeyRange.only(key);
 		var request = index.openCursor(key_range);
-
-		var records = [];
-
-		_dbRequestResult(request, callback);
-		request.onsuccess = function(event) {
-			var cursor = event.target.result;
-			if(cursor) {
-				records.push(cursor.value);
-				cursor.continue();
-			}
-			else if(records.length != 0) {
-				callback(_dbSuccess(records));
-			}
-			else {
-				callback(_dbFailure('NotFoundError'));
-			}
-		};
+		_dbCursorCollect(request, callback);
 	});
 }
 
@@ -476,26 +496,6 @@ function dbUserLogin(username, password, callback) {
 
 
 
-// Check if all elements of <contained> can be found in <container>
-function _containsAll(container, contained) {
-	contained.every( function(e) {
-		return (container.indexOf(e) != -1);
-	});
-}
-
-function dbShopSearch(types, animals, sorting, callback) {
-	var _all_types = ['food', 'toy', 'medicine', 'accessory', 'other'];
-	var _all_animals = ['cat', 'dog', 'bird', 'other'];
-
-	var search_all_types = false;
-	var search_all_animals = false;
-
-	if(types.length == 0 || _containsAll(types, _all_types)) {
-		search_all_types = true;
-	}
-
-	if(animals.length == 0 || _containsAll(animals, _all_animals)) {
-		search_all_animals = true;
-	}
-	// TODO
+function dbShopSearch(callback) {
+	_dbReadFromIndexWithKeyRange();
 }
