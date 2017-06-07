@@ -9,6 +9,18 @@ console.log('Executing script.js');
 
 
 
+function _go() {
+	$('#loginUsername').val('hdzin');
+	$('#loginPassword').val('1');
+	$('#loginButton').click();
+
+	setTimeout(function() {
+		$('#cNavShop').click();
+	}, 1000);
+}
+
+
+
 // Used to set or retrieve the user's id
 function loggedUserId(user_id) {
 	if(user_id) {
@@ -118,7 +130,7 @@ function customerNavbar() {
 	var button_actions = [
 		['#cNavProfile', 'Cliente/perfil.html', customerProfile],
 		['#cNavAnimals', 'Cliente/situacaoAnimais.html', customerAnimals],
-		['#cNavShop', 'Cliente/loja.html', undefined],
+		['#cNavShop', 'Cliente/loja.html', customerShop],
 		['#cNavServices', 'Cliente/horarioServico.html', undefined],
 		['#cNavCart', 'Cliente/carrinho.html', undefined],
 	];

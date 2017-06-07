@@ -58,8 +58,6 @@
  *   stock:        number
  *   sold_amount:  number
  *   total_income: number
- *   type:         'food', 'toy', 'medicine', 'accessory' or 'other'
- *   animal:       'cat', 'dog', 'bird' or 'other'
  *
  * services:
  *   id:           auto-generated key
@@ -79,8 +77,8 @@
  *   animal:  id from table 'animals'
  *
  * cart_items:
- *   id:        auto-generated key
- *   user:      id from table 'users'
+ *   id:      auto-generated key
+ *   user:    id from table 'users'
  *   product: id from table 'products'
  *   amount:  number
  */
@@ -176,13 +174,11 @@ function _dbCreateStores(db) {
 	newIndex(users, 'email', true);
 	newIndex(animals, 'owner', false);
 
-	newIndex(products, 'name', false);
-	newIndex(products, 'type', false);
-	newIndex(products, 'animal', false);
+	newIndex(cart_items, 'user', false);
+	newIndex(cart_items, 'product', false);
 
 	newIndex(services, 'name', false);
 	newIndex(timeslots, 'date', false);
-	newIndex(cart_items, 'user', false);
 }
 
 
@@ -255,6 +251,26 @@ function _dbPopulate(db) {
 		photo: 'images/pets/poodle.jpg',
 		breed: 'Poodle',
 		age: 3,
+	});
+
+	var products = trans.objStore('products');
+
+	products.add({
+		name: 'Osso',
+		photo: 'images/produtos/osso.jpg',
+		price: 4.99,
+	});
+
+	products.add({
+		name: 'Alpiste',
+		photo: 'images/produtos/alpiste.jpg',
+		price: 2.50,
+	});
+
+	products.add({
+		name: 'Ração',
+		photo: 'images/produtos/racao.jpg',
+		price: 25.00,
 	});
 }
 
