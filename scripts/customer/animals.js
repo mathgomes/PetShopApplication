@@ -16,38 +16,44 @@ function customerAnimals() {
 
 
 
+function animalTableRow(animal) {
+	var html = '';
+
+	function td(content) {
+		html += '<td>' + content + '</td>';
+	}
+
+	function img(src, alt) {
+		return '<img src="' + src + '" alt="' + alt + '" class="img-responsive fotoAnimal">';
+	}
+
+	function button(onclick)
+	{
+		return '<input type="button" value="Apagar" onclick="' + onclick + '">';
+	}
+
+	html += '<tr>';
+	td(img(animal.photo, animal.name));
+	td(animal.name);
+	td(animal.breed);
+	td(animal.age + ' anos');
+	td('-'); // TODO fazer quando servicos estiverem funcionando
+	td('-'); // TODO esse tambem
+	td(button('deleteAnimal(' + animal.id + ')'));
+	html += '</tr>';
+
+	return html;
+}
+
+
+
 function refreshAnimalTable() {
 	dbReadFromIndex(loggedUserId(), 'animals', 'owner', function(result) {
-		var table_html = '';
-
-		function td(content) {
-			table_html += '<td>' + content + '</td>';
-		}
-
-		function img(src, alt) {
-			return '<img src="' + src + '" alt="' + alt + '" class="img-responsive fotoAnimal">';
-		}
-
-		function button(onclick)
-		{
-			return '<input type="button" value="Apagar" onclick="' + onclick + '">';
-		}
-
 		if(result.success) {
 			result.data.forEach(function(animal) {
-				table_html += '<tr>';
-				td(img(animal.photo, animal.name));
-				td(animal.name);
-				td(animal.breed);
-				td(animal.age + ' anos');
-				td('-'); // TODO fazer quando servicos estiverem funcionando
-				td('-'); // TODO esse tambem
-				td(button('deleteAnimal(' + animal.id + ')'));
-				table_html += '</tr>';
+				$('#cAnimalTable').append(animalTableRow(animal));
 			});
 		}
-
-		$('#cAnimalTable').html(table_html);
 	});
 }
 

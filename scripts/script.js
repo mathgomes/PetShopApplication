@@ -167,7 +167,7 @@ $(document).ready(function() {
 
 	$(document).on("click", "a#carrinho", function() {
 		$("#indexCenterPage").load("Cliente/carrinho.html");
-	});*/
+	});
 
 
 
@@ -179,7 +179,7 @@ $(document).ready(function() {
 	});
 	$(document).on("click", ".carrinho_opcoes #checkout", function() {
 		$("#indexCenterPage").load("Cliente/checkout.html");
-	});
+	});*/
 
 
 
