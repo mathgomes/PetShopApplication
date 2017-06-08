@@ -461,24 +461,6 @@ function dbUpdateRecord(record, store, callback) {
 
 
 
-/* maybe useless
-function dbUpdateFromIndex(key, new_record, store, index, callback) {
-	console.log('Updating record with key', key, 'from', store + '/' + index);
-
-	_dbGetIndex(store, index, 'readwrite', function(store, index) {
-		var request = index.get(key);
-
-		_dbRequestResult(request, callback);
-		request.onsuccess = function(event) {
-			var record = event.target.result;
-			var request = store.put(record);
-			_dbRequestResult(request, callback);
-		};
-	});
-}*/
-
-
-
 function dbDeleteRecord(record_id, store, callback) {
 	console.log('Deleting record', record_id, 'from', store);
 
@@ -504,10 +486,4 @@ function dbUserLogin(username, password, callback) {
 			callback(result);
 		}
 	});
-}
-
-
-
-function dbShopSearch(callback) {
-	_dbReadFromIndexWithKeyRange();
 }
