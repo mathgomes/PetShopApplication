@@ -14,7 +14,7 @@ console.log('Executing customer/shop.js');
 function shopArticle(product) {
 	var html = '';
 
-	html += '<article class="item" ';
+	html += '<article class="item container-fluid" ';
 	html += 'onclick="productPage(' + product.id + ')">';
 
 	html += '<img class="img-reponsive" ';

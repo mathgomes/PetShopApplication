@@ -305,7 +305,9 @@ section.perfil_info *
 	display: block;
 }
 
-/* loja */
+/* Store */
+
+
 
 .store_items
 {
@@ -318,6 +320,8 @@ section.perfil_info *
 }
 .item img{
 	box-shadow: 1px 1px 10px 2px black;
+	width:180px;
+	height:180px;
 }
 .paginas
 {
@@ -366,6 +370,7 @@ section.sectionImagens img {
 	margin-top: 50px;*/
 	margin: 20px;
 }
+
 /* carrinho */
 
 
@@ -636,8 +641,11 @@ input.form-control, div.form-group, .form-group input, .painel_de_cadastro *, .p
 img.fotoAnimal {
 	height: 40px;
 }
+
+
+
 /* Reposivity */
-@media screen and (max-width: 430px) {
+@media screen and (max-width: 449px) and (min-width: 301px) {
 	img {
 		max-width: 300px;
 	}
@@ -647,9 +655,18 @@ img.fotoAnimal {
 	textarea.formTextArea {
 		max-width: 80px;
 	}
+	.item img{
+		width:150px;
+	}
 }
 @media screen and (max-width: 300px) {
 	img {
 		max-width: 80px;
+	}
+}
+@media screen and (max-width: 780px) and (min-width: 450px) {
+	.item img{
+		width:160px;
+		height:160px;
 	}
 }
