@@ -13,6 +13,7 @@
  *
  *  dbCreateRecord(record, store, callback)
  *  dbReadRecord(record_id, store, callback)
+ *  dbReadAllRecords(store, callback)
  *  dbReadFromIndex(key, store, index, callback)
  *  dbUpdateRecord(record, store, callback)
  *  dbDeleteRecord(record_id, store, callback)
@@ -76,7 +77,7 @@
  *   service: id from table 'services'
  *   animal:  id from table 'animals'
  *
- * cart_items:
+ * cartitems:
  *   id:      auto-generated key
  *   user:    id from table 'users'
  *   product: id from table 'products'

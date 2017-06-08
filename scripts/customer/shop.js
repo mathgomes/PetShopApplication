@@ -62,6 +62,7 @@ function productPage(product_id) {
 				$('#cPurchaseAmount').change(function(event) {
 					var target = $('#cPurchaseAmount');
 
+					// Check if amount is valid
 					if(target.val() < 0) {
 						target.val(0);
 					}
@@ -72,7 +73,12 @@ function productPage(product_id) {
 
 				$('#cAddToCart').click(function() {
 					var amount = parseInt($('#cPurchaseAmount').val(), 10);
-					goToCart(product.id, amount);
+					if(amount > 0) {
+						addItemToCart(product.id, amount);
+					}
+					else {
+						alert('Escolha uma quantidade maior que 0.');
+					}
 				});
 			}
 		});
@@ -80,9 +86,42 @@ function productPage(product_id) {
 }
 
 
+// Also redirects to the shopping cart page
+function addItemToCart(product_id, new_amount, ) {
+	dbReadFromIndex(loggedUserId(), 'cartitems', 'user', function(result) {
+		if(result.success) {
+			var cart_items = result.data;
 
-// Adds the product and its amount to the user's shopping cart,
-// then loads the shopping cart page
-function goToCart(product_id, amount) {
-	console.log(product_id, amount);
+			// See if the product already exists in the user's shopping cart
+			var item = cart_items.find(function(elem) {
+				return elem.product == product_id;
+			});
+
+			// Product not yet added to cart: create new object
+			if(item == undefined) {
+				item = {
+					user: loggedUserId(),
+					product: product_id,
+					amount: new_amount,
+				};
+
+				dbCreateRecord(item, 'cartitems', shoppingCartPage);
+			}
+			// Product already exists: update amount
+			else {
+				// When the cart page gets loaded, this amount will be
+				// verified to see if it doesnt overflow the product's stock
+				item.amount += new_amount;
+				dbUpdateRecord(item, 'cartitems', shoppingCartPage);
+			}
+		}
+	});
+}
+
+
+
+function shoppingCartPage() {
+	loadPage('Cliente/carrinho.html', function() {
+
+	});
 }
