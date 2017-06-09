@@ -48,7 +48,7 @@ function animalTableRow(animal) {
 
 
 function refreshAnimalTable() {
-	$('#cAnimalTable').html('oi');
+	$('#cAnimalTable').html('');
 	dbReadFromIndex(loggedUserId(), 'animals', 'owner', function(result) {
 		if(result.success) {
 			result.data.forEach(function(animal) {
