@@ -66,6 +66,9 @@ function fileReaderCallback(unique_selector, callback) {
 		fr.onload = callback;
 		fr.readAsDataURL(file);
 	}
+	else {
+		alert('Especifique um arquivo!');
+	}
 }
 
 
