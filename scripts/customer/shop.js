@@ -130,14 +130,14 @@ function addItemToCart(product_id, new_amount, ) {
 					amount: new_amount,
 				};
 
-				dbCreateRecord(item, 'cartitems', shoppingCartPage);
+				dbCreateRecord(item, 'cartitems', goToShoppingCart);
 			}
 			// Product already exists: update amount
 			else {
 				// When the cart page gets loaded, this amount will be
 				// verified to see if it doesnt overflow the product's stock
 				item.amount += new_amount;
-				dbUpdateRecord(item, 'cartitems', shoppingCartPage);
+				dbUpdateRecord(item, 'cartitems', goToShoppingCart);
 			}
 		}
 	});
@@ -145,8 +145,6 @@ function addItemToCart(product_id, new_amount, ) {
 
 
 
-function shoppingCartPage() {
-	loadPage('Cliente/carrinho.html', function() {
-
-	});
+function goToShoppingCart() {
+	loadPage('Cliente/carrinho.html', customerShoppingCart);
 }

@@ -15,7 +15,7 @@ function _go() {
 	$('#loginButton').click();
 
 	setTimeout(function() {
-		$('#cNavShop').click();
+		$('#cNavCart').click();
 	}, 1000);
 }
 
@@ -135,7 +135,7 @@ function customerNavbar() {
 		['#cNavAnimals', 'Cliente/situacaoAnimais.html', customerAnimals],
 		['#cNavShop', 'Cliente/loja.html', customerShop],
 		['#cNavServices', 'Cliente/horarioServico.html', undefined],
-		['#cNavCart', 'Cliente/carrinho.html', undefined],
+		['#cNavCart', 'Cliente/carrinho.html', customerShoppingCart],
 	];
 
 	button_actions.forEach(function(args) {
