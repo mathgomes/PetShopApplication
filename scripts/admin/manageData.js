@@ -79,11 +79,20 @@ function adminSearchData(tableName) {
 	}
 }
 
+
+
 function adminRemoveData(tableName) {
 	if(tableName === 'users') {
+/*			$('#')
+		$('#admProdAdd').click(function() {
+			createObject(tableName,'#admProdsTable', prodTableRow, createProdContainer());
+			deleteObject(objectID, tableName, '#admUserTable', usertableRow)
+		});*/
+		
 
 	}
 	else if(tableName === 'products') {
+		
 
 	}
 	else if(tableName === 'services') {
@@ -92,7 +101,8 @@ function adminRemoveData(tableName) {
 }
 function adminAlterData(tableName) {
 	if(tableName === 'users') {
-
+		
+	
 	}
 	else if(tableName === 'products') {
 
@@ -124,6 +134,8 @@ function userTableRow(user, tableName, tableID) {
 	html += td(user.phone);
 	html += td(user.email);
 	if(!user.is_admin) {html += td(user.address);}
+	if (user.id != 1) // mostra apagar somente se for diferente de admin
+		html += td(button('deleteUser(' + user.id + ')')); 
 	html += '</tr>';
 	return html;
 }
@@ -170,18 +182,18 @@ function refreshTable(tableName, tableID, tableRow) {
 }
 
 
-function deleteObject(objectID, tableName, tableID, tableRow)
+function deleteUser(user_id)
 {
-	dbDeleteRecord(objectID, tableName, function(result) {
+	dbDeleteRecord(user_id, 'users', function(result) {
+		alert(user_id);
 		if(result.success) {
-			alert('Objeto apagado com sucesso.');
+			alert('Usuário apagado com sucesso.');
 		}
 		else {
-			alert('Erro ao apagar Objeto.');
+			alert('Erro ao apagar Usuário.');
 			console.log('deleteObject:', result.error);
 		}
-
-		refreshTable(tableName,tableID,tableRow);
+		refreshTable('users','#admUserTable',userTableRow);
 	});
 }
 
