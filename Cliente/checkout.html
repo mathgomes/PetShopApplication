@@ -10,7 +10,9 @@
 				<th>Qtde.</th>
 			</tr>
 
-			<tbody id="cCheckoutItems"></tbody>
+			<!-- THIS FILE REUSES SOME IDs: cCartItems and cCartTotal-->
+
+			<tbody id="cCartItems"></tbody>
 			<!-- TODO: botar no CSS o tamanho das imagens -->
 			<!-- TODO: arrumar tamanho do input number no CSS -->
 			<!--
@@ -38,18 +40,19 @@
 		</table>
 	</article>
 	<article class="cell carrinho_opcoes">
-		<h1>Preço total: R$ 64.95</h1>
+		<h1>Preço total: R$ <span id="cCartTotal">64.95</span></h1>
 		<form>
-			<input type="text" placeholder="Número do Cartão" />
-			<select>
+			<input id="cCardNumber" type="text" placeholder="Número do Cartão" />
+			<select id="cCardFlag">
 				<option>Visa</option>
 				<option>MasterCard</option>
 				<option>American Express</option>
 				<option>Elo</option>
 			</select>
-			<input type="text" placeholder="Código de verificação" />
-			<input type="text" placeholder="Validade (MM/AAAA)" />
-			<input type="submit" value="Finalizar" />
+			<input id="cCardVerify"      type="text" placeholder="Código de verificação" />
+			<input id="cCardGoodThru"    type="text" placeholder="Validade (MM/AAAA)" />
+			<input id="cCheckoutAddress" type="text" placeholder="Endereço de entrega" />
+			<input id="cFinishPurchase"  type="button" value="Finalizar" />
 		</form>
 	</article>
 </div>
