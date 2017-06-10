@@ -17,6 +17,7 @@
  *  dbReadFromIndex(key, store, index, callback)
  *  dbUpdateRecord(record, store, callback)
  *  dbDeleteRecord(record_id, store, callback)
+ *  dbDeleteAllFromIndex(key, store, index, callback)
  *
  *  dbUserLogin(user, pass, callback)
  *
@@ -468,6 +469,39 @@ function dbDeleteRecord(record_id, store, callback) {
 	_dbGetStore(store, 'readwrite', function(store) {
 		var request = store.delete(record_id);
 		_dbRequestResult(request, callback);
+	});
+}
+
+
+
+// Deletes all records with specified key from index
+function dbDeleteAllFromIndex(key, store, index, callback) {
+	dbReadFromIndex(key, store, index, function(result) {
+
+		if(result.success) {
+			_dbGetStore(store, 'readwrite', function(store) {
+				var total_requests = result.data.length;
+				var complete_count = 0;
+
+				// Makes one delete request for each element
+				result.data.forEach(function(elem) {
+					var request = store.delete(elem.id);
+
+					request.onsuccess = function(event) {
+						complete_count += 1;
+						if(complete_count == total_requests) {
+							// Invokes the callback when all requests complete
+							callback(_dbSuccess(undefined));
+						}
+					}
+
+					request.onerror = request.onsuccess;
+				});
+			});
+		}
+		else {
+			callback(result);
+		}
 	});
 }
 

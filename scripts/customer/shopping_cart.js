@@ -7,6 +7,8 @@
 
 console.log('Executing customer/shopping_cart.js');
 
+
+
 function customerShoppingCart() {
 	$('#cBackToShop').click(function() {
 		$('#cNavShop').click();
@@ -15,21 +17,30 @@ function customerShoppingCart() {
 	$('#cEmptyCart').click(function() {
 		dbDeleteAllFromIndex(loggedUserId(), 'cartitems', 'user', function(result) {
 			if(result.success) {
-				refreshCart();
+				refreshCart(true);
 			}
 		});
 	});
 
 	$('#cGoToCheckout').click(function() {
-
+		dbReadFromIndex(loggedUserId(), 'cartitems', 'user', function(result) {
+			if(result.success && result.data.length > 0) {
+				loadPage('Cliente/checkout.html', checkoutPage);
+			}
+			else {
+				alert('Seu carrinho está vazio.');
+			}
+		});
 	});
 
-	refreshCart();
+	refreshCart(true);
 }
 
 
-
-function refreshCart() {
+// Used by shopping cart and checkout pages:
+// shopping cart: enable_inputs = true
+// checkout: enable_inputs = false
+function refreshCart(enable_inputs) {
 	cartUpdateTotal();
 	$('#cCartItems').html('');
 
@@ -45,7 +56,7 @@ function refreshCart() {
 				}
 
 				var product = result.data;
-				$('#cCartItems').append(cartItemHtml(product, item.amount));
+				$('#cCartItems').append(cartItemHtml(product, item.amount, enable_inputs));
 			});
 		});
 	});
@@ -53,7 +64,10 @@ function refreshCart() {
 
 
 
-function cartItemHtml(product, amount)
+// Used by shopping cart and checkout pages:
+// shopping cart: enable_inputs = true
+// checkout: enable_inputs = false
+function cartItemHtml(product, amount, enable_inputs)
 {
 	var html = '';
 
@@ -65,12 +79,19 @@ function cartItemHtml(product, amount)
 	td('<img src="' + product.photo + '">');
 	td(product.name);
 	td('R$ ' + product.price.toFixed(2));
-	td(
-		'<input type="number" value="' + amount + '" ' +
-		'onchange="cartChangeAmount(' + product.id + ')">');
-	td(
-		'<input type="button" value="Remover" ' +
-		'onclick="cartRemoveProduct(' + product.id + ')">');
+
+	if(enable_inputs) {
+		td(
+			'<input type="number" value="' + amount + '" ' +
+				'onchange="cartChangeAmount(' + product.id + ')">');
+		td(
+			'<input type="button" value="Remover" ' +
+				'onclick="cartRemoveProduct(' + product.id + ')">');
+	}
+	else {
+		td(amount);
+	}
+
 	html += '</tr>';
 
 	return html;
