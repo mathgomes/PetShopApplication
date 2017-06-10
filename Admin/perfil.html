@@ -1,31 +1,37 @@
+<!--
+File: perfil.html
+Authors:
+  Hugo Moraes Dzin, 8532186
+  Matheus Gomes da Silva Horta, 8532321
+  Rogiel dos Santos Silva, 8061793
+-->
 <div class="wrapper">
-  <h1 class="perfil">Fulano da Silva</h1>
+	<h1 id="cTitle" class="perfil">Fulano da Silva</h1>
 
-  <!-- Foto e input de alterar foto -->
-  <div class="centered row">
-  	<section class="perfil_foto cell col-sm-6 col-md-6">
-  		<img class="img-rounded img-responsive container-fluid" src="images/perfil.jpg" alt="Minha foto" /></img>
-  		<input type="file" /></input>
-  		<input type="submit" value="Alterar Foto" /></input>
-  	</section>
+	<!-- Foto e input de alterar foto -->
+	<div class="centered row">
+		<section class="perfil_foto cell col-sm-6 col-md-6">
+			<img   id="cProfilePhoto" src="" alt="Minha foto" class="img-rounded img-responsive container-fluid"/>
+			<input id="cProfileFile" type="file" />
+			<input id="cProfileUpdatePhoto" type="button" value="Alterar Foto" />
+		</section>
 
-  	<!-- Perfil do usuário -->
-  	<section class="perfil_info cell col-sm-6 col-md-6">
-  		<form>
-  			
-  			<input type="text" value="Fulano da Silva" placeholder="Nome" />
-  			<input type="email" value="fsilva@email.com" placeholder="Endereço de e-mail" />
-  			<input type="text" value="Rua dos Pinheiros, 404" placeholder="Endereço físico" />
-  			<input type="tel" value="(15) 9999-9999" placeholder="Telefone" />
-  			<input type="submit" value="Atualizar" />
-  		</form>
-  		<h2>Alterar senha</h2>
-  		<form>
-  			<input type="password" placeholder="Senha antiga" />
-  			<input type="password" placeholder="Senha nova" />
-  			<input type="password" placeholder="Digite novamente" />
-  			<input type="submit" />
-  		</form>
-  	</section>
-  </div>
+		<!-- Perfil do usuário -->
+		<section class="perfil_info cell col-sm-6 col-md-6">
+			<form>
+				<input id="cProfileName"    type="text"   value="" placeholder="Nome" />
+				<input id="cProfileEmail"   type="email"  value="" placeholder="Endereço de e-mail" />
+				<input id="cProfileAddress" type="text"   value="" placeholder="Endereço físico" />
+				<input id="cProfilePhone"   type="tel"    value="" placeholder="Telefone" />
+				<input id="cProfileUpdate"  type="button" value="Atualizar" />
+			</form>
+			<h2>Alterar senha</h2>
+			<form>
+				<input id="cProfileOldPass"     type="password" placeholder="Senha antiga" />
+				<input id="cProfileNewPass"     type="password" placeholder="Senha nova" />
+				<input id="cProfileConfirmPass" type="password" placeholder="Digite novamente" />
+				<input id="cProfileUpdatePass"  type="button"   value="Alterar Senha" />
+			</form>
+		</section>
+	</div>
 </div>

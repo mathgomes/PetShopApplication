@@ -1,30 +1,34 @@
+<!--
+File: cadastrarUsuario.html
+Authors:
+  Hugo Moraes Dzin, 8532186
+  Matheus Gomes da Silva Horta, 8532321
+  Rogiel dos Santos Silva, 8061793
+-->
+<div class="wrapper">
+  <h1 class="perfil">Cadstro de usuário</h1>
 
-	<h1 class="perfil">Fulano da Silva</h1>
+  <!-- Foto e input de alterar foto -->
+  <div class="centered row">
 
-	<!-- Foto e input de alterar foto -->
-	<div class="centered">
-		
-
-		<!-- Perfil do usuário -->
-		<section class="perfil_info cell">
-
-			<form>
-				<h3>Administrador</h3>
-				<input type="checkbox">
-				</input>
-				<h3>Cliente</h3>
-				<input type="checkbox" />
-				<input type="text" value="ID Cliente : 0045" readonly/> <!-- Pega do banco o id Automático -->
-				<input type="text" value="" placeholder="Nome" />
-				<input type="email" value="" placeholder="Endereço de e-mail" />
-				<input type="text" value="" placeholder="Endereço físico" />
-				<input type="tel" value="" placeholder="Telefone" />
-			</form>
-			<h2>Cadastrar Senha</h2>
-			<form>			
-				<input type="password" placeholder="Senha nova" />
-				<input type="password" placeholder="Digite novamente" />
-				<input type="submit" value="Cadastar" />
-			</form>
-		</section>
-	</div>
+  	<section class="perfil_foto cell col-sm-6 col-md-6">
+  		<img id="admProfilePhoto2" class="img-rounded img-responsive container-fluid" src="images/perfil.jpg" alt="Minha foto" /></img>
+  		<input id="admProfileFile2" type="file" /></input>
+  		<input id="admProfileUpdatePhoto2" type="button" value="Alterar Foto" /></input>
+  	</section>
+  	<!-- Perfil do usuário -->
+  	<section class="perfil_info cell col-sm-6 col-md-6">
+		<form>
+			<input id="admAddRadio" type="radio" name="type">Administrador</input>
+			<input id="admAddRadio2" type="radio" name="type">Cliente</input>
+			<input id="admUserName2"    type="text"   value="" placeholder="UserName" />
+			<input id="admProfileName2"    type="text"   value="" placeholder="Nome" />
+			<input id="admProfileEmail2"   type="email"  value="" placeholder="Endereço de e-mail" />
+			<input id="admProfileAddress2" type="text"   value="" placeholder="Endereço físico" />
+			<input id="admProfilePhone2"   type="tel"    value="" placeholder="Telefone" />
+			<input id="admProfileNewPass2"    type="password" placeholder="Senha nova" />
+			<input id="admAddUser2"  type="button"   value="Cadastrar" />
+		</form>
+  	</section>
+  </div>
+</div>

@@ -1,21 +1,25 @@
-
+<!--
+File: buscarProduto.html
+Authors:
+	Hugo Moraes Dzin, 8532186
+	Matheus Gomes da Silva Horta, 8532321
+	Rogiel dos Santos Silva, 8061793
+-->
 <div class="wrapper">
 	<article class="painel_de_cadastro container_fluid">
 		<h4>Cadastro de Produto</h4>
 		<form class="container_fluid">
 			<div class="form-group centered">
-				<input type="text" value = "" placeholder="Nome Produto" name="name">
-				<input type="text" value = "" placeholder="Preço Produto" name="name">
-				<input type="number" value="" placeholder="quantidade em estoque" name="name" >
-				<input type="number" value="" placeholder="quantidade vendida" name="name">
-				<input type="text" value = "" placeholder="Nome Produto" name="name">
-				<textarea class="formTextArea" placeholder = "Descrição Produto"></textarea>
+				<input id="admProdName" type="text" value = "" placeholder="Nome Produto" name="name">
+				<input id="admProdPrice" type="text" value = "" placeholder="Preço Produto" name="name">
+				<input id="admProdStock" type="number" value="" placeholder="quantidade em estoque" name="name" >
+				<input id="admProdSold" type="number" value="" placeholder="quantidade vendida" name="name">
+				<textarea id="admProdDesc" class="formTextArea" placeholder = "Descrição Produto"></textarea>
 				<h4>Foto do produto</h4>
-				<input type="file" value="Foto produto"></input>
-				<input type="submit" value="Cadastrar"  />
+				<input id="admProdPhoto" type="file" value="Foto produto"></input>
+				<input id="admProdAdd" type="button" value="Cadastrar"  />
 			</div>
 		</form>
-	</article>
-	
+	</article>	
 </div>
 <!--.wrapper-->

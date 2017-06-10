@@ -20,6 +20,16 @@ function _go() {
 }
 
 
+function _goAdmin() {
+  $('#loginUsername').val('admin');
+  $('#loginPassword').val('admin');
+  $('#loginButton').click();
+
+  setTimeout(function() {
+  }, 1000);
+}
+
+
 
 // Used to set or retrieve the user's id
 function loggedUserId(user_id) {
@@ -134,7 +144,6 @@ function customerNavbar() {
 		['#cNavServices', 'Cliente/horarioServico.html', undefined],
 		['#cNavCart', 'Cliente/carrinho.html', undefined],
 	];
-
 	button_actions.forEach(function(args) {
 		onClickLoadPage(args[0], args[1], args[2]);
 	});
@@ -143,7 +152,24 @@ function customerNavbar() {
 
 
 function adminNavbar() {
-	// copy and paste from customerNavbar?
+  // Each element contains:
+  //  [0] element id of the button
+  //  [1] html page to be redirected to
+  //  [2] callback that will be invoked after the page loads
+  var button_actions = [
+    ['#admNavProfile', 'Admin/perfil.html', customerProfile],
+    ['#admSearchUser', 'Admin/buscarUsuario.html', function(){ return adminSearchData('users'); }],
+    ['#admAddUser', 'Admin/cadastrarUsuario.html', function(){ return adminAddData('users'); }],
+    ['#admSearchProduct', 'Admin/buscarProduto.html', function(){ return adminSearchData('products'); }],
+    ['#admAddProduct', 'Admin/cadastrarProduto.html', function(){ return adminAddData('products'); }],
+    ['#admSearchService', 'Admin/buscarServico.html', function(){ return adminSearchData('services'); }],
+    ['#admAddService', 'Admin/cadastrarServico.html', function(){ return adminAddData('services'); }],
+    ['#admGains', 'Admin/estatisticas.html', undefined],
+  ];
+
+  button_actions.forEach(function(args) {
+    onClickLoadPage(args[0], args[1], args[2]);
+  });
 }
 
 
@@ -185,7 +211,7 @@ $(document).ready(function() {
 
 
 	//Admin
-
+/*
 	$(document).on("click", "a#perfilAdm", function() {
 		$("#indexCenterPage").load("Admin/perfil.html");
 	});
@@ -226,7 +252,7 @@ $(document).ready(function() {
 		$("#indexCenterPage").load("Admin/estatisticas.html",function() {
       $("#tableDiv").load("dataTable.html");
     });
-	});
+	});*/
 
 	$(document).on("click", "input#inputBuscaCliente", function() {
 		$("#indexCenterPage").load("Admin/alteraExcluiUsuario.html");

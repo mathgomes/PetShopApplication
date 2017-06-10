@@ -1,15 +1,16 @@
-  <h1 id="cTitle" class="perfil">Fulano da Silva</h1>
+<div class="wrapper">
+	<h1 id="cTitle" class="perfil">Fulano da Silva</h1>
 
 	<!-- Foto e input de alterar foto -->
-	<div class="centered">
-		<section class="perfil_foto cell">
-			<img   id="cProfilePhoto" src="" alt="Minha foto" />
+	<div class="centered row">
+		<section class="perfil_foto cell col-sm-6 col-md-6">
+			<img   id="cProfilePhoto" src="" alt="Minha foto" class="img-rounded img-responsive container-fluid"/>
 			<input id="cProfileFile" type="file" />
 			<input id="cProfileUpdatePhoto" type="button" value="Alterar Foto" />
 		</section>
 
 		<!-- Perfil do usuário -->
-		<section class="perfil_info cell">
+		<section class="perfil_info cell col-sm-6 col-md-6">
 			<form>
 				<input id="cProfileName"    type="text"   value="" placeholder="Nome" />
 				<input id="cProfileEmail"   type="email"  value="" placeholder="Endereço de e-mail" />
@@ -26,3 +27,4 @@
 			</form>
 		</section>
 	</div>
+</div>
