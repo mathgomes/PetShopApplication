@@ -204,7 +204,7 @@ function _dbPopulate(db) {
 		photo: 'images/perfil.jpg',
 		phone: '(99) 1111-1111',
 		email: 'minhoca@petshop.com',
-		address: undefined,
+		address: 'N/A',
 	});
 
 	users.add({
