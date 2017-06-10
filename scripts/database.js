@@ -292,7 +292,7 @@ function _dbPopulate(db) {
 
 	services.add({
 		name: 'Banho e tosa',
-		photo 'images/servico/tosa.jpg',
+		photo: 'images/servico/tosa.jpg',
 		description: 'Deixar bem cheirosinho :3',
 		sold_amount: 0,
 		total_income: 0,
@@ -300,7 +300,7 @@ function _dbPopulate(db) {
 
 	services.add({
 		name: 'Banho e tosa',
-		photo 'images/servico/tosa.jpg',
+		photo: 'images/servico/tosa.jpg',
 		description: 'Demora de 30 minutos a 2 horas dependendo do animal.',
 		sold_amount: 0,
 		total_income: 0,
@@ -308,7 +308,7 @@ function _dbPopulate(db) {
 
 	services.add({
 		name: 'Vacina contra raiva',
-		photo 'images/servico/vacina.png',
+		photo: 'images/servico/vacina.png',
 		description: 'Rápido e indolor.',
 		sold_amount: 0,
 		total_income: 0,
