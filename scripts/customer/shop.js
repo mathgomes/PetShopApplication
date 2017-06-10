@@ -106,7 +106,13 @@ function productPage(product_id) {
 						amount = product.stock;
 					}
 
-					addItemToCart(product.id, amount);
+					if(product.stock != 0) {
+						addItemToCart(product.id, amount);
+					}
+					else {
+						alert('Desculpe, mas não temos estoque deste produto.');
+					}
+
 				});
 			}
 		});

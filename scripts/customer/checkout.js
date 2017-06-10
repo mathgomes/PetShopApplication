@@ -50,7 +50,10 @@ function checkoutFinish() {
 
 
 function updateProductRecord(product, cart_item) {
-	if(product.stock > cart_item.amount) {
+	if(cart_item.amount < 0) {
+		cart_item.amount = 0;
+	}
+	if(cart_item.amount > product.stock) {
 		cart_item.amount = product.stock;
 	}
 
