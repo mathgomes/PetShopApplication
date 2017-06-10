@@ -11,7 +11,7 @@ console.log('Executing customer/shop.js');
 // TODO paginas
 
 // Creates a product <article> element.
-function shopArticle(product) {
+function shopArticleHtml(product) {
 	var html = '';
 
 	html += '<span class="item_wrapper"><article class="item container-fluid" ';
@@ -22,7 +22,7 @@ function shopArticle(product) {
 	html += 'alt="' + product.name  + '" />';
 
 	html += '<p class="product_name">'    + product.name  + '</p>';
-	html += '<p>R$ ' + product.price + '</p>';
+	html += '<p>R$ ' + product.price.toFixed(2) + '</p>';
 
 	html += '</article></span>';
 
@@ -44,7 +44,7 @@ function refreshProducts() {
 	dbReadAllRecords('products', function(result) {
 		if(result.success) {
 			result.data.forEach(function (product) {
-				$('#cShopProducts').append(shopArticle(product));
+				$('#cShopProducts').append(shopArticleHtml(product));
 			});
 		}
 	});
@@ -80,16 +80,16 @@ function productPage(product_id) {
 
 				$('#cProductTitle').html(product.name);
 				$('#cProductDescription').html(product.description);
-				$('#cProductPrice').html(product.price);
+				$('#cProductPrice').html(product.price.toFixed(2));
 				$('#cProductStock').html(product.stock);
 
-				$('#cPurchaseAmount').val(0);
+				$('#cPurchaseAmount').val(1);
 				$('#cPurchaseAmount').change(function(event) {
 					var target = $('#cPurchaseAmount');
 
 					// Check if amount is valid
-					if(target.val() < 0) {
-						target.val(0);
+					if(target.val() < 1) {
+						target.val(1);
 					}
 					else if(target.val() > product.stock) {
 						target.val(product.stock);
@@ -98,12 +98,15 @@ function productPage(product_id) {
 
 				$('#cAddToCart').click(function() {
 					var amount = parseInt($('#cPurchaseAmount').val(), 10);
-					if(amount > 0) {
-						addItemToCart(product.id, amount);
+
+					if(amount < 1) {
+						amount = 1;
 					}
-					else {
-						alert('Escolha uma quantidade maior que 0.');
+					else if(amount > product.stock) {
+						amount = product.stock;
 					}
+
+					addItemToCart(product.id, amount);
 				});
 			}
 		});

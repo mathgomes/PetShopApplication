@@ -4,45 +4,18 @@
 	<table class="minhas_compras">
 		<tr>
 			<th><!-- Imagem --></th>
-			<th>Nome do Produto</th>
+			<th>Nome</th>
 			<th>Preço</th>
 			<th>Qtde.</th>
 			<th><!-- Botao de Remover --></th>
 		</tr>
 
 		<tbody id="cCartItems"></tbody>
-
-		<!-- TODO: botar no CSS o tamanho das imagens -->
-		<!-- TODO: arrumar tamanho do input number no CSS -->
-		<!--
-		<tr>
-			<td><img src="images/produtos/racao.jpg" /></td>
-			<td>Ração para gatos 1kg</td>
-			<td>R$ 24.99</td>
-			<td><input type="number" value="1" /></td>
-			<td><input type="submit" value="Remover" /></td>
-		</tr>
-
-		<tr>
-			<td><img src="images/produtos/osso.jpg" /></td>
-			<td>Osso de borracha</td>
-			<td>R$ 4.99</td>
-			<td><input type="number" value="2" /></td>
-			<td><input type="button" value="Remover" /></td>
-		</tr>
-
-		<tr>
-			<td><img src="images/produtos/alpiste.jpg" /></td>
-			<td>Alpiste 500g</td>
-			<td>R$ 14.99</td>
-			<td><input type="number" value="2" /></td>
-			<td><input type="button" value="Remover" /></td>
-		</tr>-->
 	</table>
 </article>
 
 <article class="cell carrinho_opcoes">
-	<h1>Preço total: <span id="cCartTotal">R$ 64.95</span></h1>
+	<h1>Preço total: R$<span id="cCartTotal"></span></h1>
 	<input id="cBackToShop"   type="button" value="Continuar Comprando" />
 	<input id="cEmptyCart"    type="button" value="Esvaziar Carrinho" />
 	<input id="cGoToCheckout" type="button" value="Ir Para Pagamento" />

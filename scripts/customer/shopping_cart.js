@@ -13,10 +13,42 @@ function customerShoppingCart() {
 	});
 
 	$('#cEmptyCart').click(function() {
+		dbDeleteAllFromIndex(loggedUserId(), 'cartitems', 'user', function(result) {
+			if(result.success) {
+				refreshCart();
+			}
+		});
+	});
+
+	$('#cGoToCheckout').click(function() {
 
 	});
 
 	refreshCart();
+}
+
+
+
+function refreshCart() {
+	cartUpdateTotal();
+	$('#cCartItems').html('');
+
+	dbReadFromIndex(loggedUserId(), 'cartitems', 'user', function(result) {
+		if(result.success == false) {
+			return; // reduce nesting
+		}
+
+		result.data.forEach(function(item) {
+			dbReadRecord(item.product, 'products', function(result) {
+				if(result.success == false) {
+					return; // reduce nesting
+				}
+
+				var product = result.data;
+				$('#cCartItems').append(cartItemHtml(product, item.amount));
+			});
+		});
+	});
 }
 
 
@@ -29,12 +61,16 @@ function cartItemHtml(product, amount)
 		html += '<td>' + content + '</td>';
 	}
 
-	html += '<tr>';
+	html += '<tr id="cCartItem' + product.id + '">';
 	td('<img src="' + product.photo + '">');
 	td(product.name);
-	td('R$ ' + product.price);
-	td('<input type="number" value="' + amount + '">');
-	td('<input type="button" value="Remover">');
+	td('R$ ' + product.price.toFixed(2));
+	td(
+		'<input type="number" value="' + amount + '" ' +
+		'onchange="cartChangeAmount(' + product.id + ')">');
+	td(
+		'<input type="button" value="Remover" ' +
+		'onclick="cartRemoveProduct(' + product.id + ')">');
 	html += '</tr>';
 
 	return html;
@@ -42,22 +78,101 @@ function cartItemHtml(product, amount)
 
 
 
-function refreshCart() {
-	$('#cCartItems').html('');
+function cartChangeAmount(product_id) {
+	// Get new amount
+	var element = $('#cCartItem' + product_id + ' input[type="number"]');
+	var amount = parseInt(element.val());
 
-	dbReadFromIndex(loggedUserId(), 'cartitems', 'user', function(result) {
+	// Check if amount is valid and update cart item
+	dbReadRecord(product_id, 'products', function(result) {
 		if(result.success == false) {
-			return
+			cartRemoveProduct(product_id);
 		}
 
-		result.data.forEach(function(item) {
+		var product = result.data;
+
+		if(amount > product.stock) {
+			amount = product.stock;
+			element.val(amount);
+		}
+
+		if(amount <= 0) {
+			cartRemoveProduct(product_id);
+		}
+		else {
+			cartUpdateRecord(product_id, amount);
+		}
+	});
+}
+
+
+
+function cartUpdateRecord(product_id, amount) {
+	dbReadFromIndex(loggedUserId(), 'cartitems', 'user', function(result) {
+		if(result.success) {
+			var item = result.data.find(function(elem) {
+				return elem.product == product_id;
+			});
+
+			item.amount = amount;
+
+			dbUpdateRecord(item, 'cartitems', function(result) {
+				if(result.success) {
+					cartUpdateTotal();
+				}
+			});
+		}
+	});
+}
+
+
+
+function cartRemoveProduct(product_id) {
+	// Remove record from db
+	dbReadFromIndex(loggedUserId(), 'cartitems', 'user', function(result) {
+		if(result.success) {
+			var item = result.data.find(function(elem) {
+				return elem.product == product_id;
+			});
+
+			dbDeleteRecord(item.id, 'cartitems', function(result) {
+				if(result.success) {
+					// Update DOM
+					cartUpdateTotal();
+					$('#cCartItem' + product_id).remove();
+				}
+			});
+		}
+	});
+}
+
+
+
+function cartUpdateTotal() {
+	dbReadFromIndex(loggedUserId(), 'cartitems', 'user', function(result) {
+		var total = 0.0;
+
+		// No items -> total = 0
+		if(result.success == false || result.data.length == 0) {
+			$('#cCartTotal').html(total.toFixed(2));
+			return;
+		}
+
+		// Calculate item price * amount
+		result.data.forEach(function(item, index, array) {
 			dbReadRecord(item.product, 'products', function(result) {
 				if(result.success == false) {
 					return;
 				}
 
 				var product = result.data;
-				$('#cCartItems').append(cartItemHtml(product, item.amount));
+
+				total += item.amount * product.price;
+
+				if(index == array.length - 1) {
+					// Last item -> update DOM
+					$('#cCartTotal').html(total.toFixed(2));
+				}
 			});
 		});
 	});
