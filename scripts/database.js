@@ -308,7 +308,7 @@ function _dbPopulate(db) {
 
 	services.add({
 		name: 'Vacina contra raiva',
-		photo 'images/servico/vacina.jpg',
+		photo 'images/servico/vacina.png',
 		description: 'Rápido e indolor.',
 		sold_amount: 0,
 		total_income: 0,
