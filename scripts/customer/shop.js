@@ -14,17 +14,17 @@ console.log('Executing customer/shop.js');
 function shopArticle(product) {
 	var html = '';
 
-	html += '<article class="item container-fluid" ';
+	html += '<span class="item_wrapper"><article class="item container-fluid" ';
 	html += 'onclick="productPage(' + product.id + ')">';
 
 	html += '<img class="img-reponsive" ';
 	html += 'src="' + product.photo + '" ';
 	html += 'alt="' + product.name  + '" />';
 
-	html += '<p>'    + product.name  + '</p>';
+	html += '<p class="product_name">'    + product.name  + '</p>';
 	html += '<p>R$ ' + product.price + '</p>';
 
-	html += '</article>';
+	html += '</article></span>';
 
 	return html;
 }
@@ -33,11 +33,36 @@ function shopArticle(product) {
 
 // Reads all products from the database and loads them on the page
 function customerShop() {
+	$('#cShopSearchButton').click(shopFilter);
+	refreshProducts();
+}
+
+
+
+function refreshProducts() {
+	$('#cShopProducts').html();
 	dbReadAllRecords('products', function(result) {
 		if(result.success) {
 			result.data.forEach(function (product) {
 				$('#cShopProducts').append(shopArticle(product));
 			});
+		}
+	});
+}
+
+
+
+function shopFilter() {
+	var search_query = $("#cShopSearchQuery").val().toLowerCase();
+	console.log('Searching for: ', search_query);
+	$('.item_wrapper').each( function() {
+		var product_name = $(this).find('.product_name').html().toLowerCase();
+		console.log(product_name);
+		if(product_name.includes(search_query)) {
+			$(this).css('display', 'initial');
+		}
+		else {
+			$(this).css('display', 'none');
 		}
 	});
 }
@@ -105,14 +130,14 @@ function addItemToCart(product_id, new_amount, ) {
 					amount: new_amount,
 				};
 
-				dbCreateRecord(item, 'cartitems', shoppingCartPage);
+				dbCreateRecord(item, 'cartitems', goToShoppingCart);
 			}
 			// Product already exists: update amount
 			else {
 				// When the cart page gets loaded, this amount will be
 				// verified to see if it doesnt overflow the product's stock
 				item.amount += new_amount;
-				dbUpdateRecord(item, 'cartitems', shoppingCartPage);
+				dbUpdateRecord(item, 'cartitems', goToShoppingCart);
 			}
 		}
 	});
@@ -120,8 +145,6 @@ function addItemToCart(product_id, new_amount, ) {
 
 
 
-function shoppingCartPage() {
-	loadPage('Cliente/carrinho.html', function() {
-
-	});
+function goToShoppingCart() {
+	loadPage('Cliente/carrinho.html', customerShoppingCart);
 }

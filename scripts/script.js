@@ -15,7 +15,7 @@ function _go() {
 	$('#loginButton').click();
 
 	setTimeout(function() {
-		$('#cNavShop').click();
+		$('#cNavCart').click();
 	}, 1000);
 }
 
@@ -75,6 +75,9 @@ function fileReaderCallback(unique_selector, callback) {
 		var fr = new FileReader();
 		fr.onload = callback;
 		fr.readAsDataURL(file);
+	}
+	else {
+		alert('Especifique um arquivo!');
 	}
 }
 
@@ -142,7 +145,7 @@ function customerNavbar() {
 		['#cNavAnimals', 'Cliente/situacaoAnimais.html', customerAnimals],
 		['#cNavShop', 'Cliente/loja.html', customerShop],
 		['#cNavServices', 'Cliente/horarioServico.html', undefined],
-		['#cNavCart', 'Cliente/carrinho.html', undefined],
+		['#cNavCart', 'Cliente/carrinho.html', customerShoppingCart],
 	];
 	button_actions.forEach(function(args) {
 		onClickLoadPage(args[0], args[1], args[2]);
