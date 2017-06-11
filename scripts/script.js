@@ -260,6 +260,9 @@ $(document).ready(function() {
 	$(document).on("click", "input#inputBuscaCliente", function() {
 		$("#indexCenterPage").load("Admin/alteraExcluiUsuario.html");
 	});
+
+
+
 });
 
 
