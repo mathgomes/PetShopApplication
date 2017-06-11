@@ -15,7 +15,7 @@ function _go() {
 	$('#loginButton').click();
 
 	setTimeout(function() {
-		$('#cNavCart').click();
+		$('#cNavServices').click();
 	}, 1000);
 }
 
@@ -144,7 +144,7 @@ function customerNavbar() {
 		['#cNavProfile', 'Cliente/perfil.html', customerProfile],
 		['#cNavAnimals', 'Cliente/situacaoAnimais.html', customerAnimals],
 		['#cNavShop', 'Cliente/loja.html', customerShop],
-		['#cNavServices', 'Cliente/horarioServico.html', undefined],
+		['#cNavServices', 'Cliente/horarioServico.html', customerServices],
 		['#cNavCart', 'Cliente/carrinho.html', customerShoppingCart],
 	];
 	button_actions.forEach(function(args) {
@@ -181,81 +181,6 @@ $(document).ready(function() {
 	dbInit();
 
 	loadPage('login_page.html', setLoginAction);
-
-	//Customer
-	//MEXENDO NISSO AQUI
-	/*
-	$(document).on("click", "a#loja", function() {
-		$("#indexCenterPage").load("Cliente/loja.html");
-	});
-	$(document).on("click", "#cNavServices", function() {
-		console.log('oi');
-		$("#indexCenterPage").load("Cliente/horarioServico.html");
-	});
-
-
-	$(document).on("click", "a#carrinho", function() {
-		$("#indexCenterPage").load("Cliente/carrinho.html");
-	});
-
-
-
-	$(document).on("click", ".item img", function() {
-		$("#indexCenterPage").load("Cliente/compraProduto.html");
-	});
-	$(document).on("click", "#purchaseForm #confirm", function() {
-		$("#indexCenterPage").load("Cliente/carrinho.html");
-	});
-	$(document).on("click", ".carrinho_opcoes #checkout", function() {
-		$("#indexCenterPage").load("Cliente/checkout.html");
-	});*/
-
-
-
-
-	//Admin
-/*
-	$(document).on("click", "a#perfilAdm", function() {
-		$("#indexCenterPage").load("Admin/perfil.html");
-	});
-
-
-	$(document).on("click", "a#cadastrarUsuario", function() {
-		$("#indexCenterPage").load("Admin/cadastrarUsuario.html");
-	});
-
-	$(document).on("click", "a#buscarUsuario", function() {
-		$("#indexCenterPage").load("Admin/buscarUsuario.html",function() {
-      $("#tableDiv").load("dataTable.html");
-    });
-	});
-  $(document).on("click", "a#buscarProduto", function() {
-    $("#indexCenterPage").load("Admin/buscarProduto.html",function() {
-      $("#tableDiv").load("dataTable.html");
-    });
-  });
-  $(document).on("click", "a#buscarServico", function() {
-    $("#indexCenterPage").load("Admin/buscarServico.html",function() {
-      $("#tableDiv").load("dataTable.html");
-    });
-  });
-
-
-	$(document).on("click", "a#cadastrarProduto", function() {
-		$("#indexCenterPage").load("Admin/cadastrarProduto.html");
-	});
-
-
-	$(document).on("click", "a#cadastrarServico", function() {
-		$("#indexCenterPage").load("Admin/cadastrarServico.html");
-	});
-
-
-	$(document).on("click", "a#ganhos", function() {
-		$("#indexCenterPage").load("Admin/estatisticas.html",function() {
-      $("#tableDiv").load("dataTable.html");
-    });
-	});*/
 
 	$(document).on("click", "input#inputBuscaCliente", function() {
 		$("#indexCenterPage").load("Admin/alteraExcluiUsuario.html");

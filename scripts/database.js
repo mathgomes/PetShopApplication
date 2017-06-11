@@ -17,6 +17,7 @@
  *  dbReadFromIndex(key, store, index, callback)
  *  dbUpdateRecord(record, store, callback)
  *  dbDeleteRecord(record_id, store, callback)
+ *  dbDeleteAllFromIndex(key, store, index, callback)
  *
  *  dbUserLogin(user, pass, callback)
  *
@@ -203,7 +204,7 @@ function _dbPopulate(db) {
 		photo: 'images/perfil.jpg',
 		phone: '(99) 1111-1111',
 		email: 'minhoca@petshop.com',
-		address: undefined,
+		address: 'N/A',
 	});
 
 	users.add({
@@ -282,6 +283,25 @@ function _dbPopulate(db) {
 		description: 'Alimento para gatos',
 		price: 25.00,
 		stock: 25,
+		sold_amount: 0,
+		total_income: 0,
+	});
+
+
+	var services = trans.objectStore('services');
+
+	services.add({
+		name: 'Banho e tosa',
+		photo: 'images/servico/tosa.jpg',
+		description: 'Demora de 30 minutos a 2 horas dependendo do animal.',
+		sold_amount: 0,
+		total_income: 0,
+	});
+
+	services.add({
+		name: 'Vacina contra raiva',
+		photo: 'images/servico/vacina.png',
+		description: 'Rápido e indolor.',
 		sold_amount: 0,
 		total_income: 0,
 	});
@@ -468,6 +488,39 @@ function dbDeleteRecord(record_id, store, callback) {
 	_dbGetStore(store, 'readwrite', function(store) {
 		var request = store.delete(record_id);
 		_dbRequestResult(request, callback);
+	});
+}
+
+
+
+// Deletes all records with specified key from index
+function dbDeleteAllFromIndex(key, store, index, callback) {
+	dbReadFromIndex(key, store, index, function(result) {
+
+		if(result.success) {
+			_dbGetStore(store, 'readwrite', function(store) {
+				var total_requests = result.data.length;
+				var complete_count = 0;
+
+				// Makes one delete request for each element
+				result.data.forEach(function(elem) {
+					var request = store.delete(elem.id);
+
+					request.onsuccess = function(event) {
+						complete_count += 1;
+						if(complete_count == total_requests) {
+							// Invokes the callback when all requests complete
+							callback(_dbSuccess(undefined));
+						}
+					}
+
+					request.onerror = request.onsuccess;
+				});
+			});
+		}
+		else {
+			callback(result);
+		}
 	});
 }
 
