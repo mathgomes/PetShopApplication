@@ -125,7 +125,7 @@ function userTableRow(user, tableName, tableID) {
 
 		html += td(user.address);
 		html += td(buttonApagar('deleteUser(' + user.id + ')'));
-		html += td(buttonAlterar('alterUser(' + argumento + ')'));
+		html += td(buttonAlterar('alterUser(' + user.id + ')'));
 	}
 	html += '</tr>';
 	cellClick();
