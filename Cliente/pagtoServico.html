@@ -1,7 +1,7 @@
 
 <div class="centered">
 	<article class="cell">
-		<h1>Confirmar Agendamento</h1>
+		<h1>Realizar Agendamento</h1>
 		<table class="minhas_compras">
 			<tr>
 				<th></th>
@@ -10,27 +10,41 @@
 
 			<!-- TODO: botar no CSS o tamanho das imagens -->
 			<!-- TODO: arrumar tamanho do input number no CSS -->
+		<!--<select id="cServiceList">
+			<option disabled selected>Serviço</option>
+		</select>
+
+		<select id="cAnimalList">
+			<option disabled selected>Animal</option>
+		</select>
+		-->
+			<tr>
+				<td><h2>Data/Horário:</h2></td>
+				<td id="cServiceDateTime"></td>
+			</tr>
 
 			<tr>
 				<td><h2>Serviço:</h2></td>
-				<td>Banho e cortar as unhas</td>
+				<td>
+					<select id="cServiceList">
+						<option disabled selected>Serviço</option>
+					</select>
+				</td>
 			</tr>
-			<tr>
-				<td><h2>Data/Horário:</h2></td>
-				<td>20/04/2017 às 16:00</td>
-			</tr>
+
 			<tr>
 				<td><h2>Animal:</h2></td>
 				<td>
-					<img src="images/pets/persian.jpg" alt="frajola" />
-					<p>Frajola</p>
+					<select id="cAnimalList">
+						<option disabled selected>Animal</option>
+					</select>
 				</td>
 			</tr>
 
 		</table>
 	</article>
 	<article class="cell carrinho_opcoes">
-		<h1>Preço total: R$ 15.00</h1>
+		<h1>Preço total: R$ <span id="cServicePrice"></span></h1>
 		<form>
 			<input type="text" placeholder="Número do Cartão" />
 			<select>
@@ -41,7 +55,7 @@
 			</select>
 			<input type="text" placeholder="Código de verificação" />
 			<input type="text" placeholder="Validade (MM/AAAA)" />
-			<input type="submit" value="Finalizar" />
+			<input id="cConfirmService" type="button" value="Finalizar" />
 		</form>
 	</article>
 </div>

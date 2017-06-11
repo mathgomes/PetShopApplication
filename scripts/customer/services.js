@@ -10,27 +10,7 @@ console.log('Executing customer/services.js');
 
 
 function customerServices() {
-	/* TODO usar no checkout de servico
-	function option(value, text) {
-		return '<option value="' + value + '">' + text + '</option>';
-	}
 
-	dbReadAllRecords('services', function(result) {
-		if(result.success) {
-			result.data.forEach(function(service) {
-				$('#cServiceList').append(option(service.id, service.name));
-			});
-		}
-	});
-
-	dbReadFromIndex(loggedUserId(), 'animals', 'owner', function(result) {
-		if(result.success) {
-			result.data.forEach(function(animal) {
-				$('#cAnimalList').append(option(animal.id, animal.name));
-			});
-		}
-	});
-	*/
 
 	// Automatic date formatting
 	$('#cServiceDate').change(function() {
@@ -156,7 +136,7 @@ function displayTimeSlots(date) {
 		// Update table with unavailable timeslots, from database
 		// result.data contains already occupied time slots
 		result.data.forEach(function(slot) {
-			var row_id = '#cTimeSlot' + slot.id;
+			var row_id = '#cTimeSlot' + slot.time;
 
 			// Retrieve service and animal
 			dbReadRecord(slot.service, 'services', function(result) {
@@ -206,9 +186,8 @@ function initTimeSlotTable(date) {
 		td('<img class="cSlotImg" width=60 height=40 src="images/servico/disponivel.png">' +
 			'<br><span class="cSlotSvc"></span>');
 		td('<span class="cSlotAnimal">Vago</span>');
-		var _x = ('<input class="cSlotBtn" type="button" value="Agendar" ' +
-			' onclick="requestService(' + [date.getTime(), timeslot] + ')"');
-		td(_x); console.log(_x);
+		td('<input class="cSlotBtn" type="button" value="Agendar" ' +
+			'onclick="serviceCheckout(' + [date.getTime(), timeslot] + ')" >');
 		html += '</tr>';
 
 		return html;
@@ -228,16 +207,87 @@ function initTimeSlotTable(date) {
 
 
 
-function requestService(date, timeslot) {
-	console.log('request', date, timeslot);
-}
-
-
-
 // Used when the slot's service or animal don't exist
 function deleteIfInvalid(slot, error) {
 	if(error == 'NotFoundError')
 	{
 		dbDeleteRecord(slot.id, 'timeslots');
 	}
+}
+
+
+
+function serviceCheckout(date, timeslot) {
+	loadPage('Cliente/pagtoServico.html', function() {
+
+		function option(value, text) {
+			return '<option value="' + value + '">' + text + '</option>';
+		}
+
+		$('#cServiceDateTime').html(displayTime(date, timeslot));
+
+		dbReadAllRecords('services', function(result) {
+			if(result.success) {
+				result.data.forEach(function(service) {
+					$('#cServiceList').append(option(service.id, service.name));
+				});
+			}
+		});
+
+		dbReadFromIndex(loggedUserId(), 'animals', 'owner', function(result) {
+			if(result.success) {
+				result.data.forEach(function(animal) {
+					$('#cAnimalList').append(option(animal.id, animal.name));
+				});
+			}
+		});
+
+		console.log('ha');
+		$('#cServiceList').change(function() {
+			var service_id = parseInt($(this).val());
+
+			dbReadRecord(service_id, 'services', function(result) {
+				if(result.success) {
+					$('#cServicePrice').html(result.data.price);
+				}
+			});
+		});
+
+		$('#cConfirmService').click(function() {
+			var service_str = $('#cServiceList').val();
+			var animal_str = $('#cAnimalList').val();
+
+			if(service_str == '' || animal_str == '') {
+				alert('Especifique o serviço e o animal');
+				return;
+			}
+
+			var service = parseInt(service_str);
+			var animal  = parseInt(animal_str);
+
+			var record = {
+				date: date,
+				time: timeslot,
+				service: service,
+				animal: animal,
+			};
+
+			dbCreateRecord(record, 'timeslots', function(result) {
+				if(result.success) {
+					alert('Agendamento confirmado.');
+					$('#cNavAnimals').click();
+				}
+			});
+		});
+	});
+}
+
+
+
+function displayTime(date, timeslot) {
+	date = new Date(date);
+	timeslot = (timeslot + 9) + ':00';
+
+	return date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear() +
+		' ' + timeslot;
 }
