@@ -15,7 +15,7 @@ function _go() {
 	$('#loginButton').click();
 
 	setTimeout(function() {
-		$('#cNavCart').click();
+		$('#cNavServices').click();
 	}, 1000);
 }
 
@@ -144,7 +144,7 @@ function customerNavbar() {
 		['#cNavProfile', 'Cliente/perfil.html', customerProfile],
 		['#cNavAnimals', 'Cliente/situacaoAnimais.html', customerAnimals],
 		['#cNavShop', 'Cliente/loja.html', customerShop],
-		['#cNavServices', 'Cliente/horarioServico.html', undefined],
+		['#cNavServices', 'Cliente/horarioServico.html', customerServices],
 		['#cNavCart', 'Cliente/carrinho.html', customerShoppingCart],
 	];
 	button_actions.forEach(function(args) {
