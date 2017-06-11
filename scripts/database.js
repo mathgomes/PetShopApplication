@@ -39,9 +39,7 @@
  *   photo:    (image object)
  *   phone:    string
  *   email:    string, unique
- *   address:
- *     is_admin  -> undefined
- *     !is_admin -> string
+ *   address:  string
  *
  * animals:
  *   id:    auto-generated key
@@ -72,11 +70,15 @@
  *
  * timeslots:
  *   id:      auto-generated key
- *   date:    Date object
- *   time:    string in hh:mm format
+ *   date:    from Date.getTime()
+ *   time:    integer from 1 to 10
  *   in_use:  true or false
- *   service: id from table 'services'
- *   animal:  id from table 'animals'
+ *   in_use == true
+ *     service: id from table 'services'
+ *     animal:  id from table 'animals'
+ *   in_use == false
+ *     service: null
+ *     animal:  null
  *
  * cartitems:
  *   id:      auto-generated key
@@ -179,7 +181,7 @@ function _dbCreateStores(db) {
 	newIndex(cart_items, 'user', false);
 	newIndex(cart_items, 'product', false);
 
-	newIndex(services, 'name', false);
+	newIndex(services,  'name', false);
 	newIndex(timeslots, 'date', false);
 }
 
