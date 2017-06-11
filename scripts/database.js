@@ -294,6 +294,7 @@ function _dbPopulate(db) {
 		name: 'Banho e tosa',
 		photo: 'images/servico/tosa.jpg',
 		description: 'Demora de 30 minutos a 2 horas dependendo do animal.',
+		price: 40.00,
 		sold_amount: 0,
 		total_income: 0,
 	});
@@ -302,6 +303,7 @@ function _dbPopulate(db) {
 		name: 'Vacina contra raiva',
 		photo: 'images/servico/vacina.png',
 		description: 'Rápido e indolor.',
+		price: 30.00,
 		sold_amount: 0,
 		total_income: 0,
 	});

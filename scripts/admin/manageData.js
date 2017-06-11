@@ -74,17 +74,6 @@ function adminSearchData(tableName) {
 	}
 }
 
-/*function adminRemoveData(tableName) {
- if(tableName === 'users') {
-
- }
- else if(tableName === 'products') {
-
- }
- else if(tableName === 'services') {
-
- }
- }*/
 function adminAlterData(tableName) {
 	if (tableName === 'users') {
 
@@ -100,7 +89,7 @@ function td(content) {
 }
 
 function img(src, alt) {
-	return '<img src="' + src + '" alt="' + alt + '" class="img-responsive foto">';
+	return '<img src="' + src + '" alt="' + alt + '" class="img-responsive foto  " contenteditable = false >';
 }
 
 function buttonApagar(onclick) {
@@ -128,7 +117,7 @@ function userTableRow(user, tableName, tableID) {
 		html += td(buttonAlterar('alterUser(' + user.id + ')'));
 	}
 	html += '</tr>';
-	cellClick();
+	cellClick('#admUserTable');
 
 	return html;
 }
@@ -144,10 +133,10 @@ function prodTableRow(product, tableName, tableID) {
 	html += td(product.sold_amount);
 	html += td(product.total_income);
 	html += td(product.description);
-	html += td(button('deleteProd(' + product.id + ')'));
-
+	html += td(buttonApagar('deleteProd(' + product.id + ')'));
+	html += td(buttonAlterar('alterProd(' + product.id + ')'));
 	html += '</tr>';
-
+	cellClick('#admProdsTable');
 	return html;
 }
 
@@ -161,7 +150,11 @@ function servTableRow(service, tableName, tableID) {
 	html += td(service.sold_amount);
 	html += td(service.total_income);
 	html += td(service.description);
+	html += td(buttonApagar('deleteServico(' + service.id + ')'));
+	html += td(buttonAlterar('alterServico(' + service.id + ')'));
 	html += '</tr>';
+	cellClick('#admServsTable');
+
 	return html;
 }
 
@@ -188,10 +181,65 @@ function deleteUser(user_id) {
 	});
 }
 
-function alterUser(argumento) {
-	alert(argumento);
-	//refreshTable('users', '#admUserTable', userTableRow);
+function alterUser(user_id) {
 
+	var username,
+	    name,
+	    email,
+	    phone,
+	    address;
+
+	$("tr").click(function() {
+		$(this).find('td').each(function(i) {
+			$th = $("thead th")[i];
+			//console.log(jQuery($th).text() + ": " + $(this).html())
+
+			switch(jQuery($th).text()) {
+
+			case 'Username':
+				username = $(this).html();
+				break;
+			case 'Nome':
+				name = $(this).html();
+				break;
+			case 'Email':
+				email = $(this).html();
+				break;
+			case 'Telefone':
+				phone = $(this).html();
+				break;
+			case 'Endereço':
+				address = $(this).html();
+				break;
+			default:
+				break;
+
+			}
+
+		});
+	});
+
+	dbReadRecord(user_id, 'users', function(result) {
+		if (result.success == false)
+			return;
+
+		var user = result.data;
+		// resultado da busca
+		user.username = username;
+		user.name = name;
+		user.phone = phone;
+		user.email = email;
+		user.address = address;
+
+		dbUpdateRecord(user, 'users', function(result) {//salva no banco de dados
+			if (result.success == true)
+				alert("Usuário alterado com sucesso");
+			else
+				alert("Usuário não alterado");
+
+		});
+
+	});
 }
 
 function deleteProd(product_id) {
@@ -207,8 +255,124 @@ function deleteProd(product_id) {
 	});
 }
 
-function deleteServico(servico_id) {
+function alterProd(product_id) {
 
+	var name,
+	    description,
+	    price,
+	    stock;
+
+	$("tr").click(function() {
+		$(this).find('td').each(function(i) {
+			$th = $("thead th")[i];
+
+			switch(jQuery($th).text()) {
+
+			case 'Name':
+				name = $(this).html();
+				break;
+			case 'Preço':
+				price = $(this).html();
+				break;
+			case 'Estoque':
+				stock = $(this).html();
+				break;
+			case 'Descrição':
+				description = $(this).html();
+				break;
+			
+			default:
+				break;
+
+			}
+
+		});
+	});
+
+	dbReadRecord(product_id, 'products', function(result) {
+		if (result.success == false)
+			return;
+
+		var product = result.data;
+		// resultado da busca
+		product.name = name;
+		product.description = description;
+		product.price = parseFloat(price);
+		product.stock = parseInt(stock);
+
+		dbUpdateRecord(product, 'products', function(result) {//salva no banco de dados
+			if (result.success == true)
+				alert("Produto alterado com sucesso");
+			else
+				alert("Produto não alterado");
+
+		});
+
+	});
+}
+
+function deleteServico(service_id) {
+
+	dbDeleteRecord(service_id, 'services', function(result) {
+		if (result.success) {
+			alert('Produto apagado com sucesso.');
+		} else {
+			alert('Erro ao apagar produto.');
+			console.log('deleteObject:', result.error);
+		}
+		refreshTable('services', '#admServsTable', servTableRow)
+
+	});
+}
+
+function alterServico(servico_id) {
+
+	var name,
+	    description,
+	    price;
+
+	$("tr").click(function() {
+		$(this).find('td').each(function(i) {
+			$th = $("thead th")[i];
+
+			switch(jQuery($th).text()) {
+
+			case 'Name':
+				name = $(this).html();
+				break;
+			case 'Preço':
+				price = $(this).html();
+				break;
+			case 'Descrição':
+				description = $(this).html();
+				break;
+			default:
+				break;
+
+			}
+
+		});
+	});
+
+	dbReadRecord(servico_id, 'services', function(result) {
+		if (result.success == false)
+			return;
+
+		var service = result.data;
+		// resultado da busca
+		service.name = name;
+		service.price = parseFloat(price);
+		service.description = description;
+
+		dbUpdateRecord(service, 'services', function(result) {//salva no banco de dados
+			if (result.success == true)
+				alert("Serciço alterado com sucesso");
+			else
+				alert("Serviço não alterado");
+
+		});
+
+	});
 }
 
 function createObject(tableName, tableID, tableRow, obj) {
@@ -224,9 +388,9 @@ function createObject(tableName, tableID, tableRow, obj) {
 
 }
 
-function cellClick() {
+function cellClick(idTabela) {// torna a tabela clicavel
 
-	$('#admUserTable').on({
+	$(idTabela).on({
 		'dblclick' : function() {
 			$(this).prop('contenteditable', true);
 		},
