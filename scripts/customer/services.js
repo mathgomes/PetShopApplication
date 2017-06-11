@@ -10,6 +10,7 @@ console.log('Executing customer/services.js');
 
 
 function customerServices() {
+	/* TODO usar no checkout de servico
 	function option(value, text) {
 		return '<option value="' + value + '">' + text + '</option>';
 	}
@@ -29,11 +30,14 @@ function customerServices() {
 			});
 		}
 	});
+	*/
 
+	// Automatic date formatting
 	$('#cServiceDate').change(function() {
 		$(this).val( formatDateInput($(this).val()) );
 	});
 
+	// Display a table with available time slots
 	$('#cServiceSearch').click(function() {
 		var dd_mm_aaaa = $('#cServiceDate').val();
 		var date = processDateString(dd_mm_aaaa);
@@ -46,11 +50,13 @@ function customerServices() {
 		}
 	});
 
+	// By default, show available time slots for the current date
 	searchTodaysTimeSlots();
 }
 
 
 
+// Adds slashes, removes letters etc from a date string
 function formatDateInput(dd_mm_aaaa) {
 	var result = '';
 	var state = 0; // 0: days, 1: months, 2: years
@@ -99,6 +105,7 @@ function formatDateInput(dd_mm_aaaa) {
 }
 
 
+
 // Creates a Date object from a string in DD/MM/AAAA format
 // Returns null if the date is invalid.
 function processDateString(dd_mm_aaaa) {
@@ -126,6 +133,7 @@ function processDateString(dd_mm_aaaa) {
 
 
 
+
 function searchTodaysTimeSlots() {
 	var now = new Date();
 	var dd_mm_aaaa = now.getDate() + '/' + now.getMonth() + '/' + now.getFullYear();
@@ -138,21 +146,55 @@ function searchTodaysTimeSlots() {
 
 function displayTimeSlots(date) {
 	dbReadFromIndex(date.getTime(), 'timeslots', 'date', function(result) {
-		if(result.success) {
-			console.log(result.data);
+		if(result.success == false) {
+			return; // :(
 		}
 
-		initServiceTable(date);
+		// Creates a table with all slots available
+		initTimeSlotTable(date);
+
+		// Update table with unavailable timeslots, from database
+		// result.data contains already occupied time slots
+		result.data.forEach(function(slot) {
+			var row_id = '#cTimeSlot' + slot.id;
+
+			// Retrieve service and animal
+			dbReadRecord(slot.service, 'services', function(result) {
+				if(result.success == false) {
+					// Service not found -> invalid time slot
+					deleteIfInvalid(slot, error);
+					return;
+				}
+
+				var service_img = result.data.photo;
+				var service_name = result.data.name;
+
+				dbReadRecord(slot.animal, 'animals', function(result) {
+					if(result.success == false) {
+						// Animal not found -> invalid time slot
+						deleteIfInvalid(slot, error);
+						return;
+					}
+
+					var animal_name = result.data.name;
+
+					$(row_id + ' .cSlotImg').attr('src', service_img);
+					$(row_id + ' .cSlotSvc').html(service_name);
+					$(row_id + ' .cSlotAnimal').html(animal_name);
+					$(row_id + ' .cSlotBtn').prop('disabled', true);
+				});
+			});
+		});
 	});
 }
 
 
 
-function initServiceTable(date) {
-	console.log('initservicetable');
+function initTimeSlotTable(date) {
+
+
 
 	function rowHtml(timeslot, time1, time2) {
-		console.log('rowhtml');
 		var html = '';
 
 		function td(content) {
@@ -161,13 +203,18 @@ function initServiceTable(date) {
 
 		html += '<tr id="cTimeSlot' + timeslot + '">';
 		td('<b>' + time1 + ' ~ ' + time2 + '</b>');
-		td('<img width=60 height=40 src="images/servico/disponivel.png">');
-		td('-');
-		td('<input type="button" value="Agendar" onclick="requestService(' + [date, timeslot] + ')"');
+		td('<img class="cSlotImg" width=60 height=40 src="images/servico/disponivel.png">' +
+			'<br><span class="cSlotSvc"></span>');
+		td('<span class="cSlotAnimal">Vago</span>');
+		var _x = ('<input class="cSlotBtn" type="button" value="Agendar" ' +
+			' onclick="requestService(' + [date.getTime(), timeslot] + ')"');
+		td(_x); console.log(_x);
 		html += '</tr>';
 
 		return html;
 	}
+
+
 
 	$('#cTimeSlots').html('');
 	for(var i = 0; i < 10; i++) {
@@ -183,4 +230,14 @@ function initServiceTable(date) {
 
 function requestService(date, timeslot) {
 	console.log('request', date, timeslot);
+}
+
+
+
+// Used when the slot's service or animal don't exist
+function deleteIfInvalid(slot, error) {
+	if(error == 'NotFoundError')
+	{
+		dbDeleteRecord(slot.id, 'timeslots');
+	}
 }

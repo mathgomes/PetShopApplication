@@ -16,7 +16,13 @@ function _go() {
 
 	setTimeout(function() {
 		$('#cNavServices').click();
+
+		setTimeout(function() {
+			$('#cServiceDate').val('20/06/2017');
+			$('#cServiceSearch').click();
+		}, 1000);
 	}, 1000);
+
 }
 
 
