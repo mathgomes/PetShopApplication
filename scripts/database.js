@@ -71,14 +71,9 @@
  * timeslots:
  *   id:      auto-generated key
  *   date:    from Date.getTime()
- *   time:    integer from 1 to 10
- *   in_use:  true or false
- *   in_use == true
- *     service: id from table 'services'
- *     animal:  id from table 'animals'
- *   in_use == false
- *     service: null
- *     animal:  null
+ *   time:    integer from 0 to 9
+ *   service: id from table 'services'
+ *   animal:  id from table 'animals'
  *
  * cartitems:
  *   id:      auto-generated key
@@ -308,6 +303,23 @@ function _dbPopulate(db) {
 		price: 30.00,
 		sold_amount: 0,
 		total_income: 0,
+	});
+
+
+	var timeslots = trans.objectStore('timeslots');
+
+	timeslots.add({
+		date: (new Date('06/20/2017')).getTime(),
+		time: 5,
+		service: 1,
+		animal: 1,
+	});
+
+	timeslots.add({
+		date: (new Date('06/20/2017')).getTime(),
+		time: 7,
+		service: 2,
+		animal: 2,
 	});
 }
 
