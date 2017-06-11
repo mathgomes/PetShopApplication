@@ -71,14 +71,9 @@
  * timeslots:
  *   id:      auto-generated key
  *   date:    from Date.getTime()
- *   time:    integer from 1 to 10
- *   in_use:  true or false
- *   in_use == true
- *     service: id from table 'services'
- *     animal:  id from table 'animals'
- *   in_use == false
- *     service: null
- *     animal:  null
+ *   time:    integer from 0 to 9
+ *   service: id from table 'services'
+ *   animal:  id from table 'animals'
  *
  * cartitems:
  *   id:      auto-generated key
@@ -296,6 +291,7 @@ function _dbPopulate(db) {
 		name: 'Banho e tosa',
 		photo: 'images/servico/tosa.jpg',
 		description: 'Demora de 30 minutos a 2 horas dependendo do animal.',
+		price: 15,
 		sold_amount: 0,
 		total_income: 0,
 	});
@@ -304,8 +300,26 @@ function _dbPopulate(db) {
 		name: 'Vacina contra raiva',
 		photo: 'images/servico/vacina.png',
 		description: 'Rápido e indolor.',
+		price: 20,
 		sold_amount: 0,
 		total_income: 0,
+	});
+
+
+	var timeslots = trans.objectStore('timeslots');
+
+	timeslots.add({
+		date: (new Date('06/20/2017')).getTime(),
+		time: 5,
+		service: 1,
+		animal: 1,
+	});
+
+	timeslots.add({
+		date: (new Date('06/20/2017')).getTime(),
+		time: 7,
+		service: 2,
+		animal: 2,
 	});
 }
 
