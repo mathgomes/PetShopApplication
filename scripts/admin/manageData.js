@@ -7,6 +7,13 @@
 
 console.log('Executing admin/manageData.js');
 
+
+/*
+Functions that create objects from user inputs
+function createUserContainer()
+function createProdContainer()
+function createServContainer()
+*/
 function createUserContainer() {
 	var new_object = {
 		is_admin : ($('#admAddRadio').is(':checked')) ? true : false,
@@ -46,12 +53,17 @@ function createServContainer() {
 	return new_object;
 }
 
+
+/*
+Call the function that adds an object to the database based on whats selected
+function adminAddData(tableName)
+	tableName -> name of the table body to display the data
+*/
 function adminAddData(tableName) {
 
 	if (tableName === 'users') {
 		$('#admAddUser2').click(function() {
 			createObject(tableName, '#admUserTable', userTableRow, createUserContainer());
-
 		});
 	} else if (tableName === 'products') {
 		$('#admProdAdd').click(function() {
@@ -74,16 +86,6 @@ function adminSearchData(tableName) {
 	}
 }
 
-function adminAlterData(tableName) {
-	if (tableName === 'users') {
-
-	} else if (tableName === 'products') {
-
-	} else if (tableName === 'services') {
-
-	}
-}
-
 function td(content) {
 	return '<td>' + content + '</td>';
 }
@@ -100,6 +102,14 @@ function buttonAlterar(onclick) {
 	return '<input type="button" value="Alterar" onclick="' + onclick + '">';
 }
 
+/*
+Functions that create a new <tr> tag containing all information 
+of an object to be displayed
+
+function userTableRow(user, tableName, tableID)
+function prodTableRow(product, tableName, tableID)
+function servTableRow(service, tableName, tableID)
+*/
 function userTableRow(user, tableName, tableID) {
 	var html = '';
 
@@ -158,6 +168,11 @@ function servTableRow(service, tableName, tableID) {
 	return html;
 }
 
+
+/*
+Refreshes the table by displaying all data of a collection of objects
+function refreshTable(tableName, tableID, tableRow)
+*/
 function refreshTable(tableName, tableID, tableRow) {
 	$(tableID).html('');
 	dbReadAllRecords(tableName, function(result) {
