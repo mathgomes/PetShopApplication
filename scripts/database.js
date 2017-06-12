@@ -178,6 +178,7 @@ function _dbCreateStores(db) {
 
 	newIndex(services,  'name', false);
 	newIndex(timeslots, 'date', false);
+	newIndex(timeslots, 'animal', false);
 }
 
 
