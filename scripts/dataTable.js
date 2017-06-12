@@ -18,7 +18,7 @@
 	for (i = 1; i < tr.length; i++) {
 		td = tr[i].getElementsByTagName("td");
 		data = ""
-		for(j = 1; j < td.length; j++) {
+		for(j = 1; j < td.length-2; j++) {
 			data = data + td[j].innerHTML;
 		}
 
