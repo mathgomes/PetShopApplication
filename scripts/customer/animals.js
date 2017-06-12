@@ -16,7 +16,7 @@ function customerAnimals() {
 
 
 
-function animalTableRow(animal) {
+function animalTableRow(animal, service_name) {
 	var html = '';
 
 	function td(content) {
@@ -29,7 +29,13 @@ function animalTableRow(animal) {
 
 	function button(onclick)
 	{
-		return '<input type="button" value="Apagar" onclick="' + onclick + '">';
+		if(service_name == null) {
+			return '<input type="button" value="Apagar" onclick="' + onclick + '">';
+		}
+		else {
+			// Se o animal esta em um agendamento, nao pode deletar!
+			return '<input type="button" value="Apagar" disabled>';
+		}
 	}
 
 	html += '<tr>';
@@ -37,8 +43,14 @@ function animalTableRow(animal) {
 	td(animal.name);
 	td(animal.breed);
 	td(animal.age + ' anos');
-	td('-'); // TODO fazer quando servicos estiverem funcionando
-	td('-'); // TODO esse tambem
+
+	if(service_name != null) {
+		td(service_name);
+	}
+	else {
+		td('-');
+	}
+
 	td(button('deleteAnimal(' + animal.id + ')'));
 	html += '</tr>';
 
@@ -49,10 +61,45 @@ function animalTableRow(animal) {
 
 function refreshAnimalTable() {
 	$('#cAnimalTable').html('');
+
+
+
 	dbReadFromIndex(loggedUserId(), 'animals', 'owner', function(result) {
 		if(result.success) {
 			result.data.forEach(function(animal) {
-				$('#cAnimalTable').append(animalTableRow(animal));
+
+				// Cria uma linha na tabela para um animal que nao esta em nenhum servico
+				function appendFreeAnimal() {
+					$('#cAnimalTable').append(animalTableRow(animal, null));
+				}
+
+				// Verifica se o animal esta em algum servico
+				dbReadFromIndex(animal.id, 'timeslots', 'animal', function(result) {
+					if(result.success && result.data.length != 0) {
+						var timeslot = result.data[0];
+
+						if(timeslot.date < Date.now()) {
+							// timeslot no passado, pode ignorar
+							appendFreeAnimal();
+						}
+						else {
+							// Pega o nome do servico, para colocar na tabela
+							dbReadRecord(timeslot.service, 'services', function(result) {
+								if(result.success) {
+									var service = result.data;
+									$('#cAnimalTable').append(animalTableRow(animal, service.name));
+								} else {
+									// nao achou o servico, ignorar
+									appendFreeAnimal();
+								}
+							});
+						}
+					}
+					else {
+						// animal nao esta em nenhum agendamento
+						appendFreeAnimal();
+					}
+				});
 			});
 		}
 	});
