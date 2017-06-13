@@ -10,10 +10,12 @@ console.log('Executing customer/shopping_cart.js');
 
 
 function customerShoppingCart() {
+	// Botao de voltar para a loja
 	$('#cBackToShop').click(function() {
 		$('#cNavShop').click();
 	});
 
+	// Botao de esvaziar o carrinho. Deleta registros do Indexed DB
 	$('#cEmptyCart').click(function() {
 		dbDeleteAllFromIndex(loggedUserId(), 'cartitems', 'user', function(result) {
 			if(result.success) {
@@ -22,6 +24,7 @@ function customerShoppingCart() {
 		});
 	});
 
+	// Leva para o checkout. Da um erro se o carrinho estiver vazio.
 	$('#cGoToCheckout').click(function() {
 		dbReadFromIndex(loggedUserId(), 'cartitems', 'user', function(result) {
 			if(result.success && result.data.length > 0) {
@@ -44,18 +47,20 @@ function refreshCart(enable_inputs) {
 	cartUpdateTotal();
 	$('#cCartItems').html('');
 
+	// Percorre os itens que o usuario colocou no carrinho
 	dbReadFromIndex(loggedUserId(), 'cartitems', 'user', function(result) {
 		if(result.success == false) {
-			return; // reduce nesting
+			return;
 		}
 
 		result.data.forEach(function(item) {
 			dbReadRecord(item.product, 'products', function(result) {
 				if(result.success == false) {
-					return; // reduce nesting
+					return;
 				}
 
 				var product = result.data;
+				// Adiciona uma linha na tabela de itens a serem comprados
 				$('#cCartItems').append(cartItemHtml(product, item.amount, enable_inputs));
 			});
 		});

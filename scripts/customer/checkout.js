@@ -11,6 +11,8 @@ console.log('Executing scripts/customer.js');
 
 function checkoutPage() {
 	$('#cFinishPurchase').click(checkoutFinish);
+	// Esse 'false' eh para nao aparecer as opcoes de mudar quantidade ou
+	// de remover do carrinho. A funcao esta definida em shopping_cart.js
 	refreshCart(false);
 }
 
@@ -19,17 +21,18 @@ function checkoutPage() {
 function checkoutFinish() {
 	dbReadFromIndex(loggedUserId(), 'cartitems', 'user', function(result) {
 		if(result.success == false) {
-			return; // Reduce nesting
+			return;
 		}
 
+		// O trecho a seguir atualiza cada cadastro de produto, modificando
+		// estoque, quantidade vendida e lucro
 		var total = result.data.length;
-		var completed = 0; // Incremented when a product is updated
+		var completed = 0;
 
-		// Update the stock, sold amount and income of the purchased products
 		result.data.forEach(function(cart_item) {
 			dbReadRecord(cart_item.product, 'products', function(result) {
 				if(result.success == false) {
-					return; // Reduce nesting
+					return;
 				}
 
 				var product = result.data;
@@ -38,6 +41,7 @@ function checkoutFinish() {
 				dbUpdateRecord(product, 'products', function(result) {
 					completed += 1;
 					if(completed == total) {
+						// Atualizou todo mundo
 						finishPurchase();
 					}
 				});
@@ -49,6 +53,7 @@ function checkoutFinish() {
 
 
 
+// Atualiza os dados de estoque, qtde vendida e lucro total do produto
 function updateProductRecord(product, cart_item) {
 	if(cart_item.amount < 0) {
 		cart_item.amount = 0;
@@ -63,13 +68,10 @@ function updateProductRecord(product, cart_item) {
 }
 
 
-
+// Limpa o carrinho, mostra uma mensagem de sucesso e volta pra loja
 function finishPurchase() {
-	alert('Compra realizada com sucesso.');
-	$('#cNavShop').click();
-
-	// Empty shopping cart
 	dbDeleteAllFromIndex(loggedUserId(), 'cartitems', 'user', function(result) {
-
+		alert('Compra realizada com sucesso.');
+		$('#cNavShop').click();
 	});
 }

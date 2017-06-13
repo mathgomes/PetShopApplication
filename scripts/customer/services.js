@@ -10,33 +10,37 @@ console.log('Executing customer/services.js');
 
 
 function customerServices() {
-
-
-	// Automatic date formatting
+	// Formata a data automaticamente ao digitar
 	$('#cServiceDate').change(function() {
 		$(this).val( formatDateInput($(this).val()) );
 	});
 
-	// Display a table with available time slots
+	// Botao de buscar horarios vagos
 	$('#cServiceSearch').click(function() {
 		var dd_mm_aaaa = $('#cServiceDate').val();
+
+		// Cria um objeto Date com a string do usuario
 		var date = processDateString(dd_mm_aaaa);
 
 		if(date == null) {
+			// Mes > 12, dia > 30 etc
 			alert('Data inválida.');
 		}
 		else {
+			// Atualiza a tabela de horarios
 			displayTimeSlots(date);
 		}
 	});
 
-	// By default, show available time slots for the current date
+	// Por padrao, quando a pagina eh aberta, vai mostrar automaticamente
+	// os horarios do dia atual
 	searchTodaysTimeSlots();
 }
 
 
 
-// Adds slashes, removes letters etc from a date string
+// Faz uma arrumadinha na string que o usuario digitou. Estetico
+// Se ele nao digitar barras, por exemplo, vai completar para ele
 function formatDateInput(dd_mm_aaaa) {
 	var result = '';
 	var state = 0; // 0: days, 1: months, 2: years
@@ -172,8 +176,8 @@ function displayTimeSlots(date) {
 
 function initTimeSlotTable(date) {
 
-
-
+	// Funcao que cria uma linha da tabela de agendamentos
+	// UTILIZA O ARGUMENTO <date> ACIMA;
 	function rowHtml(timeslot, time1, time2) {
 		var html = '';
 
@@ -195,6 +199,7 @@ function initTimeSlotTable(date) {
 
 
 
+	// Cria a tabela, com os horarios todos livres
 	$('#cTimeSlots').html('');
 	for(var i = 0; i < 10; i++) {
 		// The first timeslot will be at 9:00 ~ 10:00
@@ -220,12 +225,14 @@ function deleteIfInvalid(slot, error) {
 function serviceCheckout(date, timeslot) {
 	loadPage('Cliente/pagtoServico.html', function() {
 
+		// Funcao para adicionar uma linha nos menuzinhos de escolher servico ou animal
 		function option(value, text) {
 			return '<option value="' + value + '">' + text + '</option>';
 		}
 
 		$('#cServiceDateTime').html(displayTime(date, timeslot));
 
+		// Inicializa o menuzinho de servicos
 		dbReadAllRecords('services', function(result) {
 			if(result.success) {
 				result.data.forEach(function(service) {
@@ -234,6 +241,7 @@ function serviceCheckout(date, timeslot) {
 			}
 		});
 
+		// Inicializa o menuzinho de animais do usuario
 		dbReadFromIndex(loggedUserId(), 'animals', 'owner', function(result) {
 			if(result.success) {
 				result.data.forEach(function(animal) {
@@ -242,7 +250,7 @@ function serviceCheckout(date, timeslot) {
 			}
 		});
 
-		console.log('ha');
+		// Atualiza o preco de acordo com o servico selecionado
 		$('#cServiceList').change(function() {
 			var service_id = parseInt($(this).val());
 
@@ -265,6 +273,7 @@ function serviceCheckout(date, timeslot) {
 			var service = parseInt(service_str);
 			var animal  = parseInt(animal_str);
 
+			// Cria o timeslot (agendamento) no Indexed DB
 			var record = {
 				date: date,
 				time: timeslot,
@@ -284,6 +293,8 @@ function serviceCheckout(date, timeslot) {
 
 
 
+// Pega um objeto Date e o timeslot (indice de 0 a 9)
+// Retorna uma string com a data e horario do agendamento
 function displayTime(date, timeslot) {
 	date = new Date(date);
 	timeslot = (timeslot + 9) + ':00';

@@ -16,7 +16,7 @@ function getUser(callback) {
 
 
 function customerProfile() {
-	// maps record fields to the corresponding text field ids
+	// Mapeia o campo do registro com o ID do elemento na pagina
 	var fields = {
 		'name': '#cProfileName',
 		'email': '#cProfileEmail',
@@ -26,26 +26,32 @@ function customerProfile() {
 
 	refreshProfileInfo(fields);
 
-	// Profile update callback
+	// Botao de alterar perfil
 	$('#cProfileUpdate').click(function() {
 		getUser(function(result) {
 			if(result.success) {
+				// Modifica o registro do usuario, pegando os dados que
+				// o usuario digitou na pagina
 				for(var f in fields) {
 					result.data[f] = $(fields[f]).val();
 				}
+
 				dbUpdateRecord(result.data, 'users', _test_callback);
+
+				// Pra atualizar o nome do usuario no mavbar
 				loadNavbar(result.data);
+
 				refreshInformation();
 			}
 		});
 	});
 
-	// Picture update callback
+	// Botao de alterar foto
 	$('#cProfileUpdatePhoto').click(function() {
 		fileReaderCallback('#cProfileFile', updateProfilePhoto);
 	});
 
-	// Password update callback
+	// Botao de alterar senha
 	$('#cProfileUpdatePass').click(function() {
 		getUser(function(result) {
 			if(result.success) {
@@ -70,6 +76,7 @@ function customerProfile() {
 
 
 
+// Atualiza os dados do cadastro e a foto
 function refreshProfileInfo(fields) {
 	getUser(function(result) {
 		if(result.success) {
@@ -87,8 +94,7 @@ function refreshProfileInfo(fields) {
 
 
 
-// Reads the image from #cProfilePhoto and updates the
-// user record on the database
+// Faz upload da foto escolhida no input de arquivos
 function updateProfilePhoto(event) {
 	var new_photo = event.target.result;
 	$('#cProfilePhoto').attr('src', new_photo);

@@ -16,6 +16,7 @@ function customerAnimals() {
 
 
 
+// Retorna o HTML de uma linha da tabela de animais
 function animalTableRow(animal, service_name) {
 	var html = '';
 
@@ -44,6 +45,7 @@ function animalTableRow(animal, service_name) {
 	td(animal.breed);
 	td(animal.age + ' anos');
 
+	// Mostra o agendamento do animal, se estiver em um
 	if(service_name != null) {
 		td(service_name);
 	}
@@ -64,49 +66,53 @@ function refreshAnimalTable() {
 
 
 
+	// Percorre os animais do usuario, no Indexed DB
 	dbReadFromIndex(loggedUserId(), 'animals', 'owner', function(result) {
-		if(result.success) {
-			result.data.forEach(function(animal) {
+		if(result.success == false) {
+			return
+		}
 
-				// Cria uma linha na tabela para um animal que nao esta em nenhum servico
-				function appendFreeAnimal() {
-					$('#cAnimalTable').append(animalTableRow(animal, null));
-				}
+		result.data.forEach(function(animal) {
+			// Funcao que cria uma linha na tabela para um animal que nao esta em nenhum agendamento
+			function appendFreeAnimal() {
+				$('#cAnimalTable').append(animalTableRow(animal, null));
+			}
 
-				// Verifica se o animal esta em algum servico
-				dbReadFromIndex(animal.id, 'timeslots', 'animal', function(result) {
-					if(result.success && result.data.length != 0) {
-						var timeslot = result.data[0];
+			// Verifica se o animal esta em algum agendamento
+			dbReadFromIndex(animal.id, 'timeslots', 'animal', function(result) {
+				if(result.success && result.data.length != 0) {
+					var timeslot = result.data[0];
 
-						if(timeslot.date < Date.now()) {
-							// timeslot no passado, pode ignorar
-							appendFreeAnimal();
-						}
-						else {
-							// Pega o nome do servico, para colocar na tabela
-							dbReadRecord(timeslot.service, 'services', function(result) {
-								if(result.success) {
-									var service = result.data;
-									$('#cAnimalTable').append(animalTableRow(animal, service.name));
-								} else {
-									// nao achou o servico, ignorar
-									appendFreeAnimal();
-								}
-							});
-						}
-					}
-					else {
-						// animal nao esta em nenhum agendamento
+					if(timeslot.date < Date.now()) {
+						// Agendamento do passado, pode ignorar
 						appendFreeAnimal();
 					}
-				});
+					else {
+						// Pega o nome do servico, para colocar na tabela
+						dbReadRecord(timeslot.service, 'services', function(result) {
+							if(result.success) {
+								// Achou o servico
+								var service = result.data;
+								$('#cAnimalTable').append(animalTableRow(animal, service.name));
+							} else {
+								// Nao achou o servico, ignorar
+								appendFreeAnimal();
+							}
+						});
+					}
+				}
+				else {
+					// Animal nao esta em nenhum agendamento
+					appendFreeAnimal();
+				}
 			});
-		}
+		});
 	});
 }
 
 
 
+// Deleta o animal do Indexed DB
 function deleteAnimal(animal_id)
 {
 	dbDeleteRecord(animal_id, 'animals', function(result) {
@@ -124,6 +130,7 @@ function deleteAnimal(animal_id)
 
 
 
+// Cadastra um animal no Indexed DB
 function createAnimal()
 {
 	fileReaderCallback('#cAnimalPhoto', function(event) {

@@ -9,35 +9,6 @@ console.log('Executing script.js');
 
 
 
-function _go() {
-	$('#loginUsername').val('hdzin');
-	$('#loginPassword').val('1');
-	$('#loginButton').click();
-
-	setTimeout(function() {
-		$('#cNavServices').click();
-
-		setTimeout(function() {
-			$('#cServiceDate').val('20/06/2017');
-			$('#cServiceSearch').click();
-		}, 1000);
-	}, 1000);
-
-}
-
-
-
-function _goAdmin() {
-  $('#loginUsername').val('admin');
-  $('#loginPassword').val('admin');
-  $('#loginButton').click();
-
-  setTimeout(function() {
-  }, 1000);
-}
-
-
-
 // Used to set or retrieve the user's id
 function loggedUserId(user_id) {
 	if(user_id) {

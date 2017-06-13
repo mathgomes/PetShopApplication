@@ -7,10 +7,9 @@
 
 console.log('Executing customer/shop.js');
 
-// TODO busca
-// TODO paginas
 
-// Creates a product <article> element.
+
+// Cria um <article></article> contendo um produto
 function shopArticleHtml(product) {
 	var html = '';
 
@@ -39,6 +38,7 @@ function customerShop() {
 
 
 
+// Acessa o Indexed DB para atualizar a pagina
 function refreshProducts() {
 	$('#cShopProducts').html();
 	dbReadAllRecords('products', function(result) {
@@ -52,9 +52,14 @@ function refreshProducts() {
 
 
 
+// Opçao de busca da loja
 function shopFilter() {
+	// Converte pra minusculas, pra ser mais flexivel
 	var search_query = $("#cShopSearchQuery").val().toLowerCase();
+
 	console.log('Searching for: ', search_query);
+
+	// Vai em cada <article> da pagina e esconde os que nao batem com o texto pesquisa
 	$('.item_wrapper').each( function() {
 		var product_name = $(this).find('.product_name').html().toLowerCase();
 		console.log(product_name);
@@ -120,8 +125,8 @@ function productPage(product_id) {
 }
 
 
-// Also redirects to the shopping cart page
-function addItemToCart(product_id, new_amount, ) {
+// Adiciona o produto ao carrinho e redireciona para a pagina do carrinho
+function addItemToCart(product_id, new_amount) {
 	dbReadFromIndex(loggedUserId(), 'cartitems', 'user', function(result) {
 		if(result.success) {
 			var cart_items = result.data;
