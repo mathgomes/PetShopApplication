@@ -310,14 +310,14 @@ function _dbPopulate(db) {
 	var timeslots = trans.objectStore('timeslots');
 
 	timeslots.add({
-		date: (new Date('06/20/2017')).getTime(),
+		date: (new Date('08/20/2017')).getTime(),
 		time: 5,
 		service: 1,
 		animal: 1,
 	});
 
 	timeslots.add({
-		date: (new Date('06/20/2017')).getTime(),
+		date: (new Date('08/20/2017')).getTime(),
 		time: 7,
 		service: 2,
 		animal: 2,
