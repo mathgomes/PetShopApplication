@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Node Web App</title>
+</head>
+<body>
+	<h1>Hello World!</h1>
+	<input type="button" value="Date" onclick="getServerTime()"><br>
+	<p id="date"></p>
+	<input id="number" type="text" value="9">
+	<input type="button" value="Sqrt-Post" onclick="sqrtPost()">
+	<input type="button" value="Sqrt-Get"  onclick="sqrtGet()">
+	<p id="sqrt"></p>
+
+<script>
+	function getServerTime() {
+		var ajax = new XMLHttpRequest();
+
+		ajax.open('GET', 'http://localhost/date', true);
+
+		ajax.onreadystatechange = function() {
+			if(ajax.readyState === XMLHttpRequest.DONE && ajax.status === 200) {
+				var div = document.getElementById('date');
+				div.innerHTML = ajax.responseText;
+			}
+		};
+
+		ajax.send();
+	}
+
+	function sqrtPost() {
+		var ajax = new XMLHttpRequest();
+
+		ajax.open('POST', 'http://localhost/sqrt', true);
+
+		ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		ajax.onreadystatechange = function() {
+			if(ajax.readyState === XMLHttpRequest.DONE && ajax.status === 200) {
+				var div = document.getElementById('sqrt');
+				div.innerHTML = ajax.responseText;
+			}
+		};
+
+		var num = document.getElementById('number').value;
+
+		ajax.send('num=' + num);
+	}
+
+	function sqrtGet() {
+		var ajax = new XMLHttpRequest();
+
+		var num = document.getElementById('number').value;
+		var query = '?num=' + num;
+
+		ajax.open('GET', 'http://localhost/sqrt' + query, true);
+
+		ajax.onreadystatechange = function() {
+			if(ajax.readyState === XMLHttpRequest.DONE && ajax.status === 200) {
+				var div = document.getElementById('sqrt');
+				div.innerHTML = ajax.responseText;
+			}
+		};
+
+		ajax.send();
+	}
+</script>
+
+</body>
+</html>
