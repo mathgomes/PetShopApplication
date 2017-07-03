@@ -7,7 +7,7 @@ var app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use(express.static('..'));
+app.use(express.static('public'));
 
 
 // localhost:8000/ajax/login?username=USR&password=PASS
