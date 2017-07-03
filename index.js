@@ -10,28 +10,26 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 
 
-// localhost:8000/ajax/login?username=USR&password=PASS
-app.get('/ajax/login', (req, res) => {
-	if(req.query.username === undefined || req.query.password === undefined) {
+// localhost:8000/ajax/users_by_username?key=USERNAME
+app.get('/ajax/users_by_username', (req, res) => {
+	if(req.query.key === undefined) {
 		res.status(400).send("400 Bad Request");
 	}
 
 	// TODO implementar direito, isso eh so para testar
-	res.send(JSON.stringify({
-		success: true,
-		error: undefined,
-		data: {
+	res.json(
+		[{
 			id: 1,
-			is_admin: (req.query.username != 'hdzin'),
-			username: req.query.username,
-			password: req.query.password,
+			is_admin: (req.query.key === 'hdzin'),
+			username: req.query.key,
+			password: '1',
 			name: 'Hugo Dzin',
 			photo: 'images/perfil.jpg',
 			phone: '(99) 1111-2222',
 			email: 'hugo@petshop.com',
 			adress: 'Rua dos Bobos Nr 0',
-		},
-	}));
+		}]
+	);
 });
 
 /*
