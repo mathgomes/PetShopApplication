@@ -343,7 +343,7 @@ function _dbGetStore(objStore, mode, callback) {
 		var store = transaction.objectStore(objStore);
 
 		callback(store);
-	}
+	};
 }
 
 
@@ -479,11 +479,20 @@ function dbReadAllRecords(store, callback) {
 function dbReadFromIndex(key, store, index, callback) {
 	console.log('Reading records with key', key, 'from', store + '/' + index);
 
-	_dbGetIndex(store, index, 'readonly', function(store, index) {
-		var key_range = IDBKeyRange.only(key);
-		var request = index.openCursor(key_range);
-		_dbCursorCollect(request, callback);
-	});
+	// TODO implement (on backend) for all key-store pairs
+	if(store === 'users') {
+		var path = 'ajax/' + store + '_by_' + index;
+		_jsonAjax('GET', path, { key: key }, function(result) {
+			callback(result);
+		});
+	}
+	else {
+		_dbGetIndex(store, index, 'readonly', function(store, index) {
+			var key_range = IDBKeyRange.only(key);
+			var request = index.openCursor(key_range);
+			_dbCursorCollect(request, callback);
+		});
+	}
 }
 
 
@@ -529,7 +538,7 @@ function dbDeleteAllFromIndex(key, store, index, callback) {
 							// Invokes the callback when all requests complete
 							callback(_dbSuccess(undefined));
 						}
-					}
+					};
 
 					request.onerror = request.onsuccess;
 				});
@@ -557,4 +566,41 @@ function dbUserLogin(username, password, callback) {
 			callback(result);
 		}
 	});
+}
+
+// Functions for AJAX calls
+function _jsonAjax(method, path, data, callback) {
+	// Conver data object into query string (?x=y&z=w&...)
+	var urlencoded = '?';
+
+	for(var field in data) {
+		var encoded_field = encodeURIComponent(field);
+		var encoded_data = encodeURIComponent(data[field]);
+
+		urlencoded += encoded_field + '=' + encoded_data + '&';
+	}
+
+	// Create and send JSON request
+	req = new XMLHttpRequest();
+	req.open(method, path + urlencoded, true);
+
+	req.onreadystatechange = function(event) {
+		var req = event.target;
+
+		if(req.readyState === XMLHttpRequest.DONE) {
+			// This value should not be returned
+			var result = _dbFailure('_jsonAjax logic error');
+
+			if(req.status === 200) {
+				result = _dbSuccess(JSON.parse(req.responseText));
+			}
+			else {
+				result = _dbFailure(req.status);
+			}
+
+			callback(result);
+		}
+	};
+
+	req.send(); // Sempre esqueco isso aqui
 }
