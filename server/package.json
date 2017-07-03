@@ -1,0 +1,13 @@
+{
+	"author": "Hugo, Matheus, Rogiel",
+	"description": "Trabalho Web 2017.1",
+	"repository": "https://github.com/mathgomes/PetShopApplication",
+	"license": "",
+	"name": "PetShop",
+	"dependencies": {
+		"body-parser": "^1.17.2",
+		"cookie-parser": "^1.4.3",
+		"express": "^4.15.3",
+		"multer": "^1.3.0"
+	}
+}
