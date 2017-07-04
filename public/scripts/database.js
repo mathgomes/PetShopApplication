@@ -442,27 +442,27 @@ function dbCreateRecord(record, store, callback) {
 function dbReadRecord(record_id, store, callback) {
 	console.log('Reading record', record_id, 'from ' + store);
 
-	if([].indexOf(store) !== -1) {
+	if(['users'].indexOf(store) !== -1) {
 		_jsonAjax('GET', 'ajax/' + store, { id: record_id }, callback);
 	}
+	else {
+		_dbGetStore(store, 'readonly', function(store) {
+			var request = store.get(record_id);
 
+			_dbRequestResult(request, callback);
+			request.onsuccess = function(event) {
+				var result = event.target.result;
 
-	_dbGetStore(store, 'readonly', function(store) {
-		var request = store.get(record_id);
-
-		_dbRequestResult(request, callback);
-		request.onsuccess = function(event) {
-			var result = event.target.result;
-
-			// Return a success result if found, failure result if not found
-			if(result) {
-				callback(_dbSuccess(result));
-			}
-			else {
-				callback(_dbFailure('NotFoundError'));
-			}
-		};
-	});
+				// Return a success result if found, failure result if not found
+				if(result) {
+					callback(_dbSuccess(result));
+				}
+				else {
+					callback(_dbFailure('NotFoundError'));
+				}
+			};
+		});
+	}
 }
 
 
@@ -612,6 +612,7 @@ function _jsonAjax(method, path, data, callback) {
 		return;
 	}
 
+	console.log('_jsonAjax:', method, full_path);
 	req.open(method, full_path, true);
 
 	req.onreadystatechange = function(event) {
