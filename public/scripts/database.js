@@ -571,9 +571,11 @@ function dbUserLogin(username, password, callback) {
 	});
 }
 
-// Functions for AJAX calls
+
+
+// Calls the requested HTTP method, converting the <data> object into
+// an url-encoded string, then invoking callback with a result object
 function _jsonAjax(method, path, data, callback) {
-	// Conver data object into query string (?x=y&z=w&...)
 	var urlencoded = '?';
 
 	// Convert <data> into url-encoded string
