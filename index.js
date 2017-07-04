@@ -10,26 +10,79 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 
 
-// localhost:8000/ajax/users_by_username?key=USERNAME
-app.get('/ajax/users_by_username', (req, res) => {
-	if(req.query.key === undefined) {
+// Mockup records
+var admin_record = {
+	id: 1,
+	is_admin: true,
+	username: 'admin',
+	password: 'admin',
+	name: 'Matheus Gomes',
+	photo: 'images/perfil.jpg',
+	phone: '(99) 1111-1111',
+	email: 'minhoca@petshop.com',
+	address: 'N/A',
+};
+
+var customer_record = {
+	id: 2,
+	is_admin: false,
+	username: 'hdzin',
+	password: '1',
+	name: 'Hugo Dzin',
+	photo: 'images/pets/canary.jpg',
+	phone: '(99) 1111-2222',
+	email: 'hugo@cliente.com',
+	adress: 'Rua dos Bobos Nr 0',
+};
+
+
+
+// <address>/ajax/users?id=ID
+app.get('/ajax/users', (req, res) => {
+	var id = req.query.id;
+
+	if(id === undefined) {
 		res.status(400).send("400 Bad Request");
+		return;
+	}
+	else if(id === '1') {
+		res.json(admin_record);
+	}
+	else if(id === '2') {
+		res.json(customer_record);
+	}
+	else {
+		res.status(404).send('404 Not Found');
+		return;
 	}
 
-	// TODO implementar direito, isso eh so para testar
-	res.json(
-		[{
-			id: 1,
-			is_admin: (req.query.key === 'hdzin'),
-			username: req.query.key,
-			password: '1',
-			name: 'Hugo Dzin',
-			photo: 'images/perfil.jpg',
-			phone: '(99) 1111-2222',
-			email: 'hugo@petshop.com',
-			adress: 'Rua dos Bobos Nr 0',
-		}]
-	);
+});
+
+
+
+// <address>/ajax/users_by_username?key=USERNAME
+// Nota: metodos com _by_ devem retornar um array
+app.get('/ajax/users_by_username', (req, res) => {
+	// TODO implementar de verdade
+	var key = req.query.key;
+	var send_data;
+
+	if(key === undefined) {
+		res.status(400).send("400 Bad Request");
+		return;
+	}
+	else if(key === 'admin') {
+		send_data = [admin_record];
+	}
+	else if(key === 'hdzin') {
+		send_data = [customer_record];
+	}
+	else {
+		res.status(404).send('404 Not Found');
+		return;
+	}
+
+	res.json(send_data);
 });
 
 /*
