@@ -343,7 +343,7 @@ function _dbGetStore(objStore, mode, callback) {
 		var store = transaction.objectStore(objStore);
 
 		callback(store);
-	}
+	};
 }
 
 
@@ -442,6 +442,11 @@ function dbCreateRecord(record, store, callback) {
 function dbReadRecord(record_id, store, callback) {
 	console.log('Reading record', record_id, 'from ' + store);
 
+	if([].indexOf(store) !== -1) {
+		_jsonAjax('GET', 'ajax/' + store, { id: record_id }, callback);
+	}
+
+
 	_dbGetStore(store, 'readonly', function(store) {
 		var request = store.get(record_id);
 
@@ -479,11 +484,18 @@ function dbReadAllRecords(store, callback) {
 function dbReadFromIndex(key, store, index, callback) {
 	console.log('Reading records with key', key, 'from', store + '/' + index);
 
-	_dbGetIndex(store, index, 'readonly', function(store, index) {
-		var key_range = IDBKeyRange.only(key);
-		var request = index.openCursor(key_range);
-		_dbCursorCollect(request, callback);
-	});
+	// TODO implement (on backend) for all key-store pairs
+	if(['users'].indexOf(store) !== -1) {
+		var path = 'ajax/' + store + '_by_' + index;
+		_jsonAjax('GET', path, { key: key }, callback);
+	}
+	else {
+		_dbGetIndex(store, index, 'readonly', function(store, index) {
+			var key_range = IDBKeyRange.only(key);
+			var request = index.openCursor(key_range);
+			_dbCursorCollect(request, callback);
+		});
+	}
 }
 
 
@@ -529,7 +541,7 @@ function dbDeleteAllFromIndex(key, store, index, callback) {
 							// Invokes the callback when all requests complete
 							callback(_dbSuccess(undefined));
 						}
-					}
+					};
 
 					request.onerror = request.onsuccess;
 				});
@@ -557,4 +569,68 @@ function dbUserLogin(username, password, callback) {
 			callback(result);
 		}
 	});
+}
+
+// Functions for AJAX calls
+function _jsonAjax(method, path, data, callback) {
+	// Conver data object into query string (?x=y&z=w&...)
+	var urlencoded = '?';
+
+	// Convert <data> into url-encoded string
+	// eg. {a: 10, b: 'hello?'} -> '?a=10&b=hello%3F
+	for(var field in data) {
+		var encoded_field = encodeURIComponent(field);
+		var encoded_data = encodeURIComponent(data[field]);
+
+		urlencoded += encoded_field + '=' + encoded_data + '&';
+	}
+
+	// Create and send JSON request
+	req = new XMLHttpRequest();
+
+	var full_path = path; // Used by req.open
+	var send_data; // Used by req.send
+
+	// Set parameters for each HTTP method
+	if(['GET', 'HEAD', 'DELETE', 'OPTIONS'].indexOf(method) !== -1) {
+		full_path += urlencoded;
+	}
+	else if(['POST', 'PUT'].indexOf(method) !== -1) {
+		send_data = urlencoded;
+		// Undefined otherwise
+	}
+	else if(['TRACE', 'CONNECT', 'PATCH'].indexOf(method) !== -1) {
+		// These are unsupported because they don't seem necessary now,
+		// so I didn't try to implement them
+		callback(_dbFailure('Unsupported HTTP method: ' + method));
+		return;
+	}
+	else {
+		callback(_dbFailure('Invalid HTTP method: ' + method));
+		return;
+	}
+
+	req.open(method, full_path, true);
+
+	req.onreadystatechange = function(event) {
+		var req = event.target;
+
+		if(req.readyState === XMLHttpRequest.DONE) {
+			// This value should not be returned
+			var result = _dbFailure('_jsonAjax logic error');
+
+			if(req.status === 200) {
+				// Success -> return parsed response
+				result = _dbSuccess(JSON.parse(req.responseText));
+			}
+			else {
+				// Failure -> return HTTP error code
+				result = _dbFailure(req.status);
+			}
+
+			callback(result);
+		}
+	};
+
+	req.send(send_data); // Sempre esqueco isso aqui
 }
