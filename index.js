@@ -35,6 +35,23 @@ var customer_record = {
 	adress: 'Rua dos Bobos Nr 0',
 };
 
+/*
+ * stores and indices are listed within database.js:_dbCreateStores
+ * dbCreateRecord
+ *   POST ajax/<store>/create (json record inside body)
+ * dbReadRecord
+ *   GET ajax/<store>/?id=<ID>
+ * dbReadAllRecords
+ *   GET ajax/<store>/read_all
+ * dbReadFromIndex
+ *   GET ajax/<store>_by_<index>?key=<KEY>
+ * dbUpdateRecord
+ *   PUT ajax/<store>/update?id=<ID> (json record inside body)
+ * dbDeleteRecord
+ *   DELETE ajax/<store>/delete?id=<ID>
+ * dbDeleteAllFromINdex
+ *   DELETE ajax/<store>_by_<index>/delete_all
+*/
 
 
 // <address>/ajax/users?id=ID
