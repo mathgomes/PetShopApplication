@@ -38,20 +38,62 @@ var customer_record = {
 /*
  * stores and indices are listed within database.js:_dbCreateStores
  * dbCreateRecord
- *   POST ajax/<store>/create (json record inside body)
+ *   POST create/:store (json record inside body)
  * dbReadRecord
- *   GET ajax/<store>/?id=<ID>
+ *   GET read/:store/?id=<ID>
  * dbReadAllRecords
- *   GET ajax/<store>/read_all
+ *   GET read_all/:store
  * dbReadFromIndex
- *   GET ajax/<store>_by_<index>?key=<KEY>
+ *   GET read/:store/:index?key=<KEY>
  * dbUpdateRecord
- *   PUT ajax/<store>/update?id=<ID> (json record inside body)
+ *   PUT update/:store?id=<ID> (json record inside body)
  * dbDeleteRecord
- *   DELETE ajax/<store>/delete?id=<ID>
- * dbDeleteAllFromINdex
- *   DELETE ajax/<store>_by_<index>/delete_all
+ *   DELETE delete/:store?id=<ID>
+ * dbDeleteAllFromIndex
+ *   DELETE delete_all/:store/:index
 */
+
+// a dictionary
+var store_names = {
+	users: 1,
+	animals: 1,
+	products: 1,
+	services: 1,
+	timeslots: 1,
+	cartitems: 1,
+};
+
+// index name -> store name
+var index_names = {
+	username: 'users',
+	email: 'users',
+	owner: 'animals',
+	user: 'cart_items',
+	product: 'cart_items',
+	services: 'name',
+};
+
+
+app.post('/create/:store', (req, res) => {
+	var store = req.params.store;
+	if(store in store_names === false) {
+		res.status(404).send('404 Not Found');
+		return;
+	}
+
+	var record = req.body;
+	console.log(record);
+
+	// TODO inserir no DB e dar send no resultado
+
+	res.status(200);
+});
+
+app.
+
+//app.put('/update/:store',
+//app.get('/read/:store',
+//app.get('/read/:store',
 
 
 // <address>/ajax/users?id=ID
