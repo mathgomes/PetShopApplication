@@ -526,7 +526,7 @@ function dbDeleteRecord(record_id, store, callback) {
 function dbDeleteAllFromIndex(key, store, index, callback) {
 	console.log('Deleting all records from', store);
 
-	//_jsonAjax('DELETE', '/delete_all/' + store + '/' + index, {}, callback);
+	//_jsonAjax('DELETE', '/delete_all/' + store + '/' + index, { key: key }, callback);
 
 	dbReadFromIndex(key, store, index, function(result) {
 
