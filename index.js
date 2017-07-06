@@ -146,7 +146,7 @@ app.delete('/delete_all/:store/:index', (req, res) => {
 
 	// TODO deletar todos os documentos com doc.type == store && doc[index] == key
 
-	res.status(200).send(''); // TODO status da operacao
+	res.status(200).send(); // TODO status da operacao
 });
 
 

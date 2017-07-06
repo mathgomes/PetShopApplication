@@ -625,7 +625,12 @@ function _jsonAjax(method, path, data, callback) {
 
 			if(req.status === 200) {
 				// Success -> return parsed response
-				result = _dbSuccess(JSON.parse(req.responseText));
+				if(req.responseText !== '') {
+					result = _dbSuccess(JSON.parse(req.responseText));
+				}
+				else {
+					result = _dbSuccess(req.status);
+				}
 			}
 			else {
 				// Failure -> return HTTP error code
