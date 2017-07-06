@@ -2,9 +2,10 @@
 
 var express = require('express');
 var bodyParser = require('body-parser');
-
+var couch = require('./couchDB')
 
 var app = express();
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -54,6 +55,21 @@ var customer_record = {
  *   DELETE /delete_all/:store/:index?key=<KEY>
 */
 
+
+// to initialize the database
+app.get('/init', (req,res) => {
+
+	couch.initCouch(function(err) {
+		if (err) {
+    		throw err
+  		}
+  		else {
+  			var send_data = {status: 'database initialized'};
+  			res.status(200).json(send_data);
+  		}
+	});
+	
+});
 
 // dbCreateRecord
 app.post('/create/:store', (req, res) => {
