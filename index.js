@@ -2,6 +2,8 @@
 
 var express = require('express');
 var bodyParser = require('body-parser');
+var nano = require('nano')('http://localhost:8000');
+
 
 var app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -53,6 +55,29 @@ var customer_record = {
  *   DELETE delete_all/:store/:index
 */
 
+
+ 
+// clean up the database we created previously 
+function insertBanco (object) {
+  
+console.log("Estou aqui:" + object);
+nano.db.destroy('petShop', function() {
+  // create a new database 
+  nano.db.create('petShop', function() {
+    // specify the database we are going to use 
+    var pet = nano.use('petShop');
+    // and insert a document in it 
+    pet.insert(object, 'rabbit', function(err, body, header) {
+      if (err) {
+        console.log('[petShop.insert] ', err.message);
+        return;
+      }
+      console.log('you have inserted the rabbit.')
+      console.log(body);
+    });
+  });
+});
+}
 // a dictionary
 var store_names = {
 	users: 1,
@@ -83,13 +108,48 @@ app.post('/create/:store', (req, res) => {
 
 	var record = req.body;
 	console.log(record);
+	
 
 	// TODO inserir no DB e dar send no resultado
+	//insertBanco(record);
+	
+	nano.db.create('petShop', function(err, body, header) {
+	console.log('Estou aqui');
+  	if (err)
+  		console.log(err);
+  	else 
+ 	 	console.log(body, header);
+	});
+   
+/* nano.db.destroy('petShop', function(err, body){
+ 	
+ 	if (err)
+ 		console.log(err);
+ 	else
+ 		console.log("sucesso");
+});*/
+
+/*nano.db.destroy('petShop', function() {
+  // create a new database 
+  nano.db.create('petShop', function() {
+    // specify the database we are going to use 
+    var pet = nano.use('petShop');
+    // and insert a document in it 
+    pet.insert({ happy: true }, 'rabbit', function(err, body, header) {
+      if (err) {
+        console.log('[petShop.insert] ', err.message);
+        return;
+      }
+      console.log('you have inserted the rabbit.')
+      console.log(body);
+    });
+  });
+});*/
 
 	res.status(200);
 });
 
-app.
+//app.
 
 //app.put('/update/:store',
 //app.get('/read/:store',
