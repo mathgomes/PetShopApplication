@@ -109,6 +109,7 @@ function _dbErrorHandler(event) {
 
 
 function dbInit() {
+
 	var request = window.indexedDB.open(DB_NAME, DB_VERSION);
 	request.onerror = _dbErrorHandler;
 
