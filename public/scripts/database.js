@@ -598,7 +598,7 @@ function _jsonAjax(method, path, data, callback) {
 		full_path += urlencoded;
 	}
 	else if(['POST', 'PUT'].indexOf(method) !== -1) {
-		send_data = urlencoded;
+		send_data = JSON.stringify(data);
 		// Undefined otherwise
 	}
 	else if(['TRACE', 'CONNECT', 'PATCH'].indexOf(method) !== -1) {
@@ -614,6 +614,7 @@ function _jsonAjax(method, path, data, callback) {
 
 	console.log('_jsonAjax:', method, full_path);
 	req.open(method, full_path, true);
+	req.setRequestHeader("Content-type", "application/json");
 
 	req.onreadystatechange = function(event) {
 		var req = event.target;
