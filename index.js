@@ -95,21 +95,22 @@ var store_names = {
 	cartitems: 1,
 };
 
-// to initialize the database
-app.get('/init', (req,res) => {
-
-	couch.initCouch(function(err) {
-		if (err) {
-    		throw err;
-  		}
-  		else {
-  			var send_data = {status: 'database initialized'};
-  			res.status(200).json(send_data);
-  		}
-	});
-	
+// initialize the database
+couch.initCouch(function(db,err) {
+	if (err) {
+		throw err;
+	}
+	else {
+		console.log(db + " : database initialized");
+		// test for inserting a document
+		/*		couch.createDocument({name : 'test', username : 'aaa'}, 'users', function(err, body){
+			if(err) 
+				console.log("error[reason, statusCode] : " + err.reason, err.statusCode);
+			else
+				console.log(body + ' : created with sucess');
+		});*/
+	}
 });
-
 
 // dbCreateRecord
 app.post('/create/:store', (req, res) => {
@@ -118,17 +119,18 @@ app.post('/create/:store', (req, res) => {
 
 	console.log('create', store, record);
 
-	// TODO inserir no DB com doc.type == store
-	couch.createUser(req.body,function(err){//
+	var result = {
+		status : ""
+	}
+	couch.createDocument(record, store, function(err, body){//
 		if(err) 
-			console.log(err);
+			console.log("error[reason, statusCode] : " + err.reason, err.statusCode);
 		else
-			console.log('user created with sucess');
-
-		
+			console.log(body.id + ' : created with sucess');
+			result.status = body.id + ' : created with sucess';
 	});
 
-	res.status(200).send(); // TODO status da operacao
+	res.status(200).send(result); // TODO status da operacao
 });
 
 
@@ -139,21 +141,6 @@ app.get('/read/:store', (req, res) => {
 
 	var record = req.body;
 	console.log(record);
-	
-
-	// TODO inserir no DB e dar send no resultado
-	//insertBanco(record);
-	
-	
-   
-/* nano.db.destroy('petShop', function(err, body){
- 	
- 	if (err)
- 		console.log(err);
- 	else
- 		console.log("sucesso");
-});*/
-
 
 	console.log('read', store, id);
 
@@ -177,7 +164,6 @@ app.get('/read_all/:store', (req, res) => {
 });
 
 
-//app.
 
 
 // dbReadFromIndex

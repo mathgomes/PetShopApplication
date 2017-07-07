@@ -110,11 +110,6 @@ function _dbErrorHandler(event) {
 
 function dbInit() {
 
-	// call to initialize de database
-	_jsonAjax('GET', '/init', {}, function(result) {
-		console.log('result:' + result.data.status);
-	});
-
 	var request = window.indexedDB.open(DB_NAME, DB_VERSION);
 	request.onerror = _dbErrorHandler;
 
@@ -436,7 +431,7 @@ function _dbCursorCollect(cursor_request, callback)
 function dbCreateRecord(record, store, callback) {
 	console.log('Creating record', record, 'into', store);
 
-	//_jsonAjax('POST', '/create/' + store, record, callback);
+	_jsonAjax('POST', '/create/' + store, record, callback);
 
 	_dbGetStore(store, 'readwrite', function(store) {
 		var request = store.add(record);
@@ -601,11 +596,11 @@ function _jsonAjax(method, path, data, callback) {
 	req = new XMLHttpRequest();
 
 	var full_path = path; // Used by req.open
-	var send_data; // Used by req.send
+	var send_data = null; // Used by req.send
 
 	// Set parameters for each HTTP method
 	if(['GET', 'HEAD', 'DELETE', 'OPTIONS'].indexOf(method) !== -1) {
-		//full_path += urlencoded;
+		full_path += urlencoded;
 	}
 	else if(['POST', 'PUT'].indexOf(method) !== -1) {
 		send_data = JSON.stringify(data);

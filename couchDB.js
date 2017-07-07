@@ -9,19 +9,31 @@ var nano = require('nano')(process.env.COUCHDB_URL || 'http://127.0.0.1:5984');
 
 module.exports = couch;
 
-var dbName = 'petshop'
+var dbNames = ['users','animals','products','services','timeslots','cartitems']
+var uniqueIDs = {
+	users : 'username',
+	animals : 'owner',
+	products : 'name',
+	services : 'name'
+};
+
 
 // object with all the database functions
 var couch = module.exports = {
 	initCouch: function (callback) {
-		this.createDatabase(dbName,callback);
+		this.createDatabases(callback);
+	},
+	createDatabases: function(callback) {
+		dbNames.forEach(function(name) {
+			this.createDatabase(name,callback);
+		}, this);
 	},
 	createDatabase: function (db,callback) {
 		nano.db.create(db, function(err) {
 			if (err && err.statusCode == 412) {
 				err = null;
 			}
-			callback(err);
+			callback(db,err);
 		});
 	},
 	removeDatabase: function (callback)	{ // teste
@@ -29,12 +41,11 @@ var couch = module.exports = {
 			callback(err);
 		});
 	},
-	createUser : function (body, callback){
-		var usuario = nano.use(dbName);
-		usuario.insert(body, 'rabbit3', function(err, body) { //informacao, id e callback
-  		// do something 
-		});
+	createDocument: function(document, database, callback) {
+		var db = nano.use(database);
+		 db.insert(document, document[uniqueIDs[database]], function(err, document) {
+		 	callback(err, document);
+		 });
 	}
-	
 }
 
