@@ -430,6 +430,8 @@ function _dbCursorCollect(cursor_request, callback)
 function dbCreateRecord(record, store, callback) {
 	console.log('Creating record', record, 'into', store);
 
+	//_jsonAjax('POST', '/create/' + store, record, callback);
+
 	_dbGetStore(store, 'readwrite', function(store) {
 		var request = store.add(record);
 		_dbRequestResult(request, callback);
@@ -442,33 +444,32 @@ function dbCreateRecord(record, store, callback) {
 function dbReadRecord(record_id, store, callback) {
 	console.log('Reading record', record_id, 'from ' + store);
 
-	if(['users'].indexOf(store) !== -1) {
-		_jsonAjax('GET', 'ajax/' + store, { id: record_id }, callback);
-	}
-	else {
-		_dbGetStore(store, 'readonly', function(store) {
-			var request = store.get(record_id);
+	//_jsonAjax('GET', '/read/' + store, { id: record_id }, callback);
 
-			_dbRequestResult(request, callback);
-			request.onsuccess = function(event) {
-				var result = event.target.result;
+	_dbGetStore(store, 'readonly', function(store) {
+		var request = store.get(record_id);
 
-				// Return a success result if found, failure result if not found
-				if(result) {
-					callback(_dbSuccess(result));
-				}
-				else {
-					callback(_dbFailure('NotFoundError'));
-				}
-			};
-		});
-	}
+		_dbRequestResult(request, callback);
+		request.onsuccess = function(event) {
+			var result = event.target.result;
+
+			// Return a success result if found, failure result if not found
+			if(result) {
+				callback(_dbSuccess(result));
+			}
+			else {
+				callback(_dbFailure('NotFoundError'));
+			}
+		};
+	});
 }
 
 
 
 function dbReadAllRecords(store, callback) {
 	console.log('Reading all records from ' + store);
+
+	//_jsonAjax('GET', '/read_all/' + store, {}, callback);
 
 	_dbGetStore(store, 'readonly', function(store) {
 		var request = store.openCursor();
@@ -484,24 +485,21 @@ function dbReadAllRecords(store, callback) {
 function dbReadFromIndex(key, store, index, callback) {
 	console.log('Reading records with key', key, 'from', store + '/' + index);
 
-	// TODO implement (on backend) for all key-store pairs
-	if(['users'].indexOf(store) !== -1) {
-		var path = 'ajax/' + store + '_by_' + index;
-		_jsonAjax('GET', path, { key: key }, callback);
-	}
-	else {
-		_dbGetIndex(store, index, 'readonly', function(store, index) {
-			var key_range = IDBKeyRange.only(key);
-			var request = index.openCursor(key_range);
-			_dbCursorCollect(request, callback);
-		});
-	}
+	//_jsonAjax('GET', '/read/' + store + '/' + index, { key: key }, callback);
+
+	_dbGetIndex(store, index, 'readonly', function(store, index) {
+		var key_range = IDBKeyRange.only(key);
+		var request = index.openCursor(key_range);
+		_dbCursorCollect(request, callback);
+	});
 }
 
 
 
 function dbUpdateRecord(record, store, callback) {
 	console.log('Updating record', record, 'on', store);
+
+	//_jsonAjax('PUT', '/update/' + store, record, callback);
 
 	_dbGetStore(store, 'readwrite', function(store) {
 		var request = store.put(record);
@@ -514,6 +512,8 @@ function dbUpdateRecord(record, store, callback) {
 function dbDeleteRecord(record_id, store, callback) {
 	console.log('Deleting record', record_id, 'from', store);
 
+	//_jsonAjax('DELETE', '/delete/' + store, { id: record_id }, callback);
+
 	_dbGetStore(store, 'readwrite', function(store) {
 		var request = store.delete(record_id);
 		_dbRequestResult(request, callback);
@@ -524,6 +524,10 @@ function dbDeleteRecord(record_id, store, callback) {
 
 // Deletes all records with specified key from index
 function dbDeleteAllFromIndex(key, store, index, callback) {
+	console.log('Deleting all records from', store);
+
+	//_jsonAjax('DELETE', '/delete_all/' + store + '/' + index, { key: key }, callback);
+
 	dbReadFromIndex(key, store, index, function(result) {
 
 		if(result.success) {
@@ -625,7 +629,12 @@ function _jsonAjax(method, path, data, callback) {
 
 			if(req.status === 200) {
 				// Success -> return parsed response
-				result = _dbSuccess(JSON.parse(req.responseText));
+				if(req.responseText !== '') {
+					result = _dbSuccess(JSON.parse(req.responseText));
+				}
+				else {
+					result = _dbSuccess(req.status);
+				}
 			}
 			else {
 				// Failure -> return HTTP error code

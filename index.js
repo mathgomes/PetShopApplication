@@ -2,7 +2,7 @@
 
 var express = require('express');
 var bodyParser = require('body-parser');
-var nano = require('nano')('http://localhost:8000');
+var nano = require('nano')('http://localhost:5984');
 
 
 var app = express();
@@ -40,25 +40,25 @@ var customer_record = {
 /*
  * stores and indices are listed within database.js:_dbCreateStores
  * dbCreateRecord
- *   POST create/:store (json record inside body)
+ *   POST /create/:store (json record inside body)
  * dbReadRecord
- *   GET read/:store/?id=<ID>
+ *   GET /read/:store/?id=<ID>
  * dbReadAllRecords
- *   GET read_all/:store
+ *   GET /read_all/:store
  * dbReadFromIndex
- *   GET read/:store/:index?key=<KEY>
+ *   GET /read/:store/:index?key=<KEY>
  * dbUpdateRecord
- *   PUT update/:store?id=<ID> (json record inside body)
+ *   PUT /update/:store?id=<ID> (json record inside body)
  * dbDeleteRecord
- *   DELETE delete/:store?id=<ID>
+ *   DELETE /delete/:store?id=<ID>
  * dbDeleteAllFromIndex
- *   DELETE delete_all/:store/:index
+ *   DELETE /delete_all/:store/:index?key=<KEY>
 */
 
 
  
 // clean up the database we created previously 
-function insertBanco (object) {
+/*function insertBanco (object) {
   
 console.log("Estou aqui:" + object);
 nano.db.destroy('petShop', function() {
@@ -77,7 +77,7 @@ nano.db.destroy('petShop', function() {
     });
   });
 });
-}
+}*/
 // a dictionary
 var store_names = {
 	users: 1,
@@ -88,23 +88,38 @@ var store_names = {
 	cartitems: 1,
 };
 
-// index name -> store name
-var index_names = {
-	username: 'users',
-	email: 'users',
-	owner: 'animals',
-	user: 'cart_items',
-	product: 'cart_items',
-	services: 'name',
-};
-
-
+// dbCreateRecord
 app.post('/create/:store', (req, res) => {
+	//var store = req.params.store;
+	//var record = req.body;
+
+	//console.log('create', store, record);
+
+	// TODO inserir no DB com doc.type == store
+	
+	nano.db.create('petShop', function(err, body, header) {
+	console.log('Estou aqui');
+  	if (err)
+  		console.log(err);
+  	else 
+ 	 	console.log(body);
+	});
+	
+	/*nano.db.list(function(err, body) {
+  // body is an array 
+  body.forEach(function(db) {
+    console.log(db);
+  });
+});*/
+
+	//res.status(200).send(); // TODO status da operacao
+});
+
+
+// dbReadRecord
+app.get('/read/:store', (req, res) => {
 	var store = req.params.store;
-	if(store in store_names === false) {
-		res.status(404).send('404 Not Found');
-		return;
-	}
+	var id = req.query.id;
 
 	var record = req.body;
 	console.log(record);
@@ -113,13 +128,7 @@ app.post('/create/:store', (req, res) => {
 	// TODO inserir no DB e dar send no resultado
 	//insertBanco(record);
 	
-	nano.db.create('petShop', function(err, body, header) {
-	console.log('Estou aqui');
-  	if (err)
-  		console.log(err);
-  	else 
- 	 	console.log(body, header);
-	});
+	
    
 /* nano.db.destroy('petShop', function(err, body){
  	
@@ -145,17 +154,88 @@ app.post('/create/:store', (req, res) => {
     });
   });
 });*/
+	console.log('read', store, id);
 
-	res.status(200);
+	// TODO ler documento do db com doc.type == store
+
+	var send_data = {store: store, id: id }; // TODO documento aqui
+	res.json(send_data);
 });
+
+
+// dbReadAllRecords
+app.get('/read_all/:store', (req, res) => {
+	var store = req.params.store;
+
+	console.log('read_all', store);
+
+	// TODO ler todos documentos do db com doc.type == store
+
+	var send_data = [{store: store}]; // TODO vetor de documentos aqui
+	res.json(send_data);
+});
+
 
 //app.
 
-//app.put('/update/:store',
-//app.get('/read/:store',
-//app.get('/read/:store',
+
+// dbReadFromIndex
+app.get('/read/:store/:index', (req, res) => {
+	var store = req.params.store;
+	var index = req.params.index;
+	var key = req.query.key;
+
+	console.log('read', store, index, key);
+
+	// TODO ler todos documentos do db com doc.type == store && doc[index] == key
+
+	var send_data = [{store: store, index: index, key: key}]; // TODO vetor de documentos aqui
+	res.json(send_data);
+});
 
 
+// dbUpdateRecord
+app.put('/update/:store', (req, res) => {
+	var store = req.params.store;
+	var id = req.query.id;
+	var new_record = req.body;
+
+	console.log('update', store, id, new_record);
+
+	// TODO atualizar o documento com doc.type == store && doc.id == id
+
+	res.status(200).send(); // TODO status da operacao
+});
+
+
+// dbDeleteRecord
+app.delete('/delete/:store', (req, res) => {
+	var store = req.params.store;
+	var id = req.query.id;
+
+	console.log('delete', store, id);
+
+	// TODO deletar o documento com doc.type == store && doc.id == id
+
+	res.status(200).send(); // TODO status da operacao
+});
+
+
+// dbDeleteAllFromIndex
+app.delete('/delete_all/:store/:index', (req, res) => {
+	var store = req.params.store;
+	var index = req.params.index;
+	var key = req.query.key;
+
+	console.log('delete_all', store, index, key);
+
+	// TODO deletar todos os documentos com doc.type == store && doc[index] == key
+
+	res.status(200).send(); // TODO status da operacao
+});
+
+
+// as rotas abaixo vao ser removidas quando terminar as de cima
 // <address>/ajax/users?id=ID
 app.get('/ajax/users', (req, res) => {
 	var id = req.query.id;
