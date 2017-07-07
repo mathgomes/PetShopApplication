@@ -55,6 +55,14 @@ var customer_record = {
  *   DELETE /delete/:store?id=<ID>
  * dbDeleteAllFromIndex
  *   DELETE /delete_all/:store/:index?key=<KEY>
+
+	TABLE OF ERRORS : 
+200 — OK, The request was successful
+201 — CREATED, A new resource object was successfully created
+404 — NOT FOUND, The requested resource could not be found
+400 — BAD REQUEST, The request was malformed or invalid
+500 — INTERNAL SERVER ERROR, Unknown server error has occurred
+	
 */
 
 
@@ -65,13 +73,19 @@ couch.initCouch(function(db,err) {
 	}
 	else {
 		console.log(db + " : database initialized");
-		// test for inserting a document
-		/*		couch.createDocument({name : 'test', username : 'aaa'}, 'users', function(err, body){
+		// INITIAL INSERTIONS
+		couch.createDocument(admin_record, 'users', function(err, body){
 			if(err) 
 				console.log("error[reason, statusCode] : " + err.reason, err.statusCode);
 			else
 				console.log(body + ' : created with sucess');
-		});*/
+		});
+		couch.createDocument(customer_record, 'users', function(err, body){
+			if(err) 
+				console.log("error[reason, statusCode] : " + err.reason, err.statusCode);
+			else
+				console.log(body + ' : created with sucess');
+		});	
 	}
 });
 
@@ -85,13 +99,16 @@ app.post('/create/:store', (req, res) => {
 	var result = {
 		status : ""
 	}
-	couch.createDocument(record, store, function(err, body){
-		if(err) 
+	couch.createDocument(record, store, function(err, result){
+		if(err) {
 			console.log("error[reason, statusCode] : " + err.reason, err.statusCode);
-		else
-			console.log(body.id + ' : created with sucess');
-			result.status = body.id + ' : created with sucess';
-			res.status(200).send(result); // TODO status da operacao
+			res.status(400).send(err)
+		}
+		else {
+			console.log(result.id + ' : created with sucess');
+			result.status = result.id + ' : created with sucess';
+			res.status(201).send(result); // status da operacao CREATED
+		}
 	});
 });
 
@@ -100,22 +117,22 @@ app.post('/create/:store', (req, res) => {
 app.get('/read/:store', (req, res) => {
 	var store = req.params.store;
 	var id = req.query.id;
-
 	var record = req.body;
-	console.log(record);
 
 	console.log('read', store, id);
 
 	var send_data = {}; // documento aqui
-
 	// ler documento do db com doc.type == store
-	couch.readDocument(id, store, function(err, body){
-		if(err) 
+	couch.readDocument(id, store, function(err, doc){
+		if(err) {
 			console.log("error[reason, statusCode] : " + err.reason, err.statusCode);
-		else
-			console.log(body._id + ' : retrieved with sucess');
-			send_data = body;
-			res.json(send_data);
+			res.status(400).send(err)
+		}
+		else {
+			console.log(doc._id + ' : retrieved with sucess');
+			send_data = doc;
+			res.status(200).json(send_data);
+		}
 	});
 });
 
@@ -158,9 +175,22 @@ app.put('/update/:store', (req, res) => {
 
 	console.log('update', store, id, new_record);
 
-	// TODO atualizar o documento com doc.type == store && doc.id == id
+	var result = {
+		status : ""
+	}
+	// atualizar o documento com doc.type == store && doc.id == id
+	couch.updateDocument(new_record, store, function(err, result){
+		if(err) {
+			console.log("error[reason, statusCode] : " + err.reason, err.statusCode);
+			res.status(400).send(err)
+		}
+		else {
+			console.log(result.id + ' : updated with sucess');
+			result.status = result.id + ' : updated with sucess';
+			res.status(200).json(result);
+		}
+	});
 
-	res.status(200).send(); // TODO status da operacao
 });
 
 

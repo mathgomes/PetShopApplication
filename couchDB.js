@@ -51,8 +51,8 @@ var couch = module.exports = {
 	// create a specified document in a given database
 	createDocument: function(document, database, callback) {
 		var db = nano.use(database);
-		 db.insert(document, document[uniqueIDs[database]], function(err, document) {
-		 	callback(err, document);
+		 db.insert(document, document[uniqueIDs[database]], function(err, result) {
+		 	callback(err, result);
 		 });
 	},
 	// retrieve a document with specified id
@@ -63,7 +63,19 @@ var couch = module.exports = {
 		});
 	},
 	updateDocument: function(document, database, callback) {
-		var db = nano.use(database);
+		var key = document[uniqueIDs[database]];
+		this.readDocument(key, database, function(err, existing) {
+			if (err) {
+				callback(err, document);
+			}
+			console.log(existing)
+			let db = nano.use(database);
+			document._rev = existing._rev;
+			db.insert(document, key, function(err, result) {
+				console.log(result)
+	 			callback(err, result);
+	 		});
+		});
 
 	},
 	readAllDocuments: function(document, database, callback) {
