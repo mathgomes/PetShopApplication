@@ -85,15 +85,14 @@ app.post('/create/:store', (req, res) => {
 	var result = {
 		status : ""
 	}
-	couch.createDocument(record, store, function(err, body){//
+	couch.createDocument(record, store, function(err, body){
 		if(err) 
 			console.log("error[reason, statusCode] : " + err.reason, err.statusCode);
 		else
 			console.log(body.id + ' : created with sucess');
 			result.status = body.id + ' : created with sucess';
+			res.status(200).send(result); // TODO status da operacao
 	});
-
-	res.status(200).send(result); // TODO status da operacao
 });
 
 
@@ -107,10 +106,17 @@ app.get('/read/:store', (req, res) => {
 
 	console.log('read', store, id);
 
-	// TODO ler documento do db com doc.type == store
+	var send_data = {}; // documento aqui
 
-	var send_data = {store: store, id: id }; // TODO documento aqui
-	res.json(send_data);
+	// ler documento do db com doc.type == store
+	couch.readDocument(id, store, function(err, body){
+		if(err) 
+			console.log("error[reason, statusCode] : " + err.reason, err.statusCode);
+		else
+			console.log(body._id + ' : retrieved with sucess');
+			send_data = body;
+			res.json(send_data);
+	});
 });
 
 

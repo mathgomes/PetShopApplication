@@ -110,6 +110,10 @@ function _dbErrorHandler(event) {
 
 function dbInit() {
 
+	//read test
+/*	_jsonAjax('GET', '/read/users', { id: 'aaaa' }, function(result) {
+		console.log(result.data._id)
+	});*/
 	var request = window.indexedDB.open(DB_NAME, DB_VERSION);
 	request.onerror = _dbErrorHandler;
 
@@ -445,7 +449,7 @@ function dbCreateRecord(record, store, callback) {
 function dbReadRecord(record_id, store, callback) {
 	console.log('Reading record', record_id, 'from ' + store);
 
-	//_jsonAjax('GET', '/read/' + store, { id: record_id }, callback);
+	_jsonAjax('GET', '/read/' + store, { id: record_id }, callback);
 
 	_dbGetStore(store, 'readonly', function(store) {
 		var request = store.get(record_id);
