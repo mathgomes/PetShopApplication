@@ -72,7 +72,6 @@ couch.initCouch(function(db,err) {
 		throw err;
 	}
 	else {
-		console.log(db + " : database initialized");
 		// INITIAL INSERTIONS
 		couch.createDocument(admin_record, 'users', function(err, body){
 			if(err) 

@@ -26,13 +26,18 @@ var uniqueIDs = {
 var couch = module.exports = {
 	// initialize the server routines
 	initCouch: function (callback) {
-		this.createDatabases(callback);
+		this.createDatabases(function() {
+			callback();
+		});
 	},
 	// create all the databases according to dbNames
 	createDatabases: function(callback) {
 		dbNames.forEach(function(name) {
-			this.createDatabase(name,callback);
+			this.createDatabase(name,function(db, err) {
+				console.log(db + " : database initialized");
+			});
 		}, this);
+		callback();
 	},
 	// create a database if it doesnt exist, do nothing if exists
 	createDatabase: function (db,callback) {

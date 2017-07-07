@@ -111,24 +111,25 @@ function _dbErrorHandler(event) {
 function dbInit() {
 
 	//read test
-/*	_jsonAjax('GET', '/read/users', { id: 'aaaa' }, function(result) {
+	_jsonAjax('GET', '/read/users', { id: 'hdzin' }, function(result) {
 		console.log(result.data)
-	});*/
-
-	// update test
-	_jsonAjax('PUT', '/update/users', 
-	{
-		"is_admin": false,
-		"username": "aaaa",
-  		"password": "a",
-  		"name": "ccc",
-  		"phone": "ccc",
-  		"email": "ccccc",
-  		"address": "abc",
-  		"photo": "images/perfil.jpg"
-  	}, function(result) {
-		console.log(result.data)
+		// update test
+		_jsonAjax('PUT', '/update/users', 
+		{
+			"is_admin": false,
+			"username": "hdzin",
+	  		"password": "1",
+	  		"name": "ccc",
+	  		"phone": "ccc",
+	  		"email": "ccccc",
+	  		"address": "abc",
+	  		"photo": "images/perfil.jpg"
+	  	}, function(result) {
+			console.log(result.data)
+		});
 	});
+
+	
 
 	var request = window.indexedDB.open(DB_NAME, DB_VERSION);
 	request.onerror = _dbErrorHandler;
