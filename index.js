@@ -6,10 +6,6 @@ var couch = require('./couchDB');
 
 var nano = require('nano')(process.env.COUCHDB_URL || 'http://127.0.0.1:5984');
 
-
-
-
-
 var app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -61,39 +57,6 @@ var customer_record = {
  *   DELETE /delete_all/:store/:index?key=<KEY>
 */
 
-
-
- 
-// clean up the database we created previously 
-/*function insertBanco (object) {
-  
-console.log("Estou aqui:" + object);
-nano.db.destroy('petShop', function() {
-  // create a new database 
-  nano.db.create('petShop', function() {
-    // specify the database we are going to use 
-    var pet = nano.use('petShop');
-    // and insert a document in it 
-    pet.insert(object, 'rabbit', function(err, body, header) {
-      if (err) {
-        console.log('[petShop.insert] ', err.message);
-        return;
-      }
-      console.log('you have inserted the rabbit.')
-      console.log(body);
-    });
-  });
-});
-}*/
-// a dictionary
-var store_names = {
-	users: 1,
-	animals: 1,
-	products: 1,
-	services: 1,
-	timeslots: 1,
-	cartitems: 1,
-};
 
 // initialize the database
 couch.initCouch(function(db,err) {
