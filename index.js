@@ -4,8 +4,6 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var couch = require('./couchDB');
 
-var nano = require('nano')(process.env.COUCHDB_URL || 'http://127.0.0.1:5984');
-
 var app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -77,13 +75,13 @@ couch.initCouch(function(db,err) {
 			if(err) 
 				console.log("error[reason, statusCode] : " + err.reason, err.statusCode);
 			else
-				console.log(body + ' : created with sucess');
+				console.log(body.id + ' : created with sucess');
 		});
 		couch.createDocument(customer_record, 'users', function(err, body){
 			if(err) 
 				console.log("error[reason, statusCode] : " + err.reason, err.statusCode);
 			else
-				console.log(body + ' : created with sucess');
+				console.log(body.id + ' : created with sucess');
 		});	
 	}
 });

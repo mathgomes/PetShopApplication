@@ -521,7 +521,7 @@ function dbReadFromIndex(key, store, index, callback) {
 function dbUpdateRecord(record, store, callback) {
 	console.log('Updating record', record, 'on', store);
 
-	//_jsonAjax('PUT', '/update/' + store, record, callback);
+	_jsonAjax('PUT', '/update/' + store, record, callback);
 
 	_dbGetStore(store, 'readwrite', function(store) {
 		var request = store.put(record);

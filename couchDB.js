@@ -9,7 +9,6 @@
 
 var nano = require('nano')(process.env.COUCHDB_URL || 'http://127.0.0.1:5984');
 
-module.exports = couch;
 
 var dbNames = ['users','animals','products','services','timeslots','cartitems']
 var uniqueIDs = {
@@ -67,6 +66,7 @@ var couch = module.exports = {
 		    callback(err, body);
 		});
 	},
+	// update a document from a source one
 	updateDocument: function(document, database, callback) {
 		var key = document[uniqueIDs[database]];
 		this.readDocument(key, database, function(err, existing) {
