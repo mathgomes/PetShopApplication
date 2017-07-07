@@ -2,10 +2,16 @@
 
 var express = require('express');
 var bodyParser = require('body-parser');
-var nano = require('nano')('http://localhost:5984');
+var couch = require('./couchDB');
+
+var nano = require('nano')(process.env.COUCHDB_URL || 'http://127.0.0.1:5984');
+
+
+
 
 
 var app = express();
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -56,6 +62,7 @@ var customer_record = {
 */
 
 
+
  
 // clean up the database we created previously 
 /*function insertBanco (object) {
@@ -88,31 +95,40 @@ var store_names = {
 	cartitems: 1,
 };
 
-// dbCreateRecord
-app.post('/create/:store', (req, res) => {
-	//var store = req.params.store;
-	//var record = req.body;
+// to initialize the database
+app.get('/init', (req,res) => {
 
-	//console.log('create', store, record);
-
-	// TODO inserir no DB com doc.type == store
-	
-	nano.db.create('petShop', function(err, body, header) {
-	console.log('Estou aqui');
-  	if (err)
-  		console.log(err);
-  	else 
- 	 	console.log(body);
+	couch.initCouch(function(err) {
+		if (err) {
+    		throw err;
+  		}
+  		else {
+  			var send_data = {status: 'database initialized'};
+  			res.status(200).json(send_data);
+  		}
 	});
 	
-	/*nano.db.list(function(err, body) {
-  // body is an array 
-  body.forEach(function(db) {
-    console.log(db);
-  });
-});*/
+});
 
-	//res.status(200).send(); // TODO status da operacao
+
+// dbCreateRecord
+app.post('/create/:store', (req, res) => {
+	var store = req.params.store;
+	var record = req.body;
+
+	console.log('create', store, record);
+
+	// TODO inserir no DB com doc.type == store
+	couch.createUser(req.body,function(err){//
+		if(err) 
+			console.log(err);
+		else
+			console.log('user created with sucess');
+
+		
+	});
+
+	res.status(200).send(); // TODO status da operacao
 });
 
 
@@ -138,22 +154,7 @@ app.get('/read/:store', (req, res) => {
  		console.log("sucesso");
 });*/
 
-/*nano.db.destroy('petShop', function() {
-  // create a new database 
-  nano.db.create('petShop', function() {
-    // specify the database we are going to use 
-    var pet = nano.use('petShop');
-    // and insert a document in it 
-    pet.insert({ happy: true }, 'rabbit', function(err, body, header) {
-      if (err) {
-        console.log('[petShop.insert] ', err.message);
-        return;
-      }
-      console.log('you have inserted the rabbit.')
-      console.log(body);
-    });
-  });
-});*/
+
 	console.log('read', store, id);
 
 	// TODO ler documento do db com doc.type == store

@@ -109,6 +109,12 @@ function _dbErrorHandler(event) {
 
 
 function dbInit() {
+
+	// call to initialize de database
+	_jsonAjax('GET', '/init', {}, function(result) {
+		console.log('result:' + result.data.status);
+	});
+
 	var request = window.indexedDB.open(DB_NAME, DB_VERSION);
 	request.onerror = _dbErrorHandler;
 
@@ -599,7 +605,7 @@ function _jsonAjax(method, path, data, callback) {
 
 	// Set parameters for each HTTP method
 	if(['GET', 'HEAD', 'DELETE', 'OPTIONS'].indexOf(method) !== -1) {
-		full_path += urlencoded;
+		//full_path += urlencoded;
 	}
 	else if(['POST', 'PUT'].indexOf(method) !== -1) {
 		send_data = JSON.stringify(data);

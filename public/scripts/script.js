@@ -160,9 +160,9 @@ $(document).ready(function() {
 
 	loadPage('login_page.html', setLoginAction);
 
-	$(document).on("click", "input#inputBuscaCliente", function() {
-		$("#indexCenterPage").load("Admin/alteraExcluiUsuario.html");
-	});
+	// $(document).on("click", "input#inputBuscaCliente", function() {
+	// 	$("#indexCenterPage").load("Admin/alteraExcluiUsuario.html");
+	// });
 
 
 
