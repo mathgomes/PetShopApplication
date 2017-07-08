@@ -111,10 +111,11 @@ function _dbErrorHandler(event) {
 function dbInit() {
 
 	//read test
+	/*
 	_jsonAjax('GET', '/read/users', { id: 'hdzin' }, function(result) {
 		console.log(result.data)
 		// update test
-		_jsonAjax('PUT', '/update/users', 
+		_jsonAjax('PUT', '/update/users',
 		{
 			id: 2,
 			is_admin: false,
@@ -129,8 +130,9 @@ function dbInit() {
 			console.log(result.data)
 		});
 	});
+	*/
 
-	
+
 
 	var request = window.indexedDB.open(DB_NAME, DB_VERSION);
 	request.onerror = _dbErrorHandler;
@@ -455,10 +457,12 @@ function dbCreateRecord(record, store, callback) {
 
 	_jsonAjax('POST', '/create/' + store, record, callback);
 
+	/*
 	_dbGetStore(store, 'readwrite', function(store) {
 		var request = store.add(record);
 		_dbRequestResult(request, callback);
 	});
+	*/
 }
 
 
@@ -469,6 +473,7 @@ function dbReadRecord(record_id, store, callback) {
 
 	_jsonAjax('GET', '/read/' + store, { id: record_id }, callback);
 
+	/*
 	_dbGetStore(store, 'readonly', function(store) {
 		var request = store.get(record_id);
 
@@ -485,6 +490,7 @@ function dbReadRecord(record_id, store, callback) {
 			}
 		};
 	});
+	*/
 }
 
 
@@ -510,11 +516,25 @@ function dbReadFromIndex(key, store, index, callback) {
 
 	//_jsonAjax('GET', '/read/' + store + '/' + index, { key: key }, callback);
 
-	_dbGetIndex(store, index, 'readonly', function(store, index) {
-		var key_range = IDBKeyRange.only(key);
-		var request = index.openCursor(key_range);
-		_dbCursorCollect(request, callback);
-	});
+	// Por enquanto, ta feito na gambiarra
+
+	// User id is the username
+	if(store === 'users' && index === 'username') {
+		dbReadRecord(key, 'users', function(result) {
+			// dbReadFromIndex must return an array
+			if(result.success) {
+				result.data = [ result.data ];
+			}
+			callback(result);
+		});
+	}
+	else {
+		_dbGetIndex(store, index, 'readonly', function(store, index) {
+			var key_range = IDBKeyRange.only(key);
+			var request = index.openCursor(key_range);
+			_dbCursorCollect(request, callback);
+		});
+	}
 }
 
 
@@ -524,10 +544,12 @@ function dbUpdateRecord(record, store, callback) {
 
 	_jsonAjax('PUT', '/update/' + store, record, callback);
 
+	/*
 	_dbGetStore(store, 'readwrite', function(store) {
 		var request = store.put(record);
 		_dbRequestResult(request, callback);
 	});
+	*/
 }
 
 
@@ -625,6 +647,12 @@ function _jsonAjax(method, path, data, callback) {
 		full_path += urlencoded;
 	}
 	else if(['POST', 'PUT'].indexOf(method) !== -1) {
+		// Fix ID property (couchdb - indexeddb inconsistency)
+		if(data.id !== undefined) {
+			data._id = data.id;
+			delete data.id;
+		}
+
 		send_data = JSON.stringify(data);
 		// Undefined otherwise
 	}
@@ -653,7 +681,15 @@ function _jsonAjax(method, path, data, callback) {
 			if(req.status === 200) {
 				// Success -> return parsed response
 				if(req.responseText !== '') {
-					result = _dbSuccess(JSON.parse(req.responseText));
+					var obj = JSON.parse(req.responseText);
+
+					// Fix ID property (couchdb - indexeddb inconsistency)
+					if(obj._id !== undefined) {
+						obj.id = obj._id;
+						delete obj._id;
+					}
+
+					result = _dbSuccess(obj);
 				}
 				else {
 					result = _dbSuccess(req.status);

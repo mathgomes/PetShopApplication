@@ -11,13 +11,15 @@ console.log('Executing script.js');
 
 // Used to set or retrieve the user's id
 function loggedUserId(user_id) {
-	if(user_id) {
+	if(user_id !== undefined) {
 		// Logging in
-		localStorage.setItem('user_id', user_id);
+		var obj = { data: user_id };
+		localStorage.setItem('user_id', JSON.stringify(obj));
 	}
 	else {
 		// ID retrieval
-		return parseInt(localStorage.getItem('user_id'));
+		var json = localStorage.getItem('user_id');
+		return JSON.parse(json).data;
 	}
 }
 
