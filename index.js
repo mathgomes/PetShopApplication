@@ -56,11 +56,22 @@ var customer_record = {
  *   DELETE /delete_all/:store/:index?key=<KEY>
 
 	TABLE OF ERRORS : 
-200 — OK, The request was successful
-201 — CREATED, A new resource object was successfully created
-404 — NOT FOUND, The requested resource could not be found
-400 — BAD REQUEST, The request was malformed or invalid
-500 — INTERNAL SERVER ERROR, Unknown server error has occurred
+200 - OK
+201 - Created
+202 - Accepted
+304 - Not Modified
+400 - Bad Request
+401 - Unauthorized
+403 - Forbidden
+404 - Not Found
+405 - Resource Not Allowed
+406 - Not Acceptable
+409 - Conflict
+412 - Precondition Failed
+415 - Bad Content Type
+416 - Requested Range Not Satisfiable
+417 - Expectation Failed
+500 - Internal Server Error
 	
 */
 
@@ -203,6 +214,9 @@ app.delete('/delete/:store', (req, res) => {
 
 	console.log('delete', store, id);
 
+	var result = {
+		status : ""
+	}
 	// deletar o documento com doc.type == store && doc.id == id
 	couch.deleteDocument(id, store, function(err, result){
 		if(err) {
