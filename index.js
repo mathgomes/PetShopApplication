@@ -153,6 +153,12 @@ app.get('/read_all/:store', (req, res) => {
 	console.log('read_all', store);
 
 	// TODO ler todos documentos do db com doc.type == store
+	couch.readAllDocuments(null,store,function(err, res) {
+		res.rows.forEach(function (row) {
+			// print out to console it's name and isHyperlink flag
+			console.log(row);
+		});
+	});
 
 	var send_data = [{store: store}]; // TODO vetor de documentos aqui
 	res.json(send_data);

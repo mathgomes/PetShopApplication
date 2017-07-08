@@ -13,13 +13,19 @@ var nano = require('nano')(process.env.COUCHDB_URL || 'http://127.0.0.1:5984');
 var dbNames = ['users','animals','products','services','timeslots','cartitems']
 var uniqueIDs = {
 	users : 'username',
-	animals : 'owner',
+	animals : '',
 	products : 'name',
 	services : 'name',
 	timeslots : '',
 	cartItems:  ''
 };
 
+var views = 
+	{ "views": 
+      { "display_all": 
+        { "map": function(doc) { emit(doc._id, doc); } } 
+      }
+    }
 
 // object with all the database functions
 var couch = module.exports = {
@@ -36,6 +42,11 @@ var couch = module.exports = {
 			this.createDatabase(name,function(db, err) {
 				itemsProcessed++;
 				console.log(db + " : database initialized");
+				let dbase = nano.use(db);
+				dbase.insert(views,'_design/queries', function(error, response) {
+					console.log("view inserted");
+				});
+
 				if(itemsProcessed === dbNames.length) {
 					callback();
 				}	
@@ -100,7 +111,9 @@ var couch = module.exports = {
 	},
 	readAllDocuments: function(document, database, callback) {
 		var db = nano.use(database);
-
+		db.view('queries',"display_all",function(err, res) {
+			callback(err, res);
+		});
 	}
 }
 
