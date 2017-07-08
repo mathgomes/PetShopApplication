@@ -109,18 +109,14 @@ app.post('/create/:store', (req, res) => {
 
 	console.log('create', store, record);
 
-	var result = {
-		status : ""
-	}
 	couch.createDocument(record, store, function(err, result){
 		if(err) {
 			console.log("error[reason, statusCode] : " + err.reason, err.statusCode);
-			res.status(err.statusCode).send(err)
+			res.status(err.statusCode).send()
 		}
 		else {
 			console.log(result.id + ' : created with sucess');
-			result.status = result.id + ' : created with sucess';
-			res.status(201).send(result); // status da operacao CREATED
+			res.status(201).send(); // status da operacao CREATED
 		}
 	});
 });
@@ -139,7 +135,7 @@ app.get('/read/:store', (req, res) => {
 	couch.readDocument(id, store, function(err, doc){
 		if(err) {
 			console.log("error[reason, statusCode] : " + err.reason, err.statusCode);
-			res.status(err.statusCode).send(err)
+			res.status(err.statusCode).send()
 		}
 		else {
 			console.log(doc._id + ' : retrieved with sucess');
@@ -188,19 +184,15 @@ app.put('/update/:store', (req, res) => {
 
 	console.log('update', store, id, new_record);
 
-	var result = {
-		status : ""
-	}
 	// atualizar o documento com doc.type == store && doc.id == id
 	couch.updateDocument(new_record, store, function(err, result){
 		if(err) {
 			console.log("error[reason, statusCode] : " + err.reason, err.statusCode);
-			res.status(err.statusCode).send(err)
+			res.status(err.statusCode).send()
 		}
 		else {
 			console.log(result.id + ' : updated with sucess');
-			result.status = result.id + ' : updated with sucess';
-			res.status(200).json(result);
+			res.status(200).json();
 		}
 	});
 
@@ -214,19 +206,15 @@ app.delete('/delete/:store', (req, res) => {
 
 	console.log('delete', store, id);
 
-	var result = {
-		status : ""
-	}
 	// deletar o documento com doc.type == store && doc.id == id
 	couch.deleteDocument(id, store, function(err, result){
 		if(err) {
 			console.log("error[reason, statusCode] : " + err.reason, err.statusCode);
-			res.status(err.statusCode).send(err)
+			res.status(err.statusCode).send()
 		}
 		else {
 			console.log(result.id + ' : deleted with sucess');
-			result.status = result.id + ' : deleted with sucess';
-			res.status(200).json(result);
+			res.status(200).json();
 		}
 	});
 

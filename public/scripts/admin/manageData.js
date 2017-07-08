@@ -189,7 +189,7 @@ function deleteUser(user_id) {
 		if (result.success) {
 			alert('Usuário apagado com sucesso.');
 		} else {
-			alert('Erro ao apagar Usuário.');
+			alert('Erro '+result.error+' ao apagar Usuário.');
 			console.log('deleteObject:', result.error);
 		}
 		refreshTable('users', '#admUserTable', userTableRow);
@@ -332,7 +332,7 @@ function deleteServico(service_id) {
 		if (result.success) {
 			alert('Produto apagado com sucesso.');
 		} else {
-			alert('Erro ao apagar produto.');
+			alert('Erro '+ result.error +' ao apagar produto.');
 			console.log('deleteObject:', result.error);
 		}
 		refreshTable('services', '#admServsTable', servTableRow)
@@ -395,8 +395,9 @@ function createObject(tableName, tableID, tableRow, obj) {
 	new_object = obj;
 	dbCreateRecord(new_object, tableName, function(result) {
 		if (result.success == false) {
-			alert('Erro ao criar objeto');
+			alert('Erro '+ result.error + ' ao criar objeto');
 		} else {
+			alert('Objeto cadastrado com sucesso');
 			refreshTable(tableName, tableID, tableRow);
 		}
 	});

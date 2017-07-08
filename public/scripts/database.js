@@ -557,12 +557,12 @@ function dbUpdateRecord(record, store, callback) {
 function dbDeleteRecord(record_id, store, callback) {
 	console.log('Deleting record', record_id, 'from', store);
 
-	//_jsonAjax('DELETE', '/delete/' + store, { id: record_id }, callback);
+	_jsonAjax('DELETE', '/delete/' + store, { id: record_id }, callback);
 
-	_dbGetStore(store, 'readwrite', function(store) {
+/*	_dbGetStore(store, 'readwrite', function(store) {
 		var request = store.delete(record_id);
 		_dbRequestResult(request, callback);
-	});
+	});*/
 }
 
 
@@ -678,7 +678,7 @@ function _jsonAjax(method, path, data, callback) {
 			// This value should not be returned
 			var result = _dbFailure('_jsonAjax logic error');
 
-			if(req.status === 200) {
+			if(req.status === 200 || req.status === 201) {
 				// Success -> return parsed response
 				if(req.responseText !== '') {
 					var obj = JSON.parse(req.responseText);
