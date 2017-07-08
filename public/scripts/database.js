@@ -116,14 +116,15 @@ function dbInit() {
 		// update test
 		_jsonAjax('PUT', '/update/users', 
 		{
-			"is_admin": false,
-			"username": "hdzin",
-	  		"password": "1",
-	  		"name": "ccc",
-	  		"phone": "ccc",
-	  		"email": "ccccc",
-	  		"address": "abc",
-	  		"photo": "images/perfil.jpg"
+			id: 2,
+			is_admin: false,
+			username: "hdzin",
+	  		password: "1",
+	  		name: "ccc",
+	  		phone: "ccc",
+	  		email: "ccccc",
+	  		address: "abc",
+	  		photo: "images/perfil.jpg"
 	  	}, function(result) {
 			console.log(result.data)
 		});

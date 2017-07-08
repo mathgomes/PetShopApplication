@@ -31,12 +31,16 @@ var couch = module.exports = {
 	},
 	// create all the databases according to dbNames
 	createDatabases: function(callback) {
+		let itemsProcessed = 0;
 		dbNames.forEach(function(name) {
 			this.createDatabase(name,function(db, err) {
+				itemsProcessed++;
 				console.log(db + " : database initialized");
+				if(itemsProcessed === dbNames.length) {
+					callback();
+				}	
 			});
 		}, this);
-		callback();
 	},
 	// create a database if it doesnt exist, do nothing if exists
 	createDatabase: function (db,callback) {
@@ -55,6 +59,7 @@ var couch = module.exports = {
 	// create a specified document in a given database
 	createDocument: function(document, database, callback) {
 		var db = nano.use(database);
+		console.log(document[uniqueIDs[database]])
 		 db.insert(document, document[uniqueIDs[database]], function(err, result) {
 		 	callback(err, result);
 		 });
