@@ -93,15 +93,12 @@ var couch = module.exports = {
 			}
 			let db = nano.use(database);
 			db.destroy(document_id, existing._rev, function(err, result) {
+				console.log(result)
 	 			callback(err, result);
 	 		});
 		});
 	},
 	readAllDocuments: function(document, database, callback) {
-		var db = nano.use(database);
-
-	},
-	deleteDocument: function(document, database, callback) {
 		var db = nano.use(database);
 
 	}
