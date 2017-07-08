@@ -73,16 +73,20 @@ couch.initCouch(function(db,err) {
 	else {
 		// INITIAL INSERTIONS
 		couch.createDocument(admin_record, 'users', function(err, body){
-			if(err) 
+			if(err) {
 				console.log("error[reason, statusCode] : " + err.reason, err.statusCode);
-			else
+			}
+			else {
 				console.log(body.id + ' : created with sucess');
+			}
 		});
 		couch.createDocument(customer_record, 'users', function(err, body){
-			if(err) 
+			if(err) {
 				console.log("error[reason, statusCode] : " + err.reason, err.statusCode);
-			else
+			}
+			else {
 				console.log(body.id + ' : created with sucess');
+			}
 		});	
 	}
 });
@@ -199,9 +203,19 @@ app.delete('/delete/:store', (req, res) => {
 
 	console.log('delete', store, id);
 
-	// TODO deletar o documento com doc.type == store && doc.id == id
+	// deletar o documento com doc.type == store && doc.id == id
+	couch.deleteDocument(id, store, function(err, result){
+		if(err) {
+			console.log("error[reason, statusCode] : " + err.reason, err.statusCode);
+			res.status(404).send(err)
+		}
+		else {
+			console.log(result.id + ' : deleted with sucess');
+			result.status = result.id + ' : deleted with sucess';
+			res.status(200).json(result);
+		}
+	});
 
-	res.status(200).send(); // TODO status da operacao
 });
 
 

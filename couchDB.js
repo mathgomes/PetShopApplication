@@ -77,7 +77,6 @@ var couch = module.exports = {
 			if (err) {
 				callback(err, document);
 			}
-			console.log(existing)
 			let db = nano.use(database);
 			document._rev = existing._rev;
 			db.insert(document, key, function(err, result) {
@@ -86,6 +85,17 @@ var couch = module.exports = {
 	 		});
 		});
 
+	},
+	deleteDocument: function(document_id, database, callback) {
+		this.readDocument(document_id, database, function(err, existing) {
+			if (err) {
+				callback(err, existing);
+			}
+			let db = nano.use(database);
+			db.destroy(document_id, existing._rev, function(err, result) {
+	 			callback(err, result);
+	 		});
+		});
 	},
 	readAllDocuments: function(document, database, callback) {
 		var db = nano.use(database);
