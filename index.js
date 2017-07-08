@@ -104,7 +104,7 @@ app.post('/create/:store', (req, res) => {
 	couch.createDocument(record, store, function(err, result){
 		if(err) {
 			console.log("error[reason, statusCode] : " + err.reason, err.statusCode);
-			res.status(404).send(err)
+			res.status(err.statusCode).send(err)
 		}
 		else {
 			console.log(result.id + ' : created with sucess');
@@ -128,7 +128,7 @@ app.get('/read/:store', (req, res) => {
 	couch.readDocument(id, store, function(err, doc){
 		if(err) {
 			console.log("error[reason, statusCode] : " + err.reason, err.statusCode);
-			res.status(404).send(err)
+			res.status(err.statusCode).send(err)
 		}
 		else {
 			console.log(doc._id + ' : retrieved with sucess');
@@ -184,7 +184,7 @@ app.put('/update/:store', (req, res) => {
 	couch.updateDocument(new_record, store, function(err, result){
 		if(err) {
 			console.log("error[reason, statusCode] : " + err.reason, err.statusCode);
-			res.status(404).send(err)
+			res.status(err.statusCode).send(err)
 		}
 		else {
 			console.log(result.id + ' : updated with sucess');
@@ -207,7 +207,7 @@ app.delete('/delete/:store', (req, res) => {
 	couch.deleteDocument(id, store, function(err, result){
 		if(err) {
 			console.log("error[reason, statusCode] : " + err.reason, err.statusCode);
-			res.status(404).send(err)
+			res.status(err.statusCode).send(err)
 		}
 		else {
 			console.log(result.id + ' : deleted with sucess');
