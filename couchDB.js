@@ -59,7 +59,6 @@ var couch = module.exports = {
 	// create a specified document in a given database
 	createDocument: function(document, database, callback) {
 		var db = nano.use(database);
-		console.log(document[uniqueIDs[database]])
 		 db.insert(document, document[uniqueIDs[database]], function(err, result) {
 		 	callback(err, result);
 		 });
