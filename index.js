@@ -195,9 +195,14 @@ app.delete('/delete_all/:store/:index', (req, res) => {
 
 	console.log('delete_all', store, index, key);
 
-	// TODO deletar todos os documentos com doc.type == store && doc[index] == key
-
-	res.status(200).send(); // TODO status da operacao
+	couch.deleteAllFromView(key, store, 'queries', index, function(err, body) {
+		if(err) {
+			_sendError(err, res);
+		}
+		else {
+			res.status(200).send();
+		}
+	});
 });
 
 

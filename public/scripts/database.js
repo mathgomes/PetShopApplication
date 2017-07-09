@@ -585,8 +585,9 @@ function dbDeleteAllFromIndex(key, store, index, callback) {
 	console.log('Deleting all records from', store);
 
 	// Doesn't send a record, so convertIdProperty isn't needed
-	//_jsonAjax('DELETE', '/delete_all/' + store + '/' + index, { key: key }, callback);
+	_jsonAjax('DELETE', '/delete_all/' + store + '/' + index, { key: key }, callback);
 
+	/*
 	dbReadFromIndex(key, store, index, function(result) {
 
 		if(result.success) {
@@ -614,6 +615,7 @@ function dbDeleteAllFromIndex(key, store, index, callback) {
 			callback(result);
 		}
 	});
+	*/
 }
 
 

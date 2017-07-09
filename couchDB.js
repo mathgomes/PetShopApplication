@@ -109,9 +109,33 @@ var couch = module.exports = {
 		nano.use(database).list({include_docs: true}, callback);
 	},
 
-	readFromView(key, database, design_doc, view, callback) {
+	readFromView: function(key, database, design_doc, view, callback) {
 		var db = nano.use(database);
 		db.view(design_doc, view, {include_docs: true, key: key}, callback);
+	},
+
+	deleteAllFromView: function(key, database, design_doc, view, callback) {
+		var db = nano.use(database);
+		db.view(design_doc, view, {include_docs: true}, function(err, body) {
+			if(err) {
+				callback(err, body);
+			}
+			else {
+				// Delete all documents with specified key
+				var documents = body.rows.reduce(function(to_be_deleted, row) {
+					if(row.key === key) {
+						to_be_deleted.push({
+							_id: row.id,
+							_rev: row.doc._rev,
+							_deleted: true,
+						});
+					}
+					return to_be_deleted;
+				}, []); // <- Note empty array as 2nd parameter
+
+				db.bulk({docs: documents}, callback);
+			}
+		});
 	}
 };
 
