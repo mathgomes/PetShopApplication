@@ -50,6 +50,12 @@ app.use(express.static('public'));
 */
 
 
+function _sendError(err, res) {
+	console.log('Error', err.statusCode, '-', err.reason);
+	res.status(err.statusCode).send();
+}
+
+
 // Create and populate databases with mockup data and views
 couch.initCouch();
 
@@ -60,13 +66,11 @@ app.post('/create/:store', (req, res) => {
 
 	console.log('create', store, record);
 
-	couch.createDocument(record, undefined, store, function(err, result){
+	couch.createDocument(record, undefined, store, function(err, body) {
 		if(err) {
-			console.log("error[reason, statusCode] : " + err.reason, err.statusCode);
-			res.status(err.statusCode).send();
+			_sendError(err, res);
 		}
 		else {
-			console.log(result.id + ' : created with success');
 			res.status(201).send(); // status da operacao CREATED
 		}
 	});
@@ -83,15 +87,12 @@ app.get('/read/:store', (req, res) => {
 
 	var send_data = {}; // documento aqui
 	// ler documento do db com doc.type == store
-	couch.readDocument(id, store, function(err, doc){
+	couch.readDocument(id, store, function(err, body) {
 		if(err) {
-			console.log("error[reason, statusCode] : " + err.reason, err.statusCode);
-			res.status(err.statusCode).send();
+			_sendError(err, res);
 		}
 		else {
-			console.log(doc._id + ' : retrieved with success');
-			send_data = doc;
-			res.status(200).json(send_data);
+			res.json(body);
 		}
 	});
 });
@@ -104,14 +105,20 @@ app.get('/read_all/:store', (req, res) => {
 	console.log('read_all', store);
 
 	couch.readAllDocuments(store, function(err, body) {
-		// Send only the documents, skipping design documents
-		var docs = body.rows.reduce(function(filtered, row) {
-			if(row.doc._id.startsWith('_design/') === false) {
-				filtered.push(row.doc);
-			}
-			return filtered;
-		}, []);
-		res.json(docs);
+		if(err) {
+			_sendError(err, res);
+		}
+		else {
+			// Don't send design documents
+			var docs = body.rows.reduce(function(filtered, row) {
+				if(row.doc._id.startsWith('_design/') === false) {
+					filtered.push(row.doc);
+				}
+				return filtered;
+			}, []);
+
+			res.json(docs);
+		}
 	});
 });
 
@@ -125,11 +132,16 @@ app.get('/read/:store/:index', (req, res) => {
 	console.log('read', store, index, key);
 
 	couch.readFromView(key, store, 'queries', index, function(err, body) {
-		var docs = body.rows.map(function(row) {
-			return row.doc;
-		});
+		if(err) {
+			_sendError(err, res);
+		}
+		else {
+			var docs = body.rows.map(function(row) {
+				return row.doc;
+			});
 
-		res.json(docs);
+			res.json(docs);
+		}
 	});
 });
 
@@ -143,14 +155,12 @@ app.put('/update/:store', (req, res) => {
 	console.log('update', store, id, new_record);
 
 	// atualizar o documento com doc.type == store && doc.id == id
-	couch.updateDocument(new_record, store, function(err, result){
+	couch.updateDocument(new_record, store, function(err, body) {
 		if(err) {
-			console.log("error[reason, statusCode] : " + err.reason, err.statusCode);
-			res.status(err.statusCode).send();
+			_sendError(err, res);
 		}
 		else {
-			console.log(result.id + ' : updated with success');
-			res.status(200).json();
+			res.status(200).send();
 		}
 	});
 
@@ -165,14 +175,12 @@ app.delete('/delete/:store', (req, res) => {
 	console.log('delete', store, id);
 
 	// deletar o documento com doc.type == store && doc.id == id
-	couch.deleteDocument(id, store, function(err, result){
+	couch.deleteDocument(id, store, function(err, body) {
 		if(err) {
-			console.log("error[reason, statusCode] : " + err.reason, err.statusCode);
-			res.status(err.statusCode).send();
+			_sendError(err, res);
 		}
 		else {
-			console.log(result.id + ' : deleted with success');
-			res.status(200).json();
+			res.status(200).send();
 		}
 	});
 
