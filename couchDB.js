@@ -33,10 +33,6 @@ var couch = module.exports = {
 			this.createDatabase(name,function(db, err) {
 				itemsProcessed++;
 				console.log(db + " : database initialized");
-				/*let dbase = nano.use(db);
-				dbase.insert(views,'_design/queries', function(error, response) {
-					console.log("view inserted");
-				});*/
 
 				if(itemsProcessed === dbNames.length) {
 					callback();
@@ -135,7 +131,7 @@ function _test_callback(err, body) {
 // Adds mockup records to the databases
 function populateDatabases() {
 	function create(db, doc_id, doc) {
-		couch.createDocument(doc, doc_id, db, _test_callback);
+		couch.createDocument(doc, doc_id, db, () => {});
 	}
 
 	// TODO terminar de copiar pra ca database.js _dbPopulate
@@ -152,6 +148,43 @@ function populateDatabases() {
 		}
 	});
 
+	create('animals', '_design/queries', {
+		'views': {
+			'owner': {
+				'map': function(doc) { emit(doc.owner, null); }
+			}
+		}
+	});
+
+	create('cartitems', '_design/queries', {
+		'views': {
+			'user': {
+				'map': function(doc) { emit(doc.user, null); }
+			},
+			'product': {
+				'map': function(doc) { emit(doc.product, null); }
+			},
+		}
+	});
+
+	create('services', '_design/queries', {
+		'views': {
+			'name': {
+				'map': function(doc) { emit(doc.name, null); }
+			}
+		}
+	});
+
+	create('timeslots', '_design/queries', {
+		'views': {
+			'date': {
+				'map': function(doc) { emit(doc.date, null); }
+			},
+			'animal': {
+				'map': function(doc) { emit(doc.animal, null); }
+			},
+		}
+	});
 
 	// USERS
 	create('users', '1', {
@@ -210,5 +243,70 @@ function populateDatabases() {
 		photo: 'images/pets/poodle.jpg',
 		breed: 'Poodle',
 		age: 3,
+	});
+
+	// PRODUCTS
+	create('products', '1', {
+		name: 'Osso',
+		photo: 'images/produtos/osso.jpg',
+		description: 'Osso de borracha para cães.',
+		price: 4.99,
+		stock: 10,
+		sold_amount: 0,
+		total_income: 0,
+	});
+
+	create('products', '2', {
+		name: 'Alpiste',
+		photo: 'images/produtos/alpiste.jpg',
+		description: 'Alimento para pássaros.',
+		price: 2.50,
+		stock: 5,
+		sold_amount: 0,
+		total_income: 0,
+	});
+
+	create('products', '3', {
+		name: 'Ração',
+		photo: 'images/produtos/racao.jpg',
+		description: 'Alimento para gatos',
+		price: 25.00,
+		stock: 25,
+		sold_amount: 0,
+		total_income: 0,
+	});
+
+	// SERVICES
+	create('services', '1', {
+		name: 'Banho e tosa',
+		photo: 'images/servico/tosa.jpg',
+		description: 'Demora de 30 minutos a 2 horas dependendo do animal.',
+		price: 40.00,
+		sold_amount: 0,
+		total_income: 0,
+	});
+
+	create('services', '2', {
+		name: 'Vacina contra raiva',
+		photo: 'images/servico/vacina.png',
+		description: 'Rápido e indolor.',
+		price: 30.00,
+		sold_amount: 0,
+		total_income: 0,
+	});
+
+	// TIMESLOTS
+	create('timeslots', '1', {
+		date: (new Date('08/20/2017')).getTime(),
+		time: 5,
+		service: '1',
+		animal: '1',
+	});
+
+	create('timeslots', '2', {
+		date: (new Date('08/20/2017')).getTime(),
+		time: 7,
+		service: '2',
+		animal: '2',
 	});
 }
