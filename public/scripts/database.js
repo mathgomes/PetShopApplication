@@ -84,302 +84,23 @@
 
 console.log('Executing database.js');
 
-if(!window.indexedDB) {
-    window.alert('No Indexed DB support');
-}
-
-
-
-var DB_NAME = 'petshop';
-var DB_VERSION = 1;
-
 
 
 function _test_callback(result) {
-	console.log('Test result callback');
-	console.log(result);
-}
-
-
-
-function _dbErrorHandler(event) {
-	console.log('Database error: ' + event.target.errorCode);
+  console.log('Test result callback');
+  console.log(result);
 }
 
 
 
 function dbInit() {
-
-	//read test
-	/*
-	_jsonAjax('GET', '/read/users', { id: 'hdzin' }, function(result) {
-		console.log(result.data)
-		// update test
-		_jsonAjax('PUT', '/update/users',
-		{
-			id: 2,
-			is_admin: false,
-			username: "hdzin",
-	  		password: "1",
-	  		name: "ccc",
-	  		phone: "ccc",
-	  		email: "ccccc",
-	  		address: "abc",
-	  		photo: "images/perfil.jpg"
-	  	}, function(result) {
-			console.log(result.data)
-		});
-	});
-	*/
-
-
-
-	var request = window.indexedDB.open(DB_NAME, DB_VERSION);
-	request.onerror = _dbErrorHandler;
-
-	var should_populate = false;
-
-	// Create object stores and indices
-	request.onupgradeneeded = function(event) {
-		console.log('dbInit:onupgradeneeded');
-		var db = event.target.result;
-
-		should_populate = true;
-		_dbCreateStores(db);
-	};
-
-	// Populate database, if necessary
-	request.onsuccess = function(event) {
-		console.log('dbInit:onsuccess');
-		var db = event.target.result;
-
-		if(should_populate) {
-			_dbPopulate(db);
-		}
-	};
+	// DELETED
 }
 
 
 
 function dbDelete() {
-	var request = window.indexedDB.deleteDatabase(DB_NAME);
-
-	request.onerror = _dbErrorHandler;
-
-	request.onsuccess = function() {
-		console.log('Database deleted: ' + DB_NAME);
-	};
-}
-
-
-
-// Called by dbInit:onupgradeneeded
-// Creates object stores and indices
-function _dbCreateStores(db) {
-	console.log('Creating stores');
-
-	// Shorthand functions
-	function newStore(name) {
-		return db.createObjectStore(name, {keyPath: 'id', autoIncrement: true});
-	}
-
-	function newIndex(store, field, is_unique) {
-		store.createIndex(field, field, {unique: is_unique});
-	}
-
-	var users      = newStore('users');
-	var animals    = newStore('animals');
-	var products   = newStore('products');
-	var services   = newStore('services');
-	var timeslots  = newStore('timeslots');
-	var cart_items = newStore('cartitems');
-
-	newIndex(users, 'username', true);
-	newIndex(users, 'email', true);
-	newIndex(animals, 'owner', false);
-
-	newIndex(cart_items, 'user', false);
-	newIndex(cart_items, 'product', false);
-
-	newIndex(services,  'name', false);
-	newIndex(timeslots, 'date', false);
-	newIndex(timeslots, 'animal', false);
-}
-
-
-
-// Called by dbInit:onsuccess if dbInit:onupgradeneeded was also triggered
-// Adds a bunch of records to the database
-function _dbPopulate(db) {
-	console.log('Populating database');
-
-	var trans = db.transaction(
-		['users', 'animals', 'products', 'services', 'timeslots'],
-		'readwrite');
-
-	var users = trans.objectStore('users');
-
-	users.add({
-		is_admin: true,
-		username: 'admin',
-		password: 'admin',
-		name: 'Matheus Gomes',
-		photo: 'images/perfil.jpg',
-		phone: '(99) 1111-1111',
-		email: 'minhoca@petshop.com',
-		address: 'N/A',
-	});
-
-	users.add({
-		is_admin: false,
-		username: 'hdzin',
-		password: '1',
-		name: 'Hugo Dzin',
-		photo: 'images/pets/canary.jpg',
-		phone: '(99) 2222-2222',
-		email: 'hugo@cliente.com',
-		address: 'São Carlos',
-	});
-
-	users.add({
-		is_admin: false,
-		username: 'rsilva',
-		password: '4321',
-		name: 'Rogiel Silva',
-		photo: 'images/pets/parrot2.jpg',
-		phone: '(99) 3333-3333',
-		email: 'rogiel@cliente.com',
-		address: 'São Carlos',
-	});
-
-	var animals = trans.objectStore('animals');
-
-	animals.add({
-		owner: 2,
-		name: 'Bichano',
-		photo: 'images/pets/cat.jpg',
-		breed: 'Gato',
-		age: 5,
-	});
-
-	animals.add({
-		owner: 2,
-		name: 'Frajola',
-		photo: 'images/pets/persian.jpg',
-		breed: 'Gato',
-		age: 7,
-	});
-
-	animals.add({
-		owner: 2,
-		name: 'Totó',
-		photo: 'images/pets/poodle.jpg',
-		breed: 'Poodle',
-		age: 3,
-	});
-
-	var products = trans.objectStore('products');
-
-	products.add({
-		name: 'Osso',
-		photo: 'images/produtos/osso.jpg',
-		description: 'Osso de borracha para cães.',
-		price: 4.99,
-		stock: 10,
-		sold_amount: 0,
-		total_income: 0,
-	});
-
-	products.add({
-		name: 'Alpiste',
-		photo: 'images/produtos/alpiste.jpg',
-		description: 'Alimento para pássaros.',
-		price: 2.50,
-		stock: 5,
-		sold_amount: 0,
-		total_income: 0,
-	});
-
-	products.add({
-		name: 'Ração',
-		photo: 'images/produtos/racao.jpg',
-		description: 'Alimento para gatos',
-		price: 25.00,
-		stock: 25,
-		sold_amount: 0,
-		total_income: 0,
-	});
-
-
-	var services = trans.objectStore('services');
-
-	services.add({
-		name: 'Banho e tosa',
-		photo: 'images/servico/tosa.jpg',
-		description: 'Demora de 30 minutos a 2 horas dependendo do animal.',
-		price: 40.00,
-		sold_amount: 0,
-		total_income: 0,
-	});
-
-	services.add({
-		name: 'Vacina contra raiva',
-		photo: 'images/servico/vacina.png',
-		description: 'Rápido e indolor.',
-		price: 30.00,
-		sold_amount: 0,
-		total_income: 0,
-	});
-
-
-	var timeslots = trans.objectStore('timeslots');
-
-	timeslots.add({
-		date: (new Date('08/20/2017')).getTime(),
-		time: 5,
-		service: 1,
-		animal: 1,
-	});
-
-	timeslots.add({
-		date: (new Date('08/20/2017')).getTime(),
-		time: 7,
-		service: 2,
-		animal: 2,
-	});
-}
-
-
-
-// Helper functions start here
-// They are used by all CRUD functions
-
-
-
-// Connects to the DB_NAME database and passes the
-// requested store as argument to the callback
-function _dbGetStore(objStore, mode, callback) {
-	var request = window.indexedDB.open(DB_NAME);
-	request.onerror = _dbErrorHandler;
-
-	request.onsuccess = function(event) {
-		var db = event.target.result;
-		var transaction = db.transaction(objStore, mode);
-		var store = transaction.objectStore(objStore);
-
-		callback(store);
-	};
-}
-
-
-
-// Connects to the DB_NAME database and passes the
-// requested store and index as arguments to the callback
-function _dbGetIndex(objStore, indexName, mode, callback) {
-	_dbGetStore(objStore, mode, function(store) {
-		var index = store.index(indexName);
-		callback(store, index);
-	});
+	// DELETED
 }
 
 
@@ -406,45 +127,6 @@ function _dbFailure(error) {
 
 
 
-// Sets callback functions for the request
-// Meant for record CRUD functions
-function _dbRequestResult(request, callback) {
-	request.onsuccess = function(event) {
-		// Success with no data associated
-		callback(_dbSuccess(undefined));
-	};
-
-	request.onerror = function(event) {
-		callback(_dbFailure(event.target.error.name));
-	};
-}
-
-
-
-// Iterates through a cursor, stores every element into an array,
-// then invokes the callback with a result object containing the array as data
-function _dbCursorCollect(cursor_request, callback)
-{
-	var records = [];
-
-	_dbRequestResult(cursor_request, callback);
-	cursor_request.onsuccess = function(event) {
-		var cursor = event.target.result;
-
-		// There is data to read
-		if(cursor) {
-			records.push(cursor.value);
-			cursor.continue();
-		}
-		// There is no data to read
-		else {
-			callback(_dbSuccess(records));
-		}
-	};
-}
-
-
-
 // CRUD functions start here
 // These functions take a callback, that will be invoked with a
 // "result" {success, error, data} parameter created by _dbSuccess or _dbFailure.
@@ -457,13 +139,6 @@ function dbCreateRecord(record, store, callback) {
 
 	// No id field, doesn't need convertIdProperty
 	_jsonAjax('POST', '/create/' + store, record, callback);
-
-	/*
-	_dbGetStore(store, 'readwrite', function(store) {
-		var request = store.add(record);
-		_dbRequestResult(request, callback);
-	});
-	*/
 }
 
 
@@ -479,25 +154,6 @@ function dbReadRecord(record_id, store, callback) {
 		}
 		callback(result);
 	});
-
-	/*
-	_dbGetStore(store, 'readonly', function(store) {
-		var request = store.get(record_id);
-
-		_dbRequestResult(request, callback);
-		request.onsuccess = function(event) {
-			var result = event.target.result;
-
-			// Return a success result if found, failure result if not found
-			if(result) {
-				callback(_dbSuccess(result));
-			}
-			else {
-				callback(_dbFailure('NotFoundError'));
-			}
-		};
-	});
-	*/
 }
 
 
@@ -512,13 +168,6 @@ function dbReadAllRecords(store, callback) {
 		}
 		callback(result);
 	});
-
-	/*
-	_dbGetStore(store, 'readonly', function(store) {
-		var request = store.openCursor();
-		_dbCursorCollect(request, callback);
-	});
-	*/
 }
 
 
@@ -537,13 +186,6 @@ function dbReadFromIndex(key, store, index, callback) {
 		}
 		callback(result);
 	});
-	/*
-	_dbGetIndex(store, index, 'readonly', function(store, index) {
-		var key_range = IDBKeyRange.only(key);
-		var request = index.openCursor(key_range);
-		_dbCursorCollect(request, callback);
-	});
-	*/
 }
 
 
@@ -555,13 +197,6 @@ function dbUpdateRecord(record, store, callback) {
 	convertIdProperty(record);
 
 	_jsonAjax('PUT', '/update/' + store, record, callback);
-
-	/*
-	_dbGetStore(store, 'readwrite', function(store) {
-		var request = store.put(record);
-		_dbRequestResult(request, callback);
-	});
-	*/
 }
 
 
@@ -571,11 +206,6 @@ function dbDeleteRecord(record_id, store, callback) {
 
 	// Doesn't send a record, so convertIdProperty isn't needed
 	_jsonAjax('DELETE', '/delete/' + store, { id: record_id }, callback);
-
-/*	_dbGetStore(store, 'readwrite', function(store) {
-		var request = store.delete(record_id);
-		_dbRequestResult(request, callback);
-	});*/
 }
 
 
@@ -586,36 +216,6 @@ function dbDeleteAllFromIndex(key, store, index, callback) {
 
 	// Doesn't send a record, so convertIdProperty isn't needed
 	_jsonAjax('DELETE', '/delete_all/' + store + '/' + index, { key: key }, callback);
-
-	/*
-	dbReadFromIndex(key, store, index, function(result) {
-
-		if(result.success) {
-			_dbGetStore(store, 'readwrite', function(store) {
-				var total_requests = result.data.length;
-				var complete_count = 0;
-
-				// Makes one delete request for each element
-				result.data.forEach(function(elem) {
-					var request = store.delete(elem.id);
-
-					request.onsuccess = function(event) {
-						complete_count += 1;
-						if(complete_count == total_requests) {
-							// Invokes the callback when all requests complete
-							callback(_dbSuccess(undefined));
-						}
-					};
-
-					request.onerror = request.onsuccess;
-				});
-			});
-		}
-		else {
-			callback(result);
-		}
-	});
-	*/
 }
 
 
