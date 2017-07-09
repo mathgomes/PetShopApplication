@@ -455,6 +455,7 @@ function _dbCursorCollect(cursor_request, callback)
 function dbCreateRecord(record, store, callback) {
 	console.log('Creating record', record, 'into', store);
 
+	// No id field, doesn't need convertIdProperty
 	_jsonAjax('POST', '/create/' + store, record, callback);
 
 	/*
@@ -471,7 +472,13 @@ function dbCreateRecord(record, store, callback) {
 function dbReadRecord(record_id, store, callback) {
 	console.log('Reading record', record_id, 'from ' + store);
 
-	_jsonAjax('GET', '/read/' + store, { id: record_id }, callback);
+	_jsonAjax('GET', '/read/' + store, { id: record_id }, function(result) {
+		if(result.success) {
+			// Convert _id into id
+			convertIdProperty(result.data);
+		}
+		callback(result);
+	});
 
 	/*
 	_dbGetStore(store, 'readonly', function(store) {
@@ -498,12 +505,20 @@ function dbReadRecord(record_id, store, callback) {
 function dbReadAllRecords(store, callback) {
 	console.log('Reading all records from ' + store);
 
-	//_jsonAjax('GET', '/read_all/' + store, {}, callback);
+	_jsonAjax('GET', '/read_all/' + store, {}, function(result) {
+		if(result.success) {
+			// Convert _id into id
+			result.data.forEach(convertIdProperty);
+		}
+		callback(result);
+	});
 
+	/*
 	_dbGetStore(store, 'readonly', function(store) {
 		var request = store.openCursor();
 		_dbCursorCollect(request, callback);
 	});
+	*/
 }
 
 
@@ -514,33 +529,30 @@ function dbReadAllRecords(store, callback) {
 function dbReadFromIndex(key, store, index, callback) {
 	console.log('Reading records with key', key, 'from', store + '/' + index);
 
-	//_jsonAjax('GET', '/read/' + store + '/' + index, { key: key }, callback);
-
-	// Por enquanto, ta feito na gambiarra
-
-	// User id is the username
-	if(store === 'users' && index === 'username') {
-		dbReadRecord(key, 'users', function(result) {
-			// dbReadFromIndex must return an array
-			if(result.success) {
-				result.data = [ result.data ];
-			}
-			callback(result);
-		});
-	}
-	else {
-		_dbGetIndex(store, index, 'readonly', function(store, index) {
-			var key_range = IDBKeyRange.only(key);
-			var request = index.openCursor(key_range);
-			_dbCursorCollect(request, callback);
-		});
-	}
+	var path = '/read/' + store + '/' + index;
+	_jsonAjax('GET', path, { key: key }, function(result) {
+		if(result.success) {
+			// Convert _id into id
+			result.data.forEach(convertIdProperty);
+		}
+		callback(result);
+	});
+	/*
+	_dbGetIndex(store, index, 'readonly', function(store, index) {
+		var key_range = IDBKeyRange.only(key);
+		var request = index.openCursor(key_range);
+		_dbCursorCollect(request, callback);
+	});
+	*/
 }
 
 
 
 function dbUpdateRecord(record, store, callback) {
 	console.log('Updating record', record, 'on', store);
+
+	// Convert id into _id
+	convertIdProperty(record);
 
 	_jsonAjax('PUT', '/update/' + store, record, callback);
 
@@ -557,6 +569,7 @@ function dbUpdateRecord(record, store, callback) {
 function dbDeleteRecord(record_id, store, callback) {
 	console.log('Deleting record', record_id, 'from', store);
 
+	// Doesn't send a record, so convertIdProperty isn't needed
 	_jsonAjax('DELETE', '/delete/' + store, { id: record_id }, callback);
 
 /*	_dbGetStore(store, 'readwrite', function(store) {
@@ -571,6 +584,7 @@ function dbDeleteRecord(record_id, store, callback) {
 function dbDeleteAllFromIndex(key, store, index, callback) {
 	console.log('Deleting all records from', store);
 
+	// Doesn't send a record, so convertIdProperty isn't needed
 	//_jsonAjax('DELETE', '/delete_all/' + store + '/' + index, { key: key }, callback);
 
 	dbReadFromIndex(key, store, index, function(result) {
@@ -615,11 +629,26 @@ function dbUserLogin(username, password, callback) {
 			callback(_dbFailure('LoginError'));
 		}
 		else {
+			console.log(result);
 			callback(result);
 		}
 	});
 }
 
+
+// Functions for fixing CouchDB - Frontend inconsistency
+// This should be used before updating and after reading records with _jsonAjax
+function convertIdProperty(data) {
+	if(data.id === undefined) {
+		data.id = data._id;
+		delete data._id;
+	}
+	else {
+		data._id = data.id;
+		delete data.id;
+	}
+	return data;
+}
 
 
 // Calls the requested HTTP method, converting the <data> object into
@@ -647,12 +676,6 @@ function _jsonAjax(method, path, data, callback) {
 		full_path += urlencoded;
 	}
 	else if(['POST', 'PUT'].indexOf(method) !== -1) {
-		// Fix ID property (couchdb - indexeddb inconsistency)
-		if(data.id !== undefined) {
-			data._id = data.id;
-			delete data.id;
-		}
-
 		send_data = JSON.stringify(data);
 		// Undefined otherwise
 	}
@@ -682,13 +705,6 @@ function _jsonAjax(method, path, data, callback) {
 				// Success -> return parsed response
 				if(req.responseText !== '') {
 					var obj = JSON.parse(req.responseText);
-
-					// Fix ID property (couchdb - indexeddb inconsistency)
-					if(obj._id !== undefined) {
-						obj.id = obj._id;
-						delete obj._id;
-					}
-
 					result = _dbSuccess(obj);
 				}
 				else {

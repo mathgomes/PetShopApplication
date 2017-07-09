@@ -10,16 +10,14 @@ console.log('Executing script.js');
 
 
 // Used to set or retrieve the user's id
-function loggedUserId(user_id) {
-	if(user_id !== undefined) {
+function loggedUserId(user_id_str) {
+	if(user_id_str !== undefined) {
 		// Logging in
-		var obj = { data: user_id };
-		localStorage.setItem('user_id', JSON.stringify(obj));
+		localStorage.setItem('user_id', user_id_str);
 	}
 	else {
 		// ID retrieval
-		var json = localStorage.getItem('user_id');
-		return JSON.parse(json).data;
+		return localStorage.getItem('user_id');
 	}
 }
 
