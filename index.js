@@ -12,32 +12,6 @@ app.use(bodyParser.json());
 
 app.use(express.static('public'));
 
-
-// Mockup records
-var admin_record = {
-	id: 1,
-	is_admin: true,
-	username: 'admin',
-	password: 'admin',
-	name: 'Matheus Gomes',
-	photo: 'images/perfil.jpg',
-	phone: '(99) 1111-1111',
-	email: 'minhoca@petshop.com',
-	address: 'N/A',
-};
-
-var customer_record = {
-	id: 2,
-	is_admin: false,
-	username: 'hdzin',
-	password: '1',
-	name: 'Hugo Dzin',
-	photo: 'images/pets/canary.jpg',
-	phone: '(99) 1111-2222',
-	email: 'hugo@cliente.com',
-	adress: 'Rua dos Bobos Nr 0',
-};
-
 /*
  * stores and indices are listed within database.js:_dbCreateStores
  * dbCreateRecord
@@ -55,7 +29,7 @@ var customer_record = {
  * dbDeleteAllFromIndex
  *   DELETE /delete_all/:store/:index?key=<KEY>
 
-	TABLE OF ERRORS : 
+	TABLE OF ERRORS :
 200 - OK
 201 - Created
 202 - Accepted
@@ -72,35 +46,12 @@ var customer_record = {
 416 - Requested Range Not Satisfiable
 417 - Expectation Failed
 500 - Internal Server Error
-	
+
 */
 
 
-// initialize the database
-couch.initCouch(function(db,err) {
-	if (err) {
-		throw err;
-	}
-	else {
-		// INITIAL INSERTIONS
-		couch.createDocument(admin_record, 'users', function(err, body){
-			if(err) {
-				console.log("error[reason, statusCode] : " + err.reason, err.statusCode);
-			}
-			else {
-				console.log(body.id + ' : created with sucess');
-			}
-		});
-		couch.createDocument(customer_record, 'users', function(err, body){
-			if(err) {
-				console.log("error[reason, statusCode] : " + err.reason, err.statusCode);
-			}
-			else {
-				console.log(body.id + ' : created with sucess');
-			}
-		});	
-	}
-});
+// Create and populate databases with mockup data and views
+couch.initCouch();
 
 // dbCreateRecord
 app.post('/create/:store', (req, res) => {
@@ -112,10 +63,10 @@ app.post('/create/:store', (req, res) => {
 	couch.createDocument(record, store, function(err, result){
 		if(err) {
 			console.log("error[reason, statusCode] : " + err.reason, err.statusCode);
-			res.status(err.statusCode).send()
+			res.status(err.statusCode).send();
 		}
 		else {
-			console.log(result.id + ' : created with sucess');
+			console.log(result.id + ' : created with success');
 			res.status(201).send(); // status da operacao CREATED
 		}
 	});
@@ -135,10 +86,10 @@ app.get('/read/:store', (req, res) => {
 	couch.readDocument(id, store, function(err, doc){
 		if(err) {
 			console.log("error[reason, statusCode] : " + err.reason, err.statusCode);
-			res.status(err.statusCode).send()
+			res.status(err.statusCode).send();
 		}
 		else {
-			console.log(doc._id + ' : retrieved with sucess');
+			console.log(doc._id + ' : retrieved with success');
 			send_data = doc;
 			res.status(200).json(send_data);
 		}
@@ -152,19 +103,17 @@ app.get('/read_all/:store', (req, res) => {
 
 	console.log('read_all', store);
 
-	// TODO ler todos documentos do db com doc.type == store
-	couch.readAllDocuments(null,store,function(err, res) {
-		res.rows.forEach(function (row) {
-			// print out to console it's name and isHyperlink flag
-			console.log(row);
-		});
+	couch.readAllDocuments(store, function(err, body) {
+		// Send only the documents, skipping design documents
+		var docs = body.rows.reduce(function(filtered, row) {
+			if(row.doc._id.startsWith('_design/') === false) {
+				filtered.push(row.doc);
+			}
+			return filtered;
+		}, []);
+		res.json(docs);
 	});
-
-	var send_data = [{store: store}]; // TODO vetor de documentos aqui
-	res.json(send_data);
 });
-
-
 
 
 // dbReadFromIndex
@@ -175,10 +124,13 @@ app.get('/read/:store/:index', (req, res) => {
 
 	console.log('read', store, index, key);
 
-	// TODO ler todos documentos do db com doc.type == store && doc[index] == key
+	couch.readFromView(key, store, 'queries', index, function(err, body) {
+		var docs = body.rows.map(function(row) {
+			return row.doc;
+		});
 
-	var send_data = [{store: store, index: index, key: key}]; // TODO vetor de documentos aqui
-	res.json(send_data);
+		res.json(docs);
+	});
 });
 
 
@@ -194,10 +146,10 @@ app.put('/update/:store', (req, res) => {
 	couch.updateDocument(new_record, store, function(err, result){
 		if(err) {
 			console.log("error[reason, statusCode] : " + err.reason, err.statusCode);
-			res.status(err.statusCode).send()
+			res.status(err.statusCode).send();
 		}
 		else {
-			console.log(result.id + ' : updated with sucess');
+			console.log(result.id + ' : updated with success');
 			res.status(200).json();
 		}
 	});
@@ -216,10 +168,10 @@ app.delete('/delete/:store', (req, res) => {
 	couch.deleteDocument(id, store, function(err, result){
 		if(err) {
 			console.log("error[reason, statusCode] : " + err.reason, err.statusCode);
-			res.status(err.statusCode).send()
+			res.status(err.statusCode).send();
 		}
 		else {
-			console.log(result.id + ' : deleted with sucess');
+			console.log(result.id + ' : deleted with success');
 			res.status(200).json();
 		}
 	});
@@ -241,79 +193,14 @@ app.delete('/delete_all/:store/:index', (req, res) => {
 });
 
 
-// as rotas abaixo vao ser removidas quando terminar as de cima
-// <address>/ajax/users?id=ID
-app.get('/ajax/users', (req, res) => {
-	var id = req.query.id;
-
-	if(id === undefined) {
-		res.status(400).send("400 Bad Request");
-		return;
-	}
-	else if(id === '1') {
-		res.json(admin_record);
-	}
-	else if(id === '2') {
-		res.json(customer_record);
-	}
-	else {
-		res.status(404).send('404 Not Found');
-		return;
-	}
-
+// TODO remove
+app.get('/initdb', (req, res) => {
+	couchDB.initCouch();
 });
 
 
-
-// <address>/ajax/users_by_username?key=USERNAME
-// Nota: metodos com _by_ devem retornar um array
-app.get('/ajax/users_by_username', (req, res) => {
-	// TODO implementar de verdade
-	var key = req.query.key;
-	var send_data;
-
-	if(key === undefined) {
-		res.status(400).send("400 Bad Request");
-		return;
-	}
-	else if(key === 'admin') {
-		send_data = [admin_record];
-	}
-	else if(key === 'hdzin') {
-		send_data = [customer_record];
-	}
-	else {
-		res.status(404).send('404 Not Found');
-		return;
-	}
-
-	res.json(send_data);
-});
-
-/*
-app.get('/', (req, res) => {
-	res.sendFile(__dirname + '/index.html');
-});
-
-app.get('/date', (req, res) => {
-	res.send((new Date()).toString());
-});
-
-app.post('/sqrt', (req, res) => {
-	var num = parseFloat(req.body.num);
-	ans = { result: Math.sqrt(num) };
-	res.send(JSON.stringify(ans));
-});
-
-app.get('/sqrt', (req, res) => {
-	var num = parseFloat(req.query.num);
-	res.send(Math.sqrt(num).toString());
-});
-*/
-
-
+// Get port from command-line arguments (default: 8000)
 var port = 8000;
-
 if(process.argv.length >= 3) {
 	port = parseInt(process.argv[2]);
 }
