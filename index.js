@@ -60,7 +60,7 @@ app.post('/create/:store', (req, res) => {
 
 	console.log('create', store, record);
 
-	couch.createDocument(record, store, function(err, result){
+	couch.createDocument(record, undefined, store, function(err, result){
 		if(err) {
 			console.log("error[reason, statusCode] : " + err.reason, err.statusCode);
 			res.status(err.statusCode).send();
